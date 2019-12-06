@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="想想后面记笔时有那么多数学公式要处理我就方了°(°ˊДˋ°) ° 😂。还好今天研究了一下如何在博客中插入数学公式，发现有种使用起来既简单又高大尚的方法——MathJax, 哈哈😁。">
+<meta name="keywords" content="Markdown,MathJax,LaTeX">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何在Hexo博客中插入数学公式">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2016&#x2F;04&#x2F;02&#x2F;Mathmatical-Formula-within-Markdown&#x2F;index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="想想后面记笔时有那么多数学公式要处理我就方了°(°ˊДˋ°) ° 😂。还好今天研究了一下如何在博客中插入数学公式，发现有种使用起来既简单又高大尚的方法——MathJax, 哈哈😁。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;Snip20160402_3.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;Snip20160402_4.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;Snip20160402_5.png">
+<meta property="og:updated_time" content="2019-12-06T13:16:59.339Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;Snip20160402_3.png">
+
+<link rel="canonical" href="http://yoursite.com/2016/04/02/Mathmatical-Formula-within-Markdown/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>如何在Hexo博客中插入数学公式 | Hexo</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/04/02/Mathmatical-Formula-within-Markdown/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何在Hexo博客中插入数学公式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-04-02 11:31:08" itemprop="dateCreated datePublished" datetime="2016-04-02T11:31:08+08:00">2016-04-02</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2019-12-06 21:16:59" itemprop="dateModified" datetime="2019-12-06T21:16:59+08:00">2019-12-06</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+
+<p>想想后面记笔时有那么多数学公式要处理我就方了°(°ˊДˋ°) ° 😂。还好今天研究了一下如何在博客中插入数学公式，发现有种使用起来既简单又高大尚的方法——MathJax, 哈哈😁。 </p>
+<a id="more"></a>
+
+<h2 id="如何正确显示"><a href="#如何正确显示" class="headerlink" title="如何正确显示"></a>如何正确显示</h2><p>MathJax这么神奇，那到底如何使用呢？不要太简单，就两步:  </p>
+<ol>
+<li>在开始部分插入如下代码: <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span> <span class="keyword">async</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">  src=<span class="string">"https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"</span>&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">&lt;<span class="regexp">/script&gt;</span></span></pre></td></tr></table></figure>
+ 千万不要插错位置了，否则文章标题都没法正常显示。<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/Snip20160402_3.png" alt=""><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/Snip20160402_4.png" alt=""></li>
+<li>在网页中插入所需数学公式的特定格式:<br>这里先不管格式是怎样的，先看一下如何把这个特定格式显示成可读的数学公式。举一个最简单的例子:<code>f(x)=x^2</code>就是一个特定格式。只不过这个例子非常简单，一看就知道是什么含义。 想要把它显示成数学公式有两种办法，分别对应两种显示方式。一种是单独显示，另一种是在文字中显示。<ul>
+<li>单独显示，只需要在两边分别加上<code>$$</code>即可。例如<code>$$f(x)=x^2$$</code>,对应数学公式:<br>$$f(x)=x^2$$  </li>
+<li>在文字中显示，只需要在两边分别加上<code>$</code>即可。例如<code>$f(x)=x^2$</code>, 请问$f(x)=x^2$的导数为?咦？看到这里你是不是想说这**博主，说好的在文字中显示呢？？！！这里要解释一下，因为<code>$</code>这个符号在其他上下文中有不同的意义，比如它可以当作美元符号等等，所以默认情况下<code>$...$</code>是不支持的。那如何解决呢？只需要在第一步添加的代码之前再添加如下:<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/x-mathjax-config"</span>&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">MathJax.Hub.Config(&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">tex2jax: &#123;<span class="attr">inlineMath</span>: [[<span class="string">'$'</span>,<span class="string">'$'</span>], [<span class="string">'\\('</span>,<span class="string">'\\)'</span>]]&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">&#125;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">&lt;<span class="regexp">/script&gt;</span></span></pre></td></tr></table></figure>
+<img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/Snip20160402_5.png" alt=""><br>这个时候就可以完美解决了，请问\(f(x)=x^2\)的导数为? 看到公式了吧，并且公式是在文字中间显示的，并没有占整个一行。 其实，不添加这段代码也可以这样显示，这样<code>\\(f(x)=x^2\\)</code>即可：\(f(x)=x^2\)</li>
+</ul>
+</li>
+</ol>
+<h2 id="LaTeX公式参考"><a href="#LaTeX公式参考" class="headerlink" title="LaTeX公式参考"></a>LaTeX公式参考</h2><p>好了，现在你已经知道如何在博客中显示数学公式啦🤗<br>现在可以来一点稍微复杂的公式了，例如:</p>
+<pre><code>$$f&apos;(x\_0)=\lim_{\Delta x\to 0} \frac{f(x\_0+\Delta x) - f(x\_0)}{\Delta x}$$</code></pre><p>我去，这是什么鬼😫。哈哈，不慌，这个式子对应的公式为:<br>$$f’(x_0) = \lim_{\Delta x\to 0} \frac{f(x_0+\Delta x) - f(x_0)}{\Delta x}$$<br>对应着看看差不多应该有点感觉了吧。还有啊，这些显示的公式可以右击的，很有意思，你可以试一试！</p>
+<p>下面我把常用的总结一下。(试试这个:<a href="http://detexify.kirelabs.org/classify.html" target="_blank" rel="noopener">点我</a>)</p>
+<p>上角标:</p>
+<table>
+<thead>
+<tr>
+<th align="center">格式</th>
+<th align="center">显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>\\(x^y\\)</code></td>
+<td align="center">\(x^y\)</td>
+</tr>
+<tr>
+<td align="center"><code>\(x^{y^z}\\)</code></td>
+<td align="center">\(x^{y^z}\)</td>
+</tr>
+</tbody></table>
+<p>下角标:  </p>
+<table>
+<thead>
+<tr>
+<th align="center">格式</th>
+<th align="center">显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>\\(x_i\\)</code></td>
+<td align="center">\(x_i\)</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>细心的同学会发现（你肯定没发现）我前面写的公式:<br><code>$$f&#39;(x\_0)=\lim_{\Delta x\to 0} \frac{f(x\_0+\Delta x) - f(x\_0)}{\Delta x}$$</code>:<br>$$f’(x_0)=\lim_{\Delta x\to 0} \frac{f(x_0+\Delta x) - f(x_0)}{\Delta x}$$<br>每个下角标的位置都加了一个, 那是因为如果我第一个下角标不加反斜杠(后面两个加不加都不影响):<br><code>$$f&#39;(x_0)=\lim_{\Delta x\to 0} \frac{f(x\_0+\Delta x) - f(x\_0)}{\Delta x}$$</code><br>就会出现下面的效果:<br>$$f’(x_0)=\lim_{\Delta x\to 0} \frac{f(x_0+\Delta x) - f(x_0)}{\Delta x}$$<br>我也不知道为什么…😂求解答…</p>
+<blockquote>
+<p>2016.04.08:终于找到原因了，下划线在Markdown中有特殊含义，两个下划线表示斜体。。。😅, 知道这个就很好解决啦，把每个下划线前都加一个反斜杠就OK啦~🤗</p>
+</blockquote>
+</blockquote>
+<p>希腊字母:</p>
+<table>
+<thead>
+<tr>
+<th align="center">格式</th>
+<th align="center">显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>\\(\alpha\\)</code></td>
+<td align="center">\(\alpha\)</td>
+</tr>
+<tr>
+<td align="center"><code>\\(\beta\\)</code></td>
+<td align="center">\(\beta\)</td>
+</tr>
+<tr>
+<td align="center"><code>\\(\Delta\\)</code></td>
+<td align="center">\(\Delta\)</td>
+</tr>
+<tr>
+<td align="center">…</td>
+<td align="center">…</td>
+</tr>
+</tbody></table>
+<p>求和:</p>
+<table>
+<thead>
+<tr>
+<th align="center">格式</th>
+<th align="center">显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>$$\sum_{i=0}^n$$</code></td>
+<td align="center">$$\sum_{i=0}^n$$</td>
+</tr>
+</tbody></table>
+<p> 分数:</p>
+<table>
+<thead>
+<tr>
+<th align="center">格式</th>
+<th align="center">显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>$\frac{x}{y}$$</code></td>
+<td align="center">$$\frac{x}{y}$$</td>
+</tr>
+</tbody></table>
+<p>开根号:</p>
+<table>
+<thead>
+<tr>
+<th align="center">格式</th>
+<th align="center">显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>\\(\sqrt 3\\)</code></td>
+<td align="center">\(\sqrt 3\)</td>
+</tr>
+<tr>
+<td align="center"><code>\\(\sqrt[2] 3\\)</code></td>
+<td align="center">\(\sqrt[2] 3\)</td>
+</tr>
+<tr>
+<td align="center"><code>\\(\sqrt[3] 3\\)</code></td>
+<td align="center">\(\sqrt[3] 3\)</td>
+</tr>
+</tbody></table>
+<p>极限:</p>
+<table>
+<thead>
+<tr>
+<th align="center">格式</th>
+<th align="center">显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>$$\lim_{x \to 0}$$</code></td>
+<td align="center">$$\lim_{x \to 0}$$</td>
+</tr>
+</tbody></table>
+<p>分情况:</p>
+<table>
+<thead>
+<tr>
+<th align="center">格式</th>
+<th align="center">显示</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><code>$$f(x): \begin{cases} x, x&gt;0 \\\ \\\ -x,x&lt;0 \end{cases}$$</code></td>
+<td align="center">$$f(x): \begin{cases} x, x&gt;0 \\ \\ -x,x&lt;0 \end{cases}$$</td>
+</tr>
+</tbody></table>
+<p>参考:   </p>
+<ul>
+<li><a href="http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference" target="_blank" rel="noopener">MathJax basic tutorial and quick reference - StackExchange</a></li>
+<li><a href="http://docs.mathjax.org/en/latest/start.html" target="_blank" rel="noopener">MathJax Docs</a></li>
+<li><a href="http://easy-copy-mathjax.xxxx7.com" target="_blank" rel="noopener">Easy Copy MathJax</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Markdown/" rel="tag"># Markdown</a>
+              <a href="/tags/MathJax/" rel="tag"># MathJax</a>
+              <a href="/tags/LaTeX/" rel="tag"># LaTeX</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/03/26/Machine-Learning-Resources/" rel="prev" title="机器学习资源汇总">
+      <i class="fa fa-chevron-left"></i> 机器学习资源汇总
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/04/06/Machine-Learning-Andrew-Ng-My-Notes/" rel="next" title="Coursera机器学习笔记(〇)-目录">
+      Coursera机器学习笔记(〇)-目录 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#如何正确显示"><span class="nav-number">1.</span> <span class="nav-text">如何正确显示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LaTeX公式参考"><span class="nav-number">2.</span> <span class="nav-text">LaTeX公式参考</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
