@@ -40,8 +40,8 @@
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     },
-    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: '',
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
   };
 </script>
@@ -147,9 +147,34 @@
     <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
 
   </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 
 </nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
 </div>
     </header>
 
@@ -169,325 +194,6 @@
             
 
   <div class="posts-expand">
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/27/deeplearning-ai-Neural-Networks-and-Deep-Learning-week1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Daniellaah">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/08/27/deeplearning-ai-Neural-Networks-and-Deep-Learning-week1/" class="post-title-link" itemprop="url">deeplearning.ai 专项课程一第一周</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-08-27 00:51:20" itemprop="dateCreated datePublished" datetime="2017-08-27T00:51:20+08:00">2017-08-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-06 21:16:59" itemprop="dateModified" datetime="2019-12-06T21:16:59+08:00">2019-12-06</time>
-              </span>
-
-          
-            <span id="/2017/08/27/deeplearning-ai-Neural-Networks-and-Deep-Learning-week1/" class="post-meta-item leancloud_visitors" data-flag-title="deeplearning.ai 专项课程一第一周" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2017/08/27/deeplearning-ai-Neural-Networks-and-Deep-Learning-week1/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2017/08/27/deeplearning-ai-Neural-Networks-and-Deep-Learning-week1/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/andrewng-deeplearningai.jpeg" alt=""><br>这是Andrew Ng在Coursera上的深度学习专项课程中第一课Neural Networks and Deep Learning第一周Introduction to deep learning的学习笔记.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/08/27/deeplearning-ai-Neural-Networks-and-Deep-Learning-week1/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/27/deeplearning.ai-toc/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Daniellaah">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/08/27/deeplearning.ai-toc/" class="post-title-link" itemprop="url">deeplearning.ai 深度学习专项课程笔记 - 目录</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-08-27 00:33:58" itemprop="dateCreated datePublished" datetime="2017-08-27T00:33:58+08:00">2017-08-27</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-06 21:12:13" itemprop="dateModified" datetime="2019-12-06T21:12:13+08:00">2019-12-06</time>
-              </span>
-
-          
-            <span id="/2017/08/27/deeplearning.ai-toc/" class="post-meta-item leancloud_visitors" data-flag-title="deeplearning.ai 深度学习专项课程笔记 - 目录" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2017/08/27/deeplearning.ai-toc/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2017/08/27/deeplearning.ai-toc/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1263.png" alt=""><br>这里会记录我在学习深度学习系列课程中的学习笔记. 我在Github上开了一个<a href="https://github.com/daniellaah/deeplearning.ai-step-by-step-guide" target="_blank" rel="noopener">repo</a>用于分享学习心得, 代码等. 觉得好的话帮忙给个start啦.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/08/27/deeplearning.ai-toc/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/20/Support-Vector-Machines-sumup/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Daniellaah">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/03/20/Support-Vector-Machines-sumup/" class="post-title-link" itemprop="url">支持向量机总结(上)</a>
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2017-03-20 20:53:01" itemprop="dateCreated datePublished" datetime="2017-03-20T20:53:01+08:00">2017-03-20</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2019-12-06 21:16:59" itemprop="dateModified" datetime="2019-12-06T21:16:59+08:00">2019-12-06</time>
-              </span>
-
-          
-            <span id="/2017/03/20/Support-Vector-Machines-sumup/" class="post-meta-item leancloud_visitors" data-flag-title="支持向量机总结(上)" title="阅读次数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span class="leancloud-visitors-count"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2017/03/20/Support-Vector-Machines-sumup/#comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2017/03/20/Support-Vector-Machines-sumup/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
-});
-</script>
-
-<script type="text/javascript" async
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-
-<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/lo_llbs1rs0-jan-senderek.jpg?imageMogr2/thumbnail/!50p" alt=""></p>
-<p>支持向量机是一种二类分类模型. 它的基本模型是定义在特征空间上的间隔最大的线性分类器. 间隔最大使它有别与感知机, 核技巧使它成为实质上的非线性分类器. 统计学习方法有三要素, 对于支持向量机来说, 学习策略就是间隔最大化, 而优化方法就是求解凸二次规划的最优算法.<br>支持向量机学习方法包含构建由简至繁的模型: 线性可分支持向量机, 线性支持向量机, 非线性支持向量机.</p>
-<table>
-<thead>
-<tr>
-<th align="center">数据</th>
-<th align="center">策略</th>
-<th align="center">结果</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">线性可分</td>
-<td align="center">硬间隔最大化</td>
-<td align="center">线性可分支持向量机/硬间隔支持向量机</td>
-</tr>
-<tr>
-<td align="center">近似线性可分</td>
-<td align="center">软间隔最大化</td>
-<td align="center">线性支持向量机/软间隔支持向量机</td>
-</tr>
-<tr>
-<td align="center">线性不可分</td>
-<td align="center">软间隔最大化</td>
-<td align="center">非线性支持向量机</td>
-</tr>
-<tr>
-<td align="center">核函数表示将输入从输入空间映射到特征空间得到的特征向量之间的内积. 通过核函数, 可以从输入空间学习非线性支持向量机, 其等价于在特征空间中学习线性支持向量机. 这样的方法称为核技巧.</td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-</tbody></table>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2017/03/20/Support-Vector-Machines-sumup/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
         
   
   
@@ -1241,6 +947,315 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   
   
 
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/19/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daniellaah">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/11/19/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%8B/" class="post-title-link" itemprop="url">CS229机器学习笔记(三)-指数分布族, 广义线性模型</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-11-19 17:28:51" itemprop="dateCreated datePublished" datetime="2016-11-19T17:28:51+08:00">2016-11-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-06 21:16:59" itemprop="dateModified" datetime="2019-12-06T21:16:59+08:00">2019-12-06</time>
+              </span>
+
+          
+            <span id="/2016/11/19/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%8B/" class="post-meta-item leancloud_visitors" data-flag-title="CS229机器学习笔记(三)-指数分布族, 广义线性模型" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/11/19/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%8B/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/11/19/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%8B/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/photo-1468956332313-2dcf1542828f.jpg" alt=""><br>课程信息:  <a href="http://cs229.stanford.edu" target="_blank" rel="noopener">主页</a>　<a href="https://www.youtube.com/playlist?list=PLA89DCFA6ADACE599" target="_blank" rel="noopener">Youtube</a></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/11/19/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%8B/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/18/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%AD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daniellaah">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/11/18/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%AD/" class="post-title-link" itemprop="url">CS229机器学习笔记(二) - Logistic回归, 牛顿方法</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-11-18 16:09:54" itemprop="dateCreated datePublished" datetime="2016-11-18T16:09:54+08:00">2016-11-18</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-06 21:16:59" itemprop="dateModified" datetime="2019-12-06T21:16:59+08:00">2019-12-06</time>
+              </span>
+
+          
+            <span id="/2016/11/18/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%AD/" class="post-meta-item leancloud_visitors" data-flag-title="CS229机器学习笔记(二) - Logistic回归, 牛顿方法" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/11/18/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%AD/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/11/18/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%AD/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/creative-designer-photographer-workspace-picjumbo-com.jpg" alt=""><br>课程信息:  <a href="http://cs229.stanford.edu" target="_blank" rel="noopener">主页</a>　<a href="https://www.youtube.com/playlist?list=PLA89DCFA6ADACE599" target="_blank" rel="noopener">Youtube</a></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/11/18/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%AD/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/17/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%8A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daniellaah">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            <a href="/2016/11/17/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%8A/" class="post-title-link" itemprop="url">CS229机器学习笔记(一) - 梯度下降, 正规方程, 局部加权</a>
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-11-17 22:43:52" itemprop="dateCreated datePublished" datetime="2016-11-17T22:43:52+08:00">2016-11-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-06 21:16:59" itemprop="dateModified" datetime="2019-12-06T21:16:59+08:00">2019-12-06</time>
+              </span>
+
+          
+            <span id="/2016/11/17/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%8A/" class="post-meta-item leancloud_visitors" data-flag-title="CS229机器学习笔记(一) - 梯度下降, 正规方程, 局部加权" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/11/17/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%8A/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/11/17/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%8A/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/luxury-silver-pen-with-a-business-diary-picjumbo-com.jpg" alt=""><br>课程信息:  <a href="http://cs229.stanford.edu" target="_blank" rel="noopener">主页</a>　<a href="https://www.youtube.com/playlist?list=PLA89DCFA6ADACE599" target="_blank" rel="noopener">Youtube</a></p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2016/11/17/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%8A/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
   </div>
 
   
@@ -1311,12 +1326,12 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-count">42</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
@@ -1340,7 +1355,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 
 <div class="copyright">
   
-  &copy; 
+  &copy; 2015 – 
   <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
@@ -1360,94 +1375,6 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 
 
 
-  <script>
-  function leancloudSelector(url) {
-    return document.getElementById(url).querySelector('.leancloud-visitors-count');
-  }
-  if (CONFIG.page.isPost) {
-    function addCount(Counter) {
-      var visitors = document.querySelector('.leancloud_visitors');
-      var url = visitors.getAttribute('id').trim();
-      var title = visitors.getAttribute('data-flag-title').trim();
-
-      Counter('get', `/classes/Counter?where=${JSON.stringify({ url })}`)
-        .then(response => response.json())
-        .then(({ results }) => {
-          if (results.length > 0) {
-            var counter = results[0];
-            Counter('put', '/classes/Counter/' + counter.objectId, { time: { '__op': 'Increment', 'amount': 1 } })
-              .then(response => response.json())
-              .then(() => {
-                leancloudSelector(url).innerText = counter.time + 1;
-              })
-              .catch(error => {
-                console.log('Failed to save visitor count', error);
-              })
-          } else {
-              leancloudSelector(url).innerText = 'Counter not initialized! More info at console err msg.';
-              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
-            
-          }
-        })
-        .catch(error => {
-          console.log('LeanCloud Counter Error', error);
-        });
-    }
-  } else {
-    function showTime(Counter) {
-      var visitors = document.querySelectorAll('.leancloud_visitors');
-      var entries = [...visitors].map(element => {
-        return element.getAttribute('id').trim();
-      });
-
-      Counter('get', `/classes/Counter?where=${JSON.stringify({ url: { '$in': entries } })}`)
-        .then(response => response.json())
-        .then(({ results }) => {
-          if (results.length === 0) {
-            document.querySelectorAll('.leancloud_visitors .leancloud-visitors-count').forEach(element => {
-              element.innerText = 0;
-            });
-            return;
-          }
-          for (let item of results) {
-            let { url, time } = item;
-            leancloudSelector(url).innerText = time;
-          }
-          for (let url of entries) {
-            var element = leancloudSelector(url);
-            if (element.innerText == '') {
-              element.innerText = 0;
-            }
-          }
-        })
-        .catch(error => {
-          console.log('LeanCloud Counter Error', error);
-        });
-    }
-  }
-
-  fetch('https://app-router.leancloud.cn/2/route?appId=t623MSBhVLoTHhzaeTlxl7Oz-gzGzoHsz')
-    .then(response => response.json())
-    .then(({ api_server }) => {
-      var Counter = (method, url, data) => {
-        return fetch(`https://${api_server}/1.1${url}`, {
-          method: method,
-          headers: {
-            'X-LC-Id': 't623MSBhVLoTHhzaeTlxl7Oz-gzGzoHsz',
-            'X-LC-Key': 'tmiBxnWHuuecINpFBk861cEf',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data)
-        });
-      };
-      if (CONFIG.page.isPost) {
-        if (CONFIG.hostname !== location.hostname) return;
-        addCount(Counter);
-      } else if (document.querySelectorAll('.post-title-link').length >= 1) {
-        showTime(Counter);
-      }
-    });
-  </script>
 
 
       </div>
@@ -1468,6 +1395,8 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 
 
 
+
+  <script src="/js/local-search.js"></script>
 
 
 
@@ -1496,14 +1425,14 @@ NexT.utils.loadComments(() => {
     new Valine({
       el: '#comments',
       verify: false,
-      notify: false,
+      notify: true,
       appId: 't623MSBhVLoTHhzaeTlxl7Oz-gzGzoHsz',
       appKey: 'tmiBxnWHuuecINpFBk861cEf',
       placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
       avatar: 'mm',
       meta: guest,
       pageSize: '10' || 10,
-      visitor: false,
+      visitor: true,
       lang: '' || 'zh-cn',
       path: location.pathname,
       recordIP: false,
