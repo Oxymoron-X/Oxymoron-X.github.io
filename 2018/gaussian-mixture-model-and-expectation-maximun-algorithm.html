@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://daniellaah.github.io').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&amp;apos;$&amp;apos;,&amp;apos;$&amp;apos;], [&amp;apos;\\(&amp;apos;,&amp;apos;\\)&amp;apos;]]} });      本篇文章概览:  什么是高斯混合模型 什么是EM算法 如何利用EM算法推导GMM 使用Python实现GMM">
+<meta name="keywords" content="Machine Learning,GMM,EM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高斯混合模型和EM算法">
+<meta property="og:url" content="https:&#x2F;&#x2F;daniellaah.github.io&#x2F;2018&#x2F;gaussian-mixture-model-and-expectation-maximun-algorithm.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&amp;apos;$&amp;apos;,&amp;apos;$&amp;apos;], [&amp;apos;\\(&amp;apos;,&amp;apos;\\)&amp;apos;]]} });      本篇文章概览:  什么是高斯混合模型 什么是EM算法 如何利用EM算法推导GMM 使用Python实现GMM">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;luxury-silver-pen-with-a-business-diary-picjumbo-com.jpg">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;gmm1.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;gmm2.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;gmm3.png">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;gmm4.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;screenshot_1421.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;screenshot_1422.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;screenshot_1423.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;screenshot_1425.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;screenshot_1426.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;screenshot_1427.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;screenshot_1428.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;screenshot_1429.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;screenshot_1430.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;screenshot_1431.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;screenshot_1432.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;screenshot_1433.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;screenshot_1434.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;screenshot_1435.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;screenshot_1437.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;screenshot_1438.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;gmm_output.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:updated_time" content="2019-12-08T08:24:09.101Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http:&#x2F;&#x2F;7xrrje.com1.z0.glb.clouddn.com&#x2F;luxury-silver-pen-with-a-business-diary-picjumbo-com.jpg">
+
+<link rel="canonical" href="https://daniellaah.github.io/2018/gaussian-mixture-model-and-expectation-maximun-algorithm.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>高斯混合模型和EM算法 | Hexo</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f83617d7f08d120ecbbca435e8de97a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://daniellaah.github.io/2018/gaussian-mixture-model-and-expectation-maximun-algorithm.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daniellaah">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          高斯混合模型和EM算法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-01-24 16:29:24" itemprop="dateCreated datePublished" datetime="2018-01-24T16:29:24+08:00">2018-01-24</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-08 16:24:09" itemprop="dateModified" datetime="2019-12-08T16:24:09+08:00">2019-12-08</time>
+              </span>
+
+          
+            <span id="/2018/gaussian-mixture-model-and-expectation-maximun-algorithm.html" class="post-meta-item leancloud_visitors" data-flag-title="高斯混合模型和EM算法" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2018/gaussian-mixture-model-and-expectation-maximun-algorithm.html#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/gaussian-mixture-model-and-expectation-maximun-algorithm.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<p><img src="http://7xrrje.com1.z0.glb.clouddn.com/luxury-silver-pen-with-a-business-diary-picjumbo-com.jpg" alt=""><br>本篇文章概览:</p>
+<ol>
+<li>什么是高斯混合模型</li>
+<li>什么是EM算法</li>
+<li>如何利用EM算法推导GMM</li>
+<li>使用Python实现GMM</li>
+</ol>
+<a id="more"></a>
+
+<hr>
+<h1 id="一-高斯混合模型-GMM"><a href="#一-高斯混合模型-GMM" class="headerlink" title="一. 高斯混合模型(GMM)"></a>一. 高斯混合模型(GMM)</h1><p>高斯混合模型, 英文为Gaussian Mixture Model, 简称GMM, 是一种聚类算法. 它和K-means算法很像, 只不过GMM得到的结果是对概率密度的估计, 是一种软聚类. 那么究竟什么是高斯混合模型呢? 其实顾名思义, 其就假设数据是由多个服从高斯分布的数据混合而成的. 这里究竟有几个高斯分布不能确定, 就像K-means算法里的k值一样, 是一种超参数, 更多时候需要领域知识来决定. 模型中的每一个高斯分布被称为component, 即组分. 每一个组分的概率密度线性叠加就组成了GMM的概率密度函数:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/gmm1.png" alt=""><br>根据上面的式子，如果我们要从 GMM 的分布中随机地取一个点的话，实际上可以分为两步：首先随机地在这 K 个 Component 之中选一个，每个 Component 被选中的概率实际上就是它的系数 $\pi_k$ ，选中了 Component 之后，再单独地考虑从这个 Component 的分布中选取一个点就可以了──这里已经回到了普通的 Gaussian 分布，转化为了已知的问题。<sup>[1]</sup><br>给定一批数据, 我们想用GMM来对这批数据进行聚类. 具体如何做呢? 很简单, 我们只要通过这批数据来得到GMM的概率密度函数即可. 本质上就是通过数据来计算$\pi_k, \mu_k, \sigma_k$等参数.其中, 通过数据来推算概率密度被称作density estimation, 而估算参数被称作parameter estimation.<br>如何估计这些参数? 这就回到我们熟悉的最大似然估计了. 根据概率密度函数, 很容易写出对应的log似然函数:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/gmm2.png" alt=""><br>对于上式, 我们无法像普通的log似然函数那样通过求导来求出最大值. 具体地, 我们通过如下步骤来解决这个问题.</p>
+<ol>
+<li>估计当前模型下第i个观测数据来自第k个分模型的概率, 称为分模型k对观测数据$y_i$的响应度.<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/gmm3.png" alt=""><br>此时, 假设$\mu_k, \sigma_k$均已知(随机初始值).</li>
+<li>利用第一步的$\gamma_i$估计每个组分的参数$\mu_k, \sigma_k$. 直观理解, 可以将看作$x_i$这个值其中有$\gamma(i, k)x_i$这部分是由 组分$k$所生成的, 即组份$k$在生成数据$x_i$时所做的贡献.<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/gmm4.png?imageMogr/v2/thumbnail/!45p" alt=""></li>
+<li>不断迭代上面两步, 知道收敛为止.<br>上面这三步其实就是GMM的核心了, 至此我们应该可以轻松的实现GMM的代码了. 不过先不着急, 上面的步骤只是直观地展示了GMM求解的步骤, 那么这些步骤是怎么来的呢? 有没有严格的数学证明? 下面我们就来看看什么是EM算法.</li>
+</ol>
+<h1 id="二-EM算法"><a href="#二-EM算法" class="headerlink" title="二. EM算法"></a>二. EM算法</h1><p>假定有训练集<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1421.png?imageMogr/v2/thumbnail/!45p" alt=""><br>包含m个独立样本，希望从中找到该组数据的模型p(x,z)的参数.<br>常规操作, 对数似然函数为:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1422.png?imageMogr/v2/thumbnail/!45p" alt=""><br>z是隐随机变量，不方便直接找到参数估计。 策略:计算l(θ)下界，求该下界的最大值; 重复该过程，直到收敛到局部最大值。<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1423.png?imageMogr/v2/thumbnail/!45p" alt=""><br>令$Q_i$是$z$的某一个分布，$Q_i\gt 0$, 有:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1425.png?imageMogr/v2/thumbnail/!45p" alt=""><br>其中最后一步利用了Jensen不等式. 当且仅当$\log(\frac{P}{Q})=c(\text{常数})$时, 等号成立, 即:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1426.png?imageMogr/v2/thumbnail/!45p" alt=""><br>$$P(x^{(i)}, z^{(i)}; \theta)=cQ_i(z^{(i)}) \<br>\<br>\sum_z P(x^{(i)}, z^{(i)}; \theta)=\sum_zcQ_i(z^{(i)}) \<br>\<br>\sum_z P(x^{(i)}, z^{(i)}; \theta)=c \<br>\<br>\frac{P(x^{(i)}, z^{(i)}; \theta)}{Q_i(z^{(i)})}=\sum_z P(x^{(i)}, z^{(i)}; \theta) \<br>\<br>Q_i(z^{(i)})=\frac{P(x^{(i)}, z^{(i)}; \theta)}{\sum_z P(x^{(i)}, z^{(i)}; \theta)}=P(z^{(i)}|x^{(i)};\theta)$$<br>这样我们就推出了$Q_i(z^{(i)})$, 解决了$Q_i(z^{(i)})$如何选择的问题, 这就是E步, 有了$Q_i(z^{(i)})$, 就有了$l$的下界. 在M步中, 我们极大化这个下界. 一般的EM算法的步骤如下：<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1427.png?imageMogr/v2/thumbnail/!45p" alt=""><br>这里值得注意的是, 当我们把似然函数看成是关于$Q$和$\theta$的函数时, 其实我们上面的迭代步骤就是关于$Q$和$\theta$的坐标上升.<br>接下来, 我们来利用EM算法推导GMM.</p>
+<h1 id="三-利用EM算法推导GMM"><a href="#三-利用EM算法推导GMM" class="headerlink" title="三. 利用EM算法推导GMM"></a>三. 利用EM算法推导GMM</h1><p>随机变量$X$是有$K$个高斯分布混合而成，取各个高斯分布的概率为$\phi_1, \phi_2… \phi_K$，第$i$个高斯分布的均值为$\mu_i$，方差为$\Sigma_i$。若观测到随机变量$X$的一系列样本$x_1,x_2,…,x_n$试估计参数 $\phi, \mu, \Sigma$。<br>E-step:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1428.png?imageMogr/v2/thumbnail/!45p" alt=""><br>M-step:<br>将多项分布和高斯分布的参数带入:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1429.png?imageMogr/v2/thumbnail/!45p" alt=""><br>对$\mu_l$求偏导:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1430.png?imageMogr/v2/thumbnail/!45p" alt=""><br>令上式=0:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1431.png?imageMogr/v2/thumbnail/!45p" alt=""><br>同理对$\Sigma_j$求偏导并令结果为0可得:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1432.png?imageMogr/v2/thumbnail/!45p" alt=""><br>上面就解决了高斯分布中的参数. 下面看多项分布中的参数.<br>考察M-step的目标函数，对于$\phi$，删除常数项:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1433.png?imageMogr/v2/thumbnail/!45p" alt=""><br>得到:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1434.png?imageMogr/v2/thumbnail/!45p" alt=""><br>由于多项分布的概率和为1，建立拉格朗日方程<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1435.png?imageMogr/v2/thumbnail/!45p" alt=""><br>对$\phi求偏导$:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1437.png?imageMogr/v2/thumbnail/!45p" alt=""><br>令上式等于0:<br>$$\sum_{i=1}^mw_j^{(i)}+\beta\phi_j=0$$<br>$$\sum_{j=1}^k\sum_{i=1}^mw_j^{(i)}+\sum_{j=1}^k\beta\phi_j=0$$<br>$$\sum_{i=1}^m\sum_{j=1}^kw_j^{(i)}+\beta\sum_{j=1}^k\phi_j=0$$<br>$$m+\beta\sum_{j=1}^k\phi_j=0$$<br>$$\beta=-m$$<br>带回式中可得:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1438.png?imageMogr/v2/thumbnail/!45p" alt=""><br>这样, 我们通过EM算法一步步推导得到了第一节中的结论.<br>到这里, 我们就掌握了GMM和EM算法. 这里还需注意的是, EM算法是一种通用的算法, 常常用于解决含有因变量的参数估计问题. 它不仅可以用在这里的GMM, 在HMM和LDA(Latent Dirichlet Allocation)中, 我们还会看到EM的身影.<br>最后, 附上Python实现GMM的代码.</p>
+<h1 id="四-Python实现GMM"><a href="#四-Python实现GMM" class="headerlink" title="四. Python实现GMM"></a>四. Python实现GMM</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> multivariate_normal</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.utils <span class="keyword">import</span> shuffle</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GMM</span><span class="params">()</span>:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, n_components=<span class="number">2</span>, max_iter=<span class="number">100</span>)</span>:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">        self.n_comp = <span class="number">2</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">        self.max_iter = max_iter</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">        self.weights_ = []</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">        self.means_ = []</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">        self.covariances_ = []</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(self, X)</span>:</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">        m, n = X.shape</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">        means = [np.random.standard_normal(n) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.n_comp)]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">        sigmas = [np.identity(n) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.n_comp)]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">        pis = [<span class="number">1</span>/self.n_comp <span class="keyword">for</span> i <span class="keyword">in</span> range(self.n_comp)]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">        <span class="comment"># EM</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.max_iter):</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">            <span class="comment"># E Step</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">            predict_gausses = [multivariate_normal(mean, sigma) <span class="keyword">for</span> mean, sigma <span class="keyword">in</span> zip(means, sigmas)]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">            gauss_sum = <span class="number">0</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">            <span class="keyword">for</span> pi, predict_gauss <span class="keyword">in</span> zip(pis, predict_gausses):</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">                gauss_sum += pi * predict_gauss.pdf(X)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">            gammas = [pi * predict_gauss.pdf(X) / gauss_sum <span class="keyword">for</span> pi, predict_gauss <span class="keyword">in</span> zip(pis, predict_gausses)]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">            <span class="comment"># M Step</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line">            means = [np.dot(gamma, X) / np.sum(gamma) <span class="keyword">for</span> gamma <span class="keyword">in</span> gammas]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">            sigmas = [np.dot(gamma * (X - mean).T, X - mean) / np.sum(gamma) <span class="keyword">for</span> gamma, mean <span class="keyword">in</span> zip(gammas, means)]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line">            pis = [np.sum(gamma) / m <span class="keyword">for</span> gamma <span class="keyword">in</span> gammas]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">        self.weights_ = pis</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line">        self.covariances_ = sigmas</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">34</span></pre></td><td class="code"><pre><span class="line">        self.means_ = means</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">35</span></pre></td><td class="code"><pre><span class="line">        <span class="keyword">return</span> self</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">36</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">37</span></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">38</span></pre></td><td class="code"><pre><span class="line">    mean1, sigma1 = [<span class="number">0</span>, <span class="number">0</span>], [[<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>]]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">39</span></pre></td><td class="code"><pre><span class="line">    mean2, sigma2 = [<span class="number">2</span>, <span class="number">4</span>], [[<span class="number">3</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>]]</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">40</span></pre></td><td class="code"><pre><span class="line">    <span class="comment"># mean1, sigma1 = [0, 0, 0], [[1, 0, 0], [0, 1, 0], [0, 0, 1]]</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">41</span></pre></td><td class="code"><pre><span class="line">    <span class="comment"># mean2, sigma2 = [2, 4, 1], [[3, 0, 0], [0, 1, 0], [0, 0, 2]]</span></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">42</span></pre></td><td class="code"><pre><span class="line">    np.random.seed(<span class="number">8827</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">43</span></pre></td><td class="code"><pre><span class="line">    X1 = np.random.multivariate_normal(mean1, sigma1, <span class="number">500</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">44</span></pre></td><td class="code"><pre><span class="line">    X2 = np.random.multivariate_normal(mean2, sigma2, <span class="number">300</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">45</span></pre></td><td class="code"><pre><span class="line">    y = np.array([<span class="number">1</span>]*<span class="number">500</span> + [<span class="number">0</span>]*<span class="number">300</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">46</span></pre></td><td class="code"><pre><span class="line">    X = np.vstack([X1, X2])</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">47</span></pre></td><td class="code"><pre><span class="line">    X, y = shuffle(X, y)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">48</span></pre></td><td class="code"><pre><span class="line">    gmm = GMM(n_components=<span class="number">2</span>).fit(X)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">49</span></pre></td><td class="code"><pre><span class="line">    weight1, weight2 = gmm.weights_</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">50</span></pre></td><td class="code"><pre><span class="line">    predict_mean1, predict_mean2 = gmm.means_</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">51</span></pre></td><td class="code"><pre><span class="line">    predict_sigma1, predict_sigma2 = gmm.covariances_</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">52</span></pre></td><td class="code"><pre><span class="line">    predict_gauss1 = multivariate_normal(predict_mean1, predict_sigma1)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">53</span></pre></td><td class="code"><pre><span class="line">    predict_gauss2 = multivariate_normal(predict_mean2, predict_sigma2)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">54</span></pre></td><td class="code"><pre><span class="line">    predict_y1 = predict_gauss1.pdf(X)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">55</span></pre></td><td class="code"><pre><span class="line">    predict_y2 = predict_gauss2.pdf(X)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">56</span></pre></td><td class="code"><pre><span class="line">    predict1 = (predict_y1 &gt; predict_y2).astype(int)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">57</span></pre></td><td class="code"><pre><span class="line">    predict2 = (predict_y1 &lt; predict_y2).astype(int)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">58</span></pre></td><td class="code"><pre><span class="line">    acc1, acc2 = np.mean(predict1 == y), np.mean(predict2 == y)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">59</span></pre></td><td class="code"><pre><span class="line">    print(<span class="string">'accuracy: &#123;&#125;'</span>.format(acc1 <span class="keyword">if</span> acc1 &gt; acc2 <span class="keyword">else</span> acc2))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">60</span></pre></td><td class="code"><pre><span class="line">    fig = plt.figure(figsize=(<span class="number">12</span>, <span class="number">6</span>))</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">61</span></pre></td><td class="code"><pre><span class="line">    ax = fig.add_subplot(<span class="number">121</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">62</span></pre></td><td class="code"><pre><span class="line">    ax.set_title(<span class="string">'True'</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">63</span></pre></td><td class="code"><pre><span class="line">    ax.scatter(X[y==<span class="number">1</span>, <span class="number">0</span>], X[y==<span class="number">1</span>, <span class="number">1</span>], c=<span class="string">'r'</span>, s=<span class="number">10</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">64</span></pre></td><td class="code"><pre><span class="line">    ax.scatter(X[y==<span class="number">0</span>, <span class="number">0</span>], X[y==<span class="number">0</span>, <span class="number">1</span>], c=<span class="string">'b'</span>, s=<span class="number">10</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">65</span></pre></td><td class="code"><pre><span class="line">    ax = fig.add_subplot(<span class="number">122</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">66</span></pre></td><td class="code"><pre><span class="line">    ax.set_title(<span class="string">'Predict'</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">67</span></pre></td><td class="code"><pre><span class="line">    ax.scatter(X[predict1==<span class="number">1</span>, <span class="number">0</span>], X[predict1==<span class="number">1</span>, <span class="number">1</span>], c=<span class="string">'r'</span>, s=<span class="number">10</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">68</span></pre></td><td class="code"><pre><span class="line">    ax.scatter(X[predict1==<span class="number">0</span>, <span class="number">0</span>], X[predict1==<span class="number">0</span>, <span class="number">1</span>], c=<span class="string">'b'</span>, s=<span class="number">10</span>)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">69</span></pre></td><td class="code"><pre><span class="line">    plt.show()</span></pre></td></tr></table></figure>
+<p>Output:<br>accuracy: 0.9825<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/gmm_output.png?imageMogr/v2/thumbnail/!45p" alt=""></p>
+<p>参考文献:</p>
+<ol>
+<li><a href="http://blog.pluskid.org/?p=39" target="_blank" rel="noopener">漫谈 Clustering (3): Gaussian Mixture Model - pluskid</a></li>
+<li><a href="http://www.cnblogs.com/jerrylead/archive/2011/04/06/2006924.html" target="_blank" rel="noopener">混合高斯模型（Mixtures of Gaussians）和EM算法 - JerryLead</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Daniellaah
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="/https:/daniellaah.github.io/2018/gaussian-mixture-model-and-expectation-maximun-algorithm.html" title="高斯混合模型和EM算法">https://daniellaah.github.io/2018/gaussian-mixture-model-and-expectation-maximun-algorithm.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+              <a href="/tags/GMM/" rel="tag"># GMM</a>
+              <a href="/tags/EM/" rel="tag"># EM</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2017/deeplearning-ai-Improving-Deep-Neural-Networks-week3.html" rel="prev" title="deeplearning-ai-专项课程二第三周">
+      <i class="fa fa-chevron-left"></i> deeplearning-ai-专项课程二第三周
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一-高斯混合模型-GMM"><span class="nav-number">1.</span> <span class="nav-text">一. 高斯混合模型(GMM)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二-EM算法"><span class="nav-number">2.</span> <span class="nav-text">二. EM算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#三-利用EM算法推导GMM"><span class="nav-number">3.</span> <span class="nav-text">三. 利用EM算法推导GMM</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#四-Python实现GMM"><span class="nav-number">4.</span> <span class="nav-text">四. Python实现GMM</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Daniellaah</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniellaah</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(() => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#comments',
+      verify: false,
+      notify: true,
+      appId: 't623MSBhVLoTHhzaeTlxl7Oz-gzGzoHsz',
+      appKey: 'tmiBxnWHuuecINpFBk861cEf',
+      placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: true,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

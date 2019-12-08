@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://daniellaah.github.io').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&amp;apos;$&amp;apos;,&amp;apos;$&amp;apos;], [&amp;apos;\\(&amp;apos;,&amp;apos;\\)&amp;apos;]]} });      课程信息:  主页　Youtube参考资料: 《统计学习方法》参考阅读:  支持向量机系列-pluskid 支持向量机SVM（一） 斯坦福CS229机器学习课程笔记五：支持向量机 Support Vector Machines NB多项式">
+<meta name="keywords" content="Machine Learning,CS229">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS229机器学习笔记(五)-SVM之函数间隔, 几何间隔">
+<meta property="og:url" content="https:&#x2F;&#x2F;daniellaah.github.io&#x2F;2016&#x2F;CS229-ML-Notes-Lecture-6.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&amp;apos;$&amp;apos;,&amp;apos;$&amp;apos;], [&amp;apos;\\(&amp;apos;,&amp;apos;\\)&amp;apos;]]} });      课程信息:  主页　Youtube参考资料: 《统计学习方法》参考阅读:  支持向量机系列-pluskid 支持向量机SVM（一） 斯坦福CS229机器学习课程笔记五：支持向量机 Support Vector Machines NB多项式">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;photo-1414115880398-afebc3d95efc.jpg">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_690.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_747.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_746.png">
+<meta property="og:updated_time" content="2019-12-06T13:16:59.322Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;photo-1414115880398-afebc3d95efc.jpg">
+
+<link rel="canonical" href="https://daniellaah.github.io/2016/CS229-ML-Notes-Lecture-6.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>CS229机器学习笔记(五)-SVM之函数间隔, 几何间隔 | Hexo</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f83617d7f08d120ecbbca435e8de97a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://daniellaah.github.io/2016/CS229-ML-Notes-Lecture-6.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daniellaah">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CS229机器学习笔记(五)-SVM之函数间隔, 几何间隔
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-11-21 14:23:22" itemprop="dateCreated datePublished" datetime="2016-11-21T14:23:22+08:00">2016-11-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-06 21:16:59" itemprop="dateModified" datetime="2019-12-06T21:16:59+08:00">2019-12-06</time>
+              </span>
+
+          
+            <span id="/2016/CS229-ML-Notes-Lecture-6.html" class="post-meta-item leancloud_visitors" data-flag-title="CS229机器学习笔记(五)-SVM之函数间隔, 几何间隔" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/CS229-ML-Notes-Lecture-6.html#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/CS229-ML-Notes-Lecture-6.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/photo-1414115880398-afebc3d95efc.jpg" alt=""><br>课程信息:  <a href="http://cs229.stanford.edu" target="_blank" rel="noopener">主页</a>　<a href="https://www.youtube.com/playlist?list=PLA89DCFA6ADACE599" target="_blank" rel="noopener">Youtube</a><br>参考资料: <a href="https://book.douban.com/subject/10590856/" target="_blank" rel="noopener">《统计学习方法》</a><br>参考阅读:</p>
+<ol>
+<li><a href="http://blog.pluskid.org/?page_id=683" target="_blank" rel="noopener">支持向量机系列-pluskid</a></li>
+<li><a href="http://www.cnblogs.com/jerrylead/archive/2011/03/13/1982639.html" target="_blank" rel="noopener">支持向量机SVM（一）</a></li>
+<li><a href="http://logos.name/archives/304" target="_blank" rel="noopener">斯坦福CS229机器学习课程笔记五：支持向量机 Support Vector Machines</a></li>
+<li><a href="http://blog.csdn.net/stdcoutzyx/article/details/9722701" target="_blank" rel="noopener">NB多项式模型、神经网络、SVM初步—斯坦福ML公开课笔记6</a></li>
+<li><a href="https://github.com/zlotus/notes-LSJU-machine-learning" target="_blank" rel="noopener">机器学习笔记</a><a id="more"></a>
+</li>
+</ol>
+<hr>
+<h1 id="一-从Logistic-Regression到SVM"><a href="#一-从Logistic-Regression到SVM" class="headerlink" title="一. 从Logistic Regression到SVM"></a>一. 从Logistic Regression到SVM</h1><h2 id="1-1-想法"><a href="#1-1-想法" class="headerlink" title="1.1 想法"></a>1.1 想法</h2><p>在logistic regression中, sigmoid函数图像如下:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_690.png" alt=""><br>它的输出$h_\theta(x)$是$p(y=1|x)$. 在logistic中, 我们通过计算$\theta^Tx$来预测新的数据:<br>$$\text{predict} \quad  “1” \quad \text{iff} \quad \theta^Tx\ge0, \<br>\text{predict} \quad  “0”  \quad  \text{iff}  \quad  \theta^Tx\lt0.$$<br>其中iff代表当且仅当. 若$\theta^Tx$越大, 则$h_\theta(x)=p(y=1|x;w,b)$越大, 即我们非常”确信”它的标签为”1”. 所以:<br>$$ \text{If} \quad \theta^Tx\gg0,\quad \text{very “confident” that} \quad y=1, \<br> \text{If} \quad \theta^Tx\ll0,\quad \text{very “confident” that} \quad y=0.$$<br>如果在我们的训练集中, 对于所有的预测结果为”1”的样本都有$\theta^Tx\gg0$, 对于所有的预测结果为”0”的样本都有$\theta^Tx\ll0$, 那便是极好的. 用数学语言表达为:<br>$$\text{if} \quad \forall i \quad \text{s.t.} \quad y^{(i)}=1, \text{have} \quad \theta^Tx\gg0, \<br>\text{if}  \quad \forall i  \quad\text{s.t.}  \quad y^{(i)}=0, \text{have} \quad \theta^Tx\ll0,$$<br>举个例子, 假设我们有下面这个分类器, 我们观察其中三个点A, B, C. 我们可以比较确定地认为A的标签为”X”. 而对于C来说, 我们就不能非常确定它的标签是”X”, 因为它离决策边界太近了. 这个决策边界只要有一点点变化就可能导致C分到不同的类中. 对于B的确信程度介于A和C之间.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_747.png" alt=""><br>即我们不仅仅要求分类器能正确的分类, 更进一步我们要求$\theta^Tx\ll0$或$\theta^Tx\gg0$. 即, 我们想要得到一种决策边界, 使得所有的样本都尽量远离这个边界. (下图截图自<a href="https://youtu.be/8hak0XngnV0?t=2m56s" target="_blank" rel="noopener">林轩田-机器学习技法</a>), 下面三个决策边界中, 你认为哪一个最好?<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_746.png" alt=""><br>这个时候你也许会问, 这个离决策边界的距离到底指的是什么, 应该怎样表达他们. 这里就会引出”函数间隔”和”几何间隔”的概念.<br>不过为了使后面一系列的推导的方便, 我们先稍微修改一下原先的(logistic regression中的)一些记号.<br>注: 在接下来的讲解中, 我们默认数据是线性可分的(后面我们会讨论线性不可分的情况). </p>
+<h2 id="1-2-SVM中的符号说明"><a href="#1-2-SVM中的符号说明" class="headerlink" title="1.2 SVM中的符号说明"></a>1.2 SVM中的符号说明</h2><p>1.在logstic中我们用0,1代表两个类, 现在我们改用-1,+1, 即$y\in \lbrace-1, +1\rbrace$;<br>2.在logistic中, 我们的$g$是sigmoid函数, 现在改为:<br>$$g(z)=\begin{cases} 1, \quad z\ge0 \\ -1, \quad \text{otherwise} \end{cases} $$<br>3.在logistic中, 我们的假设函数为$h_\theta(x)$, 现在改为, $h_{w,b}(x)=g(w^Tx+b)$, 其中$w$相当于${\begin{bmatrix} \theta_1 \theta_2 … \theta_n \end{bmatrix}}^T$, $b$相当于$\theta_0$.<br>符号弄清楚了之后, 我们可以研究SVM了. 首先, 我们要介绍一个概念: 函数间隔(functional margin).</p>
+<h1 id="二-函数间隔和几何间隔"><a href="#二-函数间隔和几何间隔" class="headerlink" title="二. 函数间隔和几何间隔"></a>二. 函数间隔和几何间隔</h1><h2 id="2-1-函数间隔"><a href="#2-1-函数间隔" class="headerlink" title="2.1 函数间隔"></a>2.1 函数间隔</h2><p>对于一个训练样本$(x^{(i)}, y^{(i)})$, 我们定义它到超平面$(w,b)$的函数间隔为: $$\hat{\gamma}=y^{(i)}(w^Tx^{(i)}+b).$$<br>我们希望函数间隔越大越好, 即:<br>$$\text{if} \quad y^{(i)}=1, \text{want} \quad w^Tx^{(i)}+b\gg0, \<br>\text{if} \quad y^{(i)}=-1, \text{want} \quad w^Tx^{(i)}+b\ll0.$$<br>并且有, 若$y^{(i)}(w^Tx^{(i)}+b)&gt;0$, 则样本$(x^{(i)}, y^{(i)})$分类正确. </p>
+<p id="#normalization">函数间隔越大, 代表我们对于分类的结果非常确定. 我们希望函数间隔越大越好. 看上去好像没什么毛病, 但这里的确有一个问题, 就是其实我们可以在不改变这个超平面的情况下可以让函数间隔任意大, 为什么? 只要我们成比增加w,b就可以达到这个目的了. 例如, 我们将$w$变为$2w$, $b$变为$2b$, 那么我们的函数间隔将会是原来的两倍, 但是超平面$wTx+b=0$和超平面$2w^Tx+2b=0$是一回事. 为了解决这个问题, 我们就需要加上一些限制条件(后面会讲).</p>
+对于整个训练集, 我们的函数间隔定义为
+$$\hat{\gamma}=\min\_i\hat{\gamma}^{(i)}.$$ 
+也就是说, 对于整个训练集来说, 函数间隔为所有样本中函数间隔最小的那个函数间隔.
+## 2.2 几何间隔
+如下图所示, 决策边界为$w^Tx+b=0$, 我们可以证明$w$是垂直于这个决策边界(超平面)的(证明可见: [林轩田-机器学习技法](https://youtu.be/lHo9GcIURRs?t=4m28s)).对于训练样本A$(x^{(i)},y^{(i)})$, 它到超平面$w^Tx+b=0$的几何距离为$\gamma^{(i)}$. 由于BA方向上的单位向量可表示为$\frac{w}{||w||}$. 则B(A在超平面上的投影)可表示为($\overrightarrow{OB}=\overrightarrow{OA} - \overrightarrow{BA}$):
+$$x^{(i)}-\gamma^{(i)}\cdot\frac{w}{\Vert w\Vert}.$$
+![](https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_748.png)
+而B又在超平面上, 所以我们将这个点带回超平面得到:
+$$w^T(x^{(i)}-\gamma^{(i)}\cdot\frac{w}{\Vert w\Vert})+b=0.$$
+通过上式解出$\gamma$: 
+$$w^Tx^{(i)}-\gamma^{(i)}\frac{w^Tw}{||w||}+b=0, \\\
+w^Tx^{(i)}+b=\gamma^{(i)}||w||, \\\
+\gamma^{(i)}=(\frac{w}{\Vert w\Vert})^Tx^{(i)}+\frac{b}{\Vert w\Vert}.$$
+加上前面的$y^{(i)}$于是我们就得到了几何间隔: 
+$$\gamma^{(i)}=y^{(i)}(\frac{w^T}{\Vert w\Vert}x^{(i)}+\frac{b}{\Vert w\Vert}).$$
+我们发现当$||w||=1$时, 几何间隔就是函数间隔.这个时候, 如果任意放大$||w||$, 几何间隔是不会改变的, 因为$||w||$也会随着被放大. 几何间隔与函数间隔的关系为: 
+$$\gamma^{(i)}=\frac{\hat{\gamma}^{(i)}}{\Vert w\Vert}.$$
+对于所有的训练样本, 我们的几何间隔为:
+$$\gamma=\min\_i\gamma^{(i)}.$$
+视频到这里后面还有一点点的内容放到下篇一起讲.
+
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Daniellaah
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="/https:/daniellaah.github.io/2016/CS229-ML-Notes-Lecture-6.html" title="CS229机器学习笔记(五)-SVM之函数间隔, 几何间隔">https://daniellaah.github.io/2016/CS229-ML-Notes-Lecture-6.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+              <a href="/tags/CS229/" rel="tag"># CS229</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/CS229-ML-Notes-Lecture-5-6.html" rel="prev" title="CS229机器学习笔记(四)-生成学习算法, 朴素贝叶斯, 多项式事件模型">
+      <i class="fa fa-chevron-left"></i> CS229机器学习笔记(四)-生成学习算法, 朴素贝叶斯, 多项式事件模型
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/CS229-ML-Notes-Lecture-7.html" rel="next" title="CS229机器学习笔记(六)-SVM之拉格朗日对偶, 最优间隔分类器">
+      CS229机器学习笔记(六)-SVM之拉格朗日对偶, 最优间隔分类器 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#一-从Logistic-Regression到SVM"><span class="nav-number">1.</span> <span class="nav-text">一. 从Logistic Regression到SVM</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-1-想法"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 想法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#1-2-SVM中的符号说明"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 SVM中的符号说明</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#二-函数间隔和几何间隔"><span class="nav-number">2.</span> <span class="nav-text">二. 函数间隔和几何间隔</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-函数间隔"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 函数间隔</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Daniellaah</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniellaah</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(() => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#comments',
+      verify: false,
+      notify: true,
+      appId: 't623MSBhVLoTHhzaeTlxl7Oz-gzGzoHsz',
+      appKey: 'tmiBxnWHuuecINpFBk861cEf',
+      placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: true,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

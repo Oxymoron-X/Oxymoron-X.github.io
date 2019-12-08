@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://daniellaah.github.io').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&amp;apos;$&amp;apos;,&amp;apos;$&amp;apos;], [&amp;apos;\\(&amp;apos;,&amp;apos;\\)&amp;apos;]]} });        课程地址：Dimensionality Reduction 课程Wiki：wiki 课件：PPT　PDF">
+<meta name="keywords" content="Machine Learning,Notes,Coursera,MOOC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Coursera机器学习笔记(十四) - 数据降维">
+<meta property="og:url" content="https:&#x2F;&#x2F;daniellaah.github.io&#x2F;2016&#x2F;Coursera-ML-Notes-Week-8-Dimensionality-Reduction.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&amp;apos;$&amp;apos;,&amp;apos;$&amp;apos;], [&amp;apos;\\(&amp;apos;,&amp;apos;\\)&amp;apos;]]} });        课程地址：Dimensionality Reduction 课程Wiki：wiki 课件：PPT　PDF">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_276.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_278.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_279.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_280.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_281.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_282.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_300.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_301.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_302.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_284.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_285.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_286.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_287.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_288.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_289.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_290.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_291.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_292.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_293.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_294.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_295.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_296.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_297.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_298.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_299.png">
+<meta property="og:updated_time" content="2019-12-08T04:54:01.406Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_276.png">
+
+<link rel="canonical" href="https://daniellaah.github.io/2016/Coursera-ML-Notes-Week-8-Dimensionality-Reduction.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Coursera机器学习笔记(十四) - 数据降维 | Hexo</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f83617d7f08d120ecbbca435e8de97a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://daniellaah.github.io/2016/Coursera-ML-Notes-Week-8-Dimensionality-Reduction.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daniellaah">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Coursera机器学习笔记(十四) - 数据降维
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-06-16 12:40:41" itemprop="dateCreated datePublished" datetime="2016-06-16T12:40:41+08:00">2016-06-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-08 12:54:01" itemprop="dateModified" datetime="2019-12-08T12:54:01+08:00">2019-12-08</time>
+              </span>
+
+          
+            <span id="/2016/Coursera-ML-Notes-Week-8-Dimensionality-Reduction.html" class="post-meta-item leancloud_visitors" data-flag-title="Coursera机器学习笔记(十四) - 数据降维" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/Coursera-ML-Notes-Week-8-Dimensionality-Reduction.html#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/Coursera-ML-Notes-Week-8-Dimensionality-Reduction.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_276.png" alt=""></p>
+<ul>
+<li>课程地址：<a href="https://www.coursera.org/learn/machine-learning/home/week/8" target="_blank" rel="noopener">Dimensionality Reduction</a></li>
+<li>课程Wiki：<a href="https://share.coursera.org/wiki/index.php/ML:Dimensionality_Reduction" target="_blank" rel="noopener">wiki</a></li>
+<li>课件：<a href="https://d396qusza40orc.cloudfront.net/ml/docs/slides/Lecture14.pptx" target="_blank" rel="noopener">PPT</a>　<a href="https://d396qusza40orc.cloudfront.net/ml/docs/slides/Lecture14.pdf" target="_blank" rel="noopener">PDF</a><a id="more"></a>
+
+</li>
+</ul>
+<hr>
+<h2 id="一-数据降维"><a href="#一-数据降维" class="headerlink" title="一. 数据降维"></a>一. 数据降维</h2><p>对于如下图所示的二维特征, 我们可以找到一条直线, 将所有的点投射到这条直线上, 这样就将二维的数据降到了一维, 得到一个新的特征$z_1$. 降维不仅可以让我们节省空间, 更重要的是可以让学习算法运行的更快.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_278.png" alt=""><br>同样的, 可以将三维数据降到二维数据.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_279.png" alt=""><br>降维也可以更好地可视化数据. 如下图的例子, 这里一共有6个特征, 该如何更好地展示这些数据？<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_280.png" alt=""><br>上面的数据不利于我们对数据进行可视化, 但是通过降维之后, 我们得到如下的数据,<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_281.png" alt=""><br>这样就可以轻松地描绘出这些数据了.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_282.png" alt=""></p>
+<h2 id="二-PCA"><a href="#二-PCA" class="headerlink" title="二. PCA"></a>二. PCA</h2><h3 id="2-1-什么是PCA"><a href="#2-1-什么是PCA" class="headerlink" title="2.1 什么是PCA"></a>2.1 什么是PCA</h3><p>PCA(主成分分析, Principal components analysis)是用来对数据降维的非监督学习算法. 假设我们有如下图所示的数据, 我们希望将数据降到一维, 那么PCA是如何找到那条合适的直线？<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_300.png" alt=""><br>也许下面红色的线比较适合, 因为每个点投影到这条直线的距离都非常小.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_301.png" alt=""><br>相反地, 每个点投影到下图中的粉色线的距离都非常大.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_302.png" alt=""><br>PCA就是找到一条直线, 使得每个样本到这条直线的投影距离(或者叫投射误差)最小.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_284.png" alt=""><br>通过上面的内容也许会让我们想到线性会对, 但PCA和线性回归是完全不同的两个算法. 在线性回归中(下左图), 我们想要的是能够拟合数据的一条直线, 最小化的是两点之间$y$的差；而在PCA中我们最小化的是点到直线的距离(注意下右图中点垂直于线的距离). 并且, 在线性回归中, 有一个标签$y$；而在PCA中所有的都是特征.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_285.png" alt="">　　<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_286.png" alt=""></p>
+<h3 id="2-2-PCA算法"><a href="#2-2-PCA算法" class="headerlink" title="2.2  PCA算法"></a>2.2  PCA算法</h3><p>在使用PCA之前, 我们需要对数据进行feature scaling/mean normalization处理.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_287.png" alt=""><br>在PCA中, 我们需要计算的就是向量$u$和新的特征$z$. 　　<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_288.png" alt=""><br>首先我们需要计算出矩阵$\Sigma$, 然后使用奇异值分解(sigular value decomposition)来计算$[U, S, V]$. 我们需要的就是$n \times n$的矩阵$U$, 如果我们需要将数据从n维降到k维, 取U的前k列, 记为$U_{reduce}$.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_289.png" alt=""><br>最后通过如下的方法得到$z$.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_290.png" alt=""><br>下图是对PCA的总结.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_291.png" alt=""></p>
+<h2 id="三-使用PCA"><a href="#三-使用PCA" class="headerlink" title="三. 使用PCA"></a>三. 使用PCA</h2><h3 id="3-1-恢复原数据"><a href="#3-1-恢复原数据" class="headerlink" title="3.1 恢复原数据"></a>3.1 恢复原数据</h3><p>数据降维候, 我们可以通过$X_{approx}^{(1)}=U_{reduce}.z^{(1)}$来的得到原始数据的近似值.<br>　　<img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_292.png" alt=""></p>
+<h3 id="3-2-选择合适的维度"><a href="#3-2-选择合适的维度" class="headerlink" title="3.2 选择合适的维度"></a>3.2 选择合适的维度</h3><p>那么该如何选择k的值？一般选择一个最小的k并且满足下图中的公式.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_293.png" alt=""><br>我们可以使用下左图中的算法来选择k的值, 但是这样做效率太低；更好的选择是使用下右图中的方法, 在调用一次SVD之后, 我们只需要找到一个最小的k并且满足$\frac{\sum_{i=1}^kS_{ii}}{\sum_{i=1}^nS_{ii}} ge 0.99$即可.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_294.png" alt=""><br>即：<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_295.png" alt=""></p>
+<h3 id="3-3-PCA总结"><a href="#3-3-PCA总结" class="headerlink" title="3.3 PCA总结"></a>3.3 PCA总结</h3><p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_296.png" alt=""><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_297.png" alt=""><br>注意, 不要使用PCA来解决过拟合的问题.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_298.png" alt=""><br>在使用PCA之前应该考虑先使用原始数据, 如果使用原始数据不能达到效果, 再考虑使用PCA.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_299.png" alt="">
+　　</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Daniellaah
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="/https:/daniellaah.github.io/2016/Coursera-ML-Notes-Week-8-Dimensionality-Reduction.html" title="Coursera机器学习笔记(十四) - 数据降维">https://daniellaah.github.io/2016/Coursera-ML-Notes-Week-8-Dimensionality-Reduction.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+              <a href="/tags/Notes/" rel="tag"># Notes</a>
+              <a href="/tags/Coursera/" rel="tag"># Coursera</a>
+              <a href="/tags/MOOC/" rel="tag"># MOOC</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/Coursera-ML-Notes-Week-7-Support-Vector-Machines.html" rel="prev" title="Coursera机器学习笔记(十二) - SVM">
+      <i class="fa fa-chevron-left"></i> Coursera机器学习笔记(十二) - SVM
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/Coursera-ML-Notes-Week-8-Unsupervised-Learning.html" rel="next" title="Coursera机器学习笔记(十三) - 非监督学习">
+      Coursera机器学习笔记(十三) - 非监督学习 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-数据降维"><span class="nav-number">1.</span> <span class="nav-text">一. 数据降维</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-PCA"><span class="nav-number">2.</span> <span class="nav-text">二. PCA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-什么是PCA"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 什么是PCA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-PCA算法"><span class="nav-number">2.2.</span> <span class="nav-text">2.2  PCA算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-使用PCA"><span class="nav-number">3.</span> <span class="nav-text">三. 使用PCA</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-恢复原数据"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 恢复原数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-选择合适的维度"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 选择合适的维度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-PCA总结"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 PCA总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Daniellaah</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniellaah</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(() => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#comments',
+      verify: false,
+      notify: true,
+      appId: 't623MSBhVLoTHhzaeTlxl7Oz-gzGzoHsz',
+      appKey: 'tmiBxnWHuuecINpFBk861cEf',
+      placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: true,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

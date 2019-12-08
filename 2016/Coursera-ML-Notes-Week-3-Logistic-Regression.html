@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://daniellaah.github.io').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&amp;apos;$&amp;apos;,&amp;apos;$&amp;apos;], [&amp;apos;\\(&amp;apos;,&amp;apos;\\)&amp;apos;]]} });        课程地址：Logistic Regression 课程Wiki：Logistic Regression 课件：PPT　PDF">
+<meta name="keywords" content="Machine Learning,Notes,Coursera,MOOC,Logistic Regression">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Coursera机器学习笔记(五) - Logistic Regression">
+<meta property="og:url" content="https:&#x2F;&#x2F;daniellaah.github.io&#x2F;2016&#x2F;Coursera-ML-Notes-Week-3-Logistic-Regression.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&amp;apos;$&amp;apos;,&amp;apos;$&amp;apos;], [&amp;apos;\\(&amp;apos;,&amp;apos;\\)&amp;apos;]]} });        课程地址：Logistic Regression 课程Wiki：Logistic Regression 课件：PPT　PDF">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_67.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_68.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_615.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_69.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_616.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_70.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_617.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_618.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_72.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_73.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_619.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_620.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_75.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_621.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_622.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_77.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_80.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_81.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_82.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_83.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_84.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_86.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_87.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_88.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_91.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_93.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_94.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_95.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_96.png">
+<meta property="og:updated_time" content="2019-12-06T13:16:59.330Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_67.png">
+
+<link rel="canonical" href="https://daniellaah.github.io/2016/Coursera-ML-Notes-Week-3-Logistic-Regression.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Coursera机器学习笔记(五) - Logistic Regression | Hexo</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f83617d7f08d120ecbbca435e8de97a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://daniellaah.github.io/2016/Coursera-ML-Notes-Week-3-Logistic-Regression.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daniellaah">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Coursera机器学习笔记(五) - Logistic Regression
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-04-26 18:46:02" itemprop="dateCreated datePublished" datetime="2016-04-26T18:46:02+08:00">2016-04-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-06 21:16:59" itemprop="dateModified" datetime="2019-12-06T21:16:59+08:00">2019-12-06</time>
+              </span>
+
+          
+            <span id="/2016/Coursera-ML-Notes-Week-3-Logistic-Regression.html" class="post-meta-item leancloud_visitors" data-flag-title="Coursera机器学习笔记(五) - Logistic Regression" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/Coursera-ML-Notes-Week-3-Logistic-Regression.html#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/Coursera-ML-Notes-Week-3-Logistic-Regression.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_67.png" alt=""></p>
+<ul>
+<li>课程地址：<a href="https://www.coursera.org/learn/machine-learning/home/week/3" target="_blank" rel="noopener">Logistic Regression</a></li>
+<li>课程Wiki：<a href="https://share.coursera.org/wiki/index.php/ML:Logistic_Regression" target="_blank" rel="noopener">Logistic Regression</a></li>
+<li>课件：<a href="https://d396qusza40orc.cloudfront.net/ml/docs/slides/Lecture6.pptx" target="_blank" rel="noopener">PPT</a>　<a href="https://d396qusza40orc.cloudfront.net/ml/docs/slides/Lecture6.pdf" target="_blank" rel="noopener">PDF</a><a id="more"></a>
+
+</li>
+</ul>
+<hr>
+<h2 id="一-模型展示"><a href="#一-模型展示" class="headerlink" title="一. 模型展示"></a>一. 模型展示</h2><h3 id="1-1-从线性回归解到对数几率回归"><a href="#1-1-从线性回归解到对数几率回归" class="headerlink" title="1.1 从线性回归解到对数几率回归"></a>1.1 从线性回归解到对数几率回归</h3><p>前面的课程中提到了一些分类问题:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_68.png" alt=""><br>对于乳腺癌的那个例子, 数据集如下所示. 如果使用线性回归来处理这个问题, 我们可能得到这样一个假设函数:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_615.png" alt=""><br>然后我们设定一个阈值0.5, 当假设函数的输出大于这个阈值时我们预测$y=1$；当假设函数的输出小于0.5时, 我们预测$y=0$.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_69.png" alt=""><br>即使我们的问题是一个分类问题, 但是对于上面这个特定的例子, 看上去使用线性回归好像还是挺合理的. 但是如果我们再增加一个数据(下图最右), 使用Linear Regression就会得到如图蓝色线所示的$h_\theta(x)$.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_616.png" alt=""><br>这个结果显然是不合理的, 它有很多错误的分类. 直观上来看, 要是能得到图中垂直于横轴的(图中蓝色)线那边是极好的.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_70.png" alt=""><br>而且即使所有的训练样例的 y = 0或1, 使用线性回归得到的$h_\theta(x)$也有可能大于1或者小于0.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_617.png" alt=""><br>所以我们需要一个能更好地处理分类问题的模型, 即对数几率回归(Logistic Regression/Logit regression). (有些地方翻译成’逻辑回归’或者’逻辑斯蒂格回归’) 需要注意的是这个模型虽然叫regression, 但是它是一个用来解决分类问题的模型. 在对率回归(对数几率回归的简称)中, $0\le h_\theta(x)\le1$.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_618.png" alt=""></p>
+<h3 id="1-2-假设函数"><a href="#1-2-假设函数" class="headerlink" title="1.2 假设函数"></a>1.2 假设函数</h3><p>在对率回归中, 假设函数为$h_\theta(x)=g(\theta^Tx)$, 其中$g(z)=\frac{1}{1+e^{-z}}$, $g(z)$叫做Sigmoid Function或者对率函数(Logistic Function).<br>对数几率函数是Sigmoid函数的一种, 它将z值转化为一个接近0或1的y值, 并且其输出值在$z=0$附近变化很陡. Sigmoid函数即形似S的函数, 对率函数是Sigmoid函数最重要的代表.<br><font size='5'>$${h_\theta(x)=\frac{1}{1+e^{-\theta^Tx}}}$$</font><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_72.png" alt=""><br>我们可以将对率函数的输出理解为当输入为x的时候, y=1的概率. 可以用$h_\theta(x)=P(y=1|x;\theta)$表达. 例如, 在下图中, 我们给定一个x, 它的假设函数的输出为0.7, 我们可以说这个病人的肿瘤为恶性的概率是70%.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_73.png" alt=""></p>
+<h3 id="1-3-决策边界"><a href="#1-3-决策边界" class="headerlink" title="1.3 决策边界"></a>1.3 决策边界</h3><p>如图所示的Sigmoid函数, 我们可以看到, 当$z&gt;0$的时候$g(z)\ge0.5$即预测$y=1$；当$z&lt;0$的时候$g(z)&lt;0.5$即预测$y=0$.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_619.png" alt=""><br>而在对率回归中, 我们的$z=\theta^Tx$, 所以我们有：当$\theta^Tx\ge0$时, 预测$y=1$；当$\theta^Tx\lt0$时, 预测$y=0$. 如下图所示.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_620.png" alt=""><br>下面举一个例子看一看什么是决策边界. 如下图所示, 左边为数据集. 假设此时我们已经通过训练得到了$\theta=\begin{bmatrix}-3\\ 1\\ 1\end{bmatrix}$, 由上图可知, 当$\theta^Tx\ge0$时, 预测$y=1$. 即当$-3+x_1+x_2\ge0$时, 预测$y=1$；也即当$x_1+x_2\ge3$时, 预测$y=1$. 我们在坐标中画出$x_1+x_2=3$的图形, 如果数据在这条直线的上方, 我们就预测$y=1$；如果数据在这条直线的下方, 我们就预测$y=0$. 我们把$x_1+x_2\ge3$称为决策边界(Decision Boundary).<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_75.png" alt=""><br>下面看一个比较复杂的决策边界的例子. 在线性回归的时候谈到过使用高阶多项式特征, 当然这里我们也可以用. 我们添加两个特征一个是$x_1^2$, 一个是$x_2^2$. 假设我们通过训练得到参数$\theta$, 如下图所示. 当$-1+x_1^2+x_2^2\ge0$的时候, 预测$y=1$. 即$x_1^2+x_2^2\ge1$的时候, 预测$y=1$. 画出$x_1^2+x_2^2=1$的图形, 在圆内$y=0$, 在圆外$y=1$. 这是一个圆形的决策边界.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_621.png" alt=""><br>当我们有更高阶的多项式时, 我们会得到更加复杂的决策边界.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_622.png" alt=""></p>
+<h2 id="二-代价函数"><a href="#二-代价函数" class="headerlink" title="二. 代价函数"></a>二. 代价函数</h2><p>在之前的线性回归中, 我们的代价函数为：<font size='4'>$${J(\theta)=\frac{1}{m}\sum_{i=1}^m\frac{1}{2}\left(h_\theta(x^{(i)})-y^{(i)}\right)^2}$$</font>　　<br>令$$Cost\left(h_\theta(x^{(i)}),y^{(i)}\right)=\frac{1}{2}\left(h_\theta(x^{(i)})-y^{(i)}\right)^2$$, 简记为$$Cost\left(h_\theta(x),y\right)=\frac{1}{2}\left(h_\theta(x)-y\right)^2$$<br>在线性回归中, 之所以可以使用梯度下降来找到全局最优解是因为代价函数$J(\theta)$是一个凸函数(convex). 但是对于对率回归来说, 假设函数<font size='5'>$h_\theta(x)=\frac{1}{1+e^{-\theta^Tx}}$</font>是一个较为复杂的非线性函数, 直接带入的话得到的代价函数就不是一个凸函数(non-convex), 如下图左侧部分所示. 这样使用梯度下降只能找到局部最优. 所以现在我们需要构造一个合理的并且是凸函数的代价函数<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_77.png" alt=""><br>在对数几率回归中, 使用如下的$Cost\left(h_\theta(x),y\right)$<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_80.png" alt=""><br>当$y=1$时, $Cost\left(h_\theta(x),y\right)$如下图所示. 此时, 如果我们$h_\theta(x)=1$, 那么$Cost=0$, 即当预测结果和真实结果一样时, 我们不对学习算法进行惩罚；但是当结果不一致时, 即$h_\theta(x)→ 0$时, 我们对算法的惩罚趋近于无穷.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_81.png" alt=""><br>同样地, 下图是当$y=0$时的情况.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_82.png" alt=""><br>这样对代价函数处理之后, 我们的代价函数就是一个凸函数, 可以使用梯度下降来站到一个全局最优解.</p>
+<h2 id="三-梯度下降"><a href="#三-梯度下降" class="headerlink" title="三. 梯度下降"></a>三. 梯度下降</h2><p>因为y的值只有0或1两种情况, 我们现在将$Cost\left(h_\theta(x),y\right)$用一个式子来表达:<font size='4'>$${Cost\left(h_\theta(x),y\right)=-ylog(h_\theta(x))-(1-y)log(1-h_\theta(x))}$$</font><br>(可以带入验证)<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_83.png" alt=""> 　<br>于是得到代价函数:<br><font size='4'>$${J(\theta)=-\frac{1}{m}\left[\sum_{i=1}^my^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))\right]}$$</font><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_84.png" alt=""><br>到这里, 后面的步骤就和线性回归很相似了. 直接利用梯度下降即可. 同样地我们需要求偏导, 求完偏导之后我们发现得到的更新规则和之前线性回归的更性规则是一模一样的. 除了假设函数$h_\theta(x)$不一样. 这里如果特征之间的数量级差别较大也是需要特征缩放的. (注:下图公式中$\alpha$后少了一个$\frac{1}{m}$)<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_86.png" alt=""><br>关于偏导数是如何求出的, 可参见<a href="https://share.coursera.org/wiki/index.php/ML:Logistic_Regression" target="_blank" rel="noopener">课程wiki</a>.</p>
+<h2 id="四-高级优化算法"><a href="#四-高级优化算法" class="headerlink" title="四. 高级优化算法"></a>四. 高级优化算法</h2><p>除了梯度下降还有其他更加高级更加复杂的算法：Conjugate Gradient、BFGS和L-BFGS. 如下图, 右下角是这些算法的优点和缺点.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_87.png" alt=""><br>下图是一个具体的例子, 右边是自己定义的代价函数, 下方的options是调用fminunc所需的参数, initialTheta是初始的$\theta$, 然后调用fminunc并传入相应的参数就可以得到最优的$\theta$（optTheta）.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_88.png" alt=""><br>代价函数的代码如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">function [jVal, gradient] &#x3D; costFunction(theta)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">jVal &#x3D; (theta(1)-5)^2 + (theta(2)-5)^2;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">gradient &#x3D; zeros(2,1);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">gradient(1) &#x3D; 2*(theta(1)-5);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">gradient(2) &#x3D; 2*(theta(2)-5);</span></pre></td></tr></table></figure>
+<p>在Octave中演示如下:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_91.png" alt=""></p>
+<h2 id="五-多分类问题"><a href="#五-多分类问题" class="headerlink" title="五. 多分类问题"></a>五. 多分类问题</h2><p>下图举了一些多分类(Multiclass Classification)的例子.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_93.png" alt=""><br>在之前的二分类(Binary Classification)的问题中, 我们的数据集大概是如下图左侧所示. 而现在的多分类(Multi-class Classification)的问题中数据集如下图左侧所示.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_94.png" alt=""><br>我们可以使用一对多(One-vs-all/One-vs-rest)方法来处理这个问题, 即将其分成三个二分类的问题. 如下图所示.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_95.png" alt=""><br>预测时, 需要计算出$h_\theta^{(1)}(x)$、$h_\theta^{(2)}(x)$和$h_\theta^{(3)}(x)$的值并得出最大值, 其对应的分类即为预测x的分类.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_96.png" alt=""></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Daniellaah
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="/https:/daniellaah.github.io/2016/Coursera-ML-Notes-Week-3-Logistic-Regression.html" title="Coursera机器学习笔记(五) - Logistic Regression">https://daniellaah.github.io/2016/Coursera-ML-Notes-Week-3-Logistic-Regression.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+              <a href="/tags/Notes/" rel="tag"># Notes</a>
+              <a href="/tags/Coursera/" rel="tag"># Coursera</a>
+              <a href="/tags/MOOC/" rel="tag"># MOOC</a>
+              <a href="/tags/Logistic-Regression/" rel="tag"># Logistic Regression</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/Coursera-ML-Notes-Week-2-Octave-Tutorial.html" rel="prev" title="Coursera机器学习笔记(四) - Octave教程">
+      <i class="fa fa-chevron-left"></i> Coursera机器学习笔记(四) - Octave教程
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/Coursera-ML-Notes-Week-3-Regularization.html" rel="next" title="Coursera机器学习笔记(六) - 正则化">
+      Coursera机器学习笔记(六) - 正则化 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-模型展示"><span class="nav-number">1.</span> <span class="nav-text">一. 模型展示</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-从线性回归解到对数几率回归"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 从线性回归解到对数几率回归</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-假设函数"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 假设函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-决策边界"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 决策边界</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-代价函数"><span class="nav-number">2.</span> <span class="nav-text">二. 代价函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-梯度下降"><span class="nav-number">3.</span> <span class="nav-text">三. 梯度下降</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-高级优化算法"><span class="nav-number">4.</span> <span class="nav-text">四. 高级优化算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五-多分类问题"><span class="nav-number">5.</span> <span class="nav-text">五. 多分类问题</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Daniellaah</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniellaah</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(() => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#comments',
+      verify: false,
+      notify: true,
+      appId: 't623MSBhVLoTHhzaeTlxl7Oz-gzGzoHsz',
+      appKey: 'tmiBxnWHuuecINpFBk861cEf',
+      placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: true,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

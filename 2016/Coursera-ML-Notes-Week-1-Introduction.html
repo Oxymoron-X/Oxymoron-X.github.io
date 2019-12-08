@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://daniellaah.github.io').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="一. 监督学习什么是监督学习? 我们来看看维基百科中给出的定义:  监督式学习（英语：Supervised learning），是一个机器学习中的方法，可以由训练资料中学到或建立一个模式（函数 &#x2F; learning model），并依此模式推测新的实例。训练资料是由输入物件（通常是向量）和预期输出所组成。函数的输出可以是一个连续的值（称为回归分析），或是预测一个分类标签（称作分类）">
+<meta name="keywords" content="Machine Learning,Supervised Learning,UnSupervised Learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Coursera机器学习笔记(一) - 监督学习vs无监督学习">
+<meta property="og:url" content="https:&#x2F;&#x2F;daniellaah.github.io&#x2F;2016&#x2F;Coursera-ML-Notes-Week-1-Introduction.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一. 监督学习什么是监督学习? 我们来看看维基百科中给出的定义:  监督式学习（英语：Supervised learning），是一个机器学习中的方法，可以由训练资料中学到或建立一个模式（函数 &#x2F; learning model），并依此模式推测新的实例。训练资料是由输入物件（通常是向量）和预期输出所组成。函数的输出可以是一个连续的值（称为回归分析），或是预测一个分类标签（称作分类）">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_03.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;img_1.jpg?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;img_1022aa.jpg?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;img_1018abc.jpg?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_582.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!55p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;img_1025dadc.jpg?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;img_0168.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;img_0169.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;img_1024abc.jpg?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:updated_time" content="2019-12-08T12:27:54.680Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_03.png">
+
+<link rel="canonical" href="https://daniellaah.github.io/2016/Coursera-ML-Notes-Week-1-Introduction.html">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Coursera机器学习笔记(一) - 监督学习vs无监督学习 | Hexo</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f83617d7f08d120ecbbca435e8de97a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://daniellaah.github.io/2016/Coursera-ML-Notes-Week-1-Introduction.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daniellaah">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Coursera机器学习笔记(一) - 监督学习vs无监督学习
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-04-06 21:37:29" itemprop="dateCreated datePublished" datetime="2016-04-06T21:37:29+08:00">2016-04-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-08 20:27:54" itemprop="dateModified" datetime="2019-12-08T20:27:54+08:00">2019-12-08</time>
+              </span>
+
+          
+            <span id="/2016/Coursera-ML-Notes-Week-1-Introduction.html" class="post-meta-item leancloud_visitors" data-flag-title="Coursera机器学习笔记(一) - 监督学习vs无监督学习" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/Coursera-ML-Notes-Week-1-Introduction.html#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/Coursera-ML-Notes-Week-1-Introduction.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_03.png" alt=""></p>
+<h2 id="一-监督学习"><a href="#一-监督学习" class="headerlink" title="一. 监督学习"></a>一. 监督学习</h2><p>什么是监督学习? 我们来看看<a href="https://zh.wikipedia.org/wiki/%E7%9B%A3%E7%9D%A3%E5%BC%8F%E5%AD%B8%E7%BF%92" target="_blank" rel="noopener">维基百科</a>中给出的定义:</p>
+<blockquote>
+<p>监督式学习（英语：Supervised learning），是一个机器学习中的方法，可以由训练资料中学到或建立一个模式（函数 / learning model），并依此模式推测新的实例。训练资料是由输入物件（通常是向量）和预期输出所组成。函数的输出可以是一个连续的值（称为回归分析），或是预测一个分类标签（称作分类）</p>
+</blockquote>
+<a id="more"></a>
+
+<hr>
+<p>从数据的角度来讲, 监督学习和无监督学习的区别就在于监督学习的数据不仅仅有特征组成, 即每一个数据样本都包含一个准确的输出值. 在房价预测的问题中, 数据由特征+房价组成.</p>
+<h3 id="1-1-监督学习的分类"><a href="#1-1-监督学习的分类" class="headerlink" title="1.1 监督学习的分类"></a>1.1 监督学习的分类</h3><p>在监督学习中, 我们的预测结果可以是连续值, 也可以是离散值. 我们根据这样的属性将监督学习氛围回归问题和分类问题.</p>
+<p>$$<br>\text{监督学习:}<br>   \begin{cases}<br>   \text{回归}(\text{Regression})\<br>      \<br>   \text{分类}(\text{Classification})<br>   \end{cases}<br>$$</p>
+<p>下面我们分别举一个例子来看看, 学完这两个例子之后, 我们就会对监督学习, 回归以及分类有比较清晰地认识了.</p>
+<h3 id="1-2-监督学习举例"><a href="#1-2-监督学习举例" class="headerlink" title="1.2 监督学习举例"></a>1.2 监督学习举例</h3><h4 id="1-2-1-回归问题"><a href="#1-2-1-回归问题" class="headerlink" title="1.2.1 回归问题"></a>1.2.1 回归问题</h4><p>我们现在有这么一个问题, 我们想通过给定的一个房子的面积来预测这个房子在市场中的价格. 这里的房子的面积就是特征, 房子的价格就是一个输出值. 为了解决这个问题, 我们获取了大量的房地产数据, 每一条数据都包含房子的面积及其对应价格. 第一, 我们的数据不仅包含房屋的面积, 还包含其对应的价格, 而我们的目标就是通过面积预测房价. 所以这应该是一个监督学习; 其次, 我们的输出数据房价可以看做是连续的值, 所以这个问题是一个回归问题. 至于如何通过数据得到可以使用的模型, 后面的几节课我们再做讨论.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/img_1.jpg?imageMogr/v2/thumbnail/!45p" alt=""><br>思考: 如果对于同样的数据, 但是我们的目标是预测这个房子的房价是大于100w还是小于100w, 那么这个时候是什么哪一类问题?</p>
+<h4 id="1-2-2-分类问题"><a href="#1-2-2-分类问题" class="headerlink" title="1.2.2 分类问题"></a>1.2.2 分类问题</h4><p>我们再来看一个分类问题, 从名字上来讲, 分类问题还是比较好理解的, 我们的目标应该是要对数据进行分类. 现在我们的数据是有关乳腺癌的医学数据, 它包含了肿瘤的大小以及该肿瘤是良性的还是恶性的. 我们的目标是给定一个肿瘤的大小来预测它是良性还是恶性. 我们可以用0代表良性，1代表恶性. 这就是一个分类问题, 因为我们要预测的是一个离散值. 当然, 在这个例子中, 我们的离散值可以去’良性’或者’恶性’. 在其他分类问题中, 离散值可能会大于两个.例如在该例子中可以有{0,1,2,3}四种输出，分别对应{良性, 第一类肿瘤, 第二类肿瘤, 第三类肿瘤}。<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/img_1022aa.jpg?imageMogr/v2/thumbnail/!45p" alt=""><br>在这个例子中特征只有一个即瘤的大小。 对于大多数机器学习的问题, 特征往往有多个(上面的房价问题也是, 实际中特征不止是房子的面积). 例如下图， 有“年龄”和“肿瘤大小”两个特征。(还可以有其他许多特征，如下图右侧所示)<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/img_1018abc.jpg?imageMogr/v2/thumbnail/!45p" alt=""></p>
+<h2 id="二-无监督学习"><a href="#二-无监督学习" class="headerlink" title="二. 无监督学习"></a>二. 无监督学习</h2><p>在监督学习中我们也提到了它与无监督学习的区别. 在无监督学习中, 我们的数据并没有给出特定的标签, 例如上面例子中的房价或者是良性还是恶性. 我们目标也从预测某个值或者某个分类便成了寻找数据集中特殊的或者对我们来说有价值结构. 如下图所示, 我们可以直观的感受到监督学习和无监督学习在数据集上的区别.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_582.png?imageMogr/v2/thumbnail/!55p" alt=""><br>我们也可以从图中看到, 大概可以将数据及分成两个簇. 将数据集分成不同簇的无监督学习算法也被称为聚类算法.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/img_1025dadc.jpg?imageMogr/v2/thumbnail/!45p" alt=""></p>
+<h3 id="2-1-无监督学习举例"><a href="#2-1-无监督学习举例" class="headerlink" title="2.1 无监督学习举例"></a>2.1 无监督学习举例</h3><p>想要了解这些例子更详细的内容可以看<a href="https://www.coursera.org/learn/machine-learning/lecture/olRZo/unsupervised-learning" target="_blank" rel="noopener">上课视频</a>.</p>
+<h4 id="2-1-1-新闻分类"><a href="#2-1-1-新闻分类" class="headerlink" title="2.1.1 新闻分类"></a>2.1.1 新闻分类</h4><p>第一个例子举的是Google News的例子。Google News搜集网上的新闻，并且根据新闻的主题将新闻分成许多簇, 然后将在同一个簇的新闻放在一起。如图中红圈部分都是关于BP Oil Well各种新闻的链接，当打开各个新闻链接的时候，展现的都是关于BP Oil Well的新闻。<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/img_0168.png?imageMogr/v2/thumbnail/!45p" alt=""></p>
+<h4 id="2-1-2-根据给定基因将人群分类"><a href="#2-1-2-根据给定基因将人群分类" class="headerlink" title="2.1.2 根据给定基因将人群分类"></a>2.1.2 根据给定基因将人群分类</h4><p>如图是DNA数据，对于一组不同的人我们测量他们DNA中对于一个特定基因的表达程度。然后根据测量结果可以用聚类算法将他们分成不同的类型。<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/img_0169.png?imageMogr/v2/thumbnail/!45p" alt=""></p>
+<h4 id="2-1-3-鸡尾酒派对效应"><a href="#2-1-3-鸡尾酒派对效应" class="headerlink" title="2.1.3 鸡尾酒派对效应"></a>2.1.3 鸡尾酒派对效应</h4><p>详见课程: <a href="https://www.coursera.org/learn/machine-learning/lecture/olRZo/unsupervised-learning" target="_blank">Unsupervised Learning</a></p>
+<h4 id="2-1-4-其他"><a href="#2-1-4-其他" class="headerlink" title="2.1.4 其他"></a>2.1.4 其他</h4><p>这里又举了其他几个例子，有组织计算机集群，社交网络分析，市场划分，天文数据分析等。具体可以看一下视频：<a href="https://www.coursera.org/learn/machine-learning/lecture/olRZo/unsupervised-learning" target="_blank">Unsupervised Learning</a><br>   <img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/img_1024abc.jpg?imageMogr/v2/thumbnail/!45p" alt=""></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Daniellaah
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="/https:/daniellaah.github.io/2016/Coursera-ML-Notes-Week-1-Introduction.html" title="Coursera机器学习笔记(一) - 监督学习vs无监督学习">https://daniellaah.github.io/2016/Coursera-ML-Notes-Week-1-Introduction.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+              <a href="/tags/Supervised-Learning/" rel="tag"># Supervised Learning</a>
+              <a href="/tags/UnSupervised-Learning/" rel="tag"># UnSupervised Learning</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2016/Coursera-ML-Notes-Week-1-Linear-Regression-with-One-Variable.html" rel="next" title="Coursera机器学习笔记(二) - 单变量线性回归">
+      Coursera机器学习笔记(二) - 单变量线性回归 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-监督学习"><span class="nav-number">1.</span> <span class="nav-text">一. 监督学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-监督学习的分类"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 监督学习的分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-监督学习举例"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 监督学习举例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-回归问题"><span class="nav-number">1.2.1.</span> <span class="nav-text">1.2.1 回归问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-分类问题"><span class="nav-number">1.2.2.</span> <span class="nav-text">1.2.2 分类问题</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-无监督学习"><span class="nav-number">2.</span> <span class="nav-text">二. 无监督学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-无监督学习举例"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 无监督学习举例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-1-新闻分类"><span class="nav-number">2.1.1.</span> <span class="nav-text">2.1.1 新闻分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-2-根据给定基因将人群分类"><span class="nav-number">2.1.2.</span> <span class="nav-text">2.1.2 根据给定基因将人群分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-3-鸡尾酒派对效应"><span class="nav-number">2.1.3.</span> <span class="nav-text">2.1.3 鸡尾酒派对效应</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-1-4-其他"><span class="nav-number">2.1.4.</span> <span class="nav-text">2.1.4 其他</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Daniellaah</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniellaah</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+<script type="text/x-mathjax-config">
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script>
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML', () => {
+    MathJax.Hub.Typeset();
+  }, window.MathJax);
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(() => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#comments',
+      verify: false,
+      notify: true,
+      appId: 't623MSBhVLoTHhzaeTlxl7Oz-gzGzoHsz',
+      appKey: 'tmiBxnWHuuecINpFBk861cEf',
+      placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: true,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>
