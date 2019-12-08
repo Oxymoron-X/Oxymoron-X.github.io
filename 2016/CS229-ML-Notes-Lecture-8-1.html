@@ -173,9 +173,7 @@
     <i class="fa fa-search"></i>
   </span>
   <div class="search-input-container">
-    <input autocomplete="off" autocorrect="off" autocapitalize="none"
-           placeholder="搜索..." spellcheck="false"
-           type="text" id="search-input">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
   </div>
   <span class="popup-btn-close">
     <i class="fa fa-times-circle"></i>
@@ -215,7 +213,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Daniellaah">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -281,22 +279,21 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 });
 </script>
 
-<script type="text/javascript" async
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
-<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/s2du5grogtc-martin-ezequiel-sanchez.jpg" alt=""><br>课程信息:  <a href="http://cs229.stanford.edu" target="_blank" rel="noopener">主页</a>　<a href="https://www.youtube.com/playlist?list=PLA89DCFA6ADACE599" target="_blank" rel="noopener">Youtube</a><br>相关阅读:</p>
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/s2du5grogtc-martin-ezequiel-sanchez.jpg" alt><br>课程信息:  <a href="http://cs229.stanford.edu" target="_blank" rel="external nofollow noopener noreferrer">主页</a>　<a href="https://www.youtube.com/playlist?list=PLA89DCFA6ADACE599" target="_blank" rel="external nofollow noopener noreferrer">Youtube</a><br>相关阅读:</p>
 <ol>
-<li><a href="http://blog.pluskid.org/?page_id=683" target="_blank" rel="noopener">支持向量机系列-pluskid</a>(强烈推荐)</li>
-<li><a href="http://www.cnblogs.com/jerrylead/archive/2011/03/18/1988415.html" target="_blank" rel="noopener">支持向量机(四)-JerryLead</a>(强烈推荐)</li>
-<li><a href="http://logos.name/archives/304" target="_blank" rel="noopener">斯坦福CS229机器学习课程笔记五：支持向量机 Support Vector Machines</a></li>
-<li><a href="http://blog.csdn.net/stdcoutzyx/article/details/9798843" target="_blank" rel="noopener">核技法、软间隔分类器、SMO算法——斯坦福ML公开课笔记8</a></li>
-<li><a href="https://github.com/zlotus/notes-LSJU-machine-learning" target="_blank" rel="noopener">机器学习笔记</a><a id="more"></a>
+<li><a href="http://blog.pluskid.org/?page_id=683" target="_blank" rel="external nofollow noopener noreferrer">支持向量机系列-pluskid</a>(强烈推荐)</li>
+<li><a href="http://www.cnblogs.com/jerrylead/archive/2011/03/18/1988415.html" target="_blank" rel="external nofollow noopener noreferrer">支持向量机(四)-JerryLead</a>(强烈推荐)</li>
+<li><a href="http://logos.name/archives/304" target="_blank" rel="external nofollow noopener noreferrer">斯坦福CS229机器学习课程笔记五：支持向量机 Support Vector Machines</a></li>
+<li><a href="http://blog.csdn.net/stdcoutzyx/article/details/9798843" target="_blank" rel="external nofollow noopener noreferrer">核技法、软间隔分类器、SMO算法——斯坦福ML公开课笔记8</a></li>
+<li><a href="https://github.com/zlotus/notes-LSJU-machine-learning" target="_blank" rel="external nofollow noopener noreferrer">机器学习笔记</a><a id="more"></a>
 </li>
 </ol>
 <hr>
 <p>接上篇: <a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-8.html">CS229机器学习笔记(七)-SVM之Kernels</a></p>
-<h1 id="软间隔分类器"><a href="#软间隔分类器" class="headerlink" title="软间隔分类器"></a>软间隔分类器</h1><p>软间隔分类器(soft margin classifier)可以解决两种情况.<br>前面我们都假定数据是线性可分的, 但实际上数据即使映射到了高维也不一定是线性可分. 这个时候就要对超平面进行一个调整, 即这里所说的软间隔.<br>另一种情况是即使数据是线性可分的,  但数据中可能存在噪点. 而如果按照前面那种常规处理的话, 这些噪点会对我们的结果造成很大的影响.这个时候也是需要使用软间隔来尽可能减少噪点对我们的影响.<br>如下图所示, 如果数据是线性可分并且不存在噪点的话, 我们可以找到一个完美的分类超平面:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_759.png" alt=""><br>但是, 如果数据中出现了一个噪点并且仍然是线性可分, 如果我们还是按照之前的办法处理, 那么我们就会得到如下的分类超平面, 这明显是不合理的.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_760.png" alt=""><br>现在我们对原来的优化做一个处理:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_761.png" alt=""><br>我们在限制条件中添加了一个非负的$\xi$, 这样我们就允许某些点的函数间隔小于一甚至是在对方的区域. 当然, 我们不能只在限制条件中加上$\xi$, 还要在优化目标中对$\xi$进行惩罚, 使得所有$\xi$的和尽可能小.<br>有了这个优化目标后, 我们按照之前学的拉格朗日对偶的知识来求解.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_762.png" alt=""><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_763.png" alt=""><br>我们发现, $(\alpha)$和原来唯一的区别就在于多了一个$\alpha_i\le C$这个限制条件. (这里需要注意的是$b^\ast$的公式也有变化, 后面再说)KKT对偶互补条件为:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_764.png" alt=""><br>现在唯一的问题就是如何解决$W(\alpha)$了, 相关的内容放在下一篇进行介绍.</p>
+<h1 id="软间隔分类器"><a href="#软间隔分类器" class="headerlink" title="软间隔分类器"></a>软间隔分类器</h1><p>软间隔分类器(soft margin classifier)可以解决两种情况.<br>前面我们都假定数据是线性可分的, 但实际上数据即使映射到了高维也不一定是线性可分. 这个时候就要对超平面进行一个调整, 即这里所说的软间隔.<br>另一种情况是即使数据是线性可分的,  但数据中可能存在噪点. 而如果按照前面那种常规处理的话, 这些噪点会对我们的结果造成很大的影响.这个时候也是需要使用软间隔来尽可能减少噪点对我们的影响.<br>如下图所示, 如果数据是线性可分并且不存在噪点的话, 我们可以找到一个完美的分类超平面:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_759.png" alt><br>但是, 如果数据中出现了一个噪点并且仍然是线性可分, 如果我们还是按照之前的办法处理, 那么我们就会得到如下的分类超平面, 这明显是不合理的.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_760.png" alt><br>现在我们对原来的优化做一个处理:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_761.png" alt><br>我们在限制条件中添加了一个非负的$\xi$, 这样我们就允许某些点的函数间隔小于一甚至是在对方的区域. 当然, 我们不能只在限制条件中加上$\xi$, 还要在优化目标中对$\xi$进行惩罚, 使得所有$\xi$的和尽可能小.<br>有了这个优化目标后, 我们按照之前学的拉格朗日对偶的知识来求解.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_762.png" alt><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_763.png" alt><br>我们发现, $(\alpha)$和原来唯一的区别就在于多了一个$\alpha_i\le C$这个限制条件. (这里需要注意的是$b^\ast$的公式也有变化, 后面再说)KKT对偶互补条件为:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_764.png" alt><br>现在唯一的问题就是如何解决$W(\alpha)$了, 相关的内容放在下一篇进行介绍.</p>
 
     </div>
 
@@ -315,7 +312,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     <a href="/https:/daniellaah.github.io/2016/CS229-ML-Notes-Lecture-8-1.html" title="CS229机器学习笔记(八)-SVM之软间隔">https://daniellaah.github.io/2016/CS229-ML-Notes-Lecture-8-1.html</a>
   </li>
   <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
   </li>
 </ul>
 </div>
@@ -450,10 +447,10 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </span>
   <span class="author" itemprop="copyrightHolder">Daniellaah</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
   <span class="post-meta-divider">|</span>
-  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.6.0
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Muse</a> v7.6.0
   </div>
 
         

@@ -191,9 +191,7 @@
     <i class="fa fa-search"></i>
   </span>
   <div class="search-input-container">
-    <input autocomplete="off" autocorrect="off" autocapitalize="none"
-           placeholder="搜索..." spellcheck="false"
-           type="text" id="search-input">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="搜索..." spellcheck="false" type="text" id="search-input">
   </div>
   <span class="popup-btn-close">
     <i class="fa fa-times-circle"></i>
@@ -233,7 +231,7 @@
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
       <meta itemprop="name" content="Daniellaah">
-      <meta itemprop="description" content="">
+      <meta itemprop="description" content>
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -299,25 +297,24 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 });
 </script>
 
-<script type="text/javascript" async
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+<script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
-<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_276.png" alt=""></p>
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_276.png" alt></p>
 <ul>
-<li>课程地址：<a href="https://www.coursera.org/learn/machine-learning/home/week/8" target="_blank" rel="noopener">Dimensionality Reduction</a></li>
-<li>课程Wiki：<a href="https://share.coursera.org/wiki/index.php/ML:Dimensionality_Reduction" target="_blank" rel="noopener">wiki</a></li>
-<li>课件：<a href="https://d396qusza40orc.cloudfront.net/ml/docs/slides/Lecture14.pptx" target="_blank" rel="noopener">PPT</a>　<a href="https://d396qusza40orc.cloudfront.net/ml/docs/slides/Lecture14.pdf" target="_blank" rel="noopener">PDF</a><a id="more"></a>
+<li>课程地址：<a href="https://www.coursera.org/learn/machine-learning/home/week/8" target="_blank" rel="external nofollow noopener noreferrer">Dimensionality Reduction</a></li>
+<li>课程Wiki：<a href="https://share.coursera.org/wiki/index.php/ML:Dimensionality_Reduction" target="_blank" rel="external nofollow noopener noreferrer">wiki</a></li>
+<li>课件：<a href="https://d396qusza40orc.cloudfront.net/ml/docs/slides/Lecture14.pptx" target="_blank" rel="external nofollow noopener noreferrer">PPT</a>　<a href="https://d396qusza40orc.cloudfront.net/ml/docs/slides/Lecture14.pdf" target="_blank" rel="external nofollow noopener noreferrer">PDF</a><a id="more"></a>
 
 </li>
 </ul>
 <hr>
-<h2 id="一-数据降维"><a href="#一-数据降维" class="headerlink" title="一. 数据降维"></a>一. 数据降维</h2><p>对于如下图所示的二维特征, 我们可以找到一条直线, 将所有的点投射到这条直线上, 这样就将二维的数据降到了一维, 得到一个新的特征$z_1$. 降维不仅可以让我们节省空间, 更重要的是可以让学习算法运行的更快.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_278.png" alt=""><br>同样的, 可以将三维数据降到二维数据.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_279.png" alt=""><br>降维也可以更好地可视化数据. 如下图的例子, 这里一共有6个特征, 该如何更好地展示这些数据？<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_280.png" alt=""><br>上面的数据不利于我们对数据进行可视化, 但是通过降维之后, 我们得到如下的数据,<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_281.png" alt=""><br>这样就可以轻松地描绘出这些数据了.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_282.png" alt=""></p>
-<h2 id="二-PCA"><a href="#二-PCA" class="headerlink" title="二. PCA"></a>二. PCA</h2><h3 id="2-1-什么是PCA"><a href="#2-1-什么是PCA" class="headerlink" title="2.1 什么是PCA"></a>2.1 什么是PCA</h3><p>PCA(主成分分析, Principal components analysis)是用来对数据降维的非监督学习算法. 假设我们有如下图所示的数据, 我们希望将数据降到一维, 那么PCA是如何找到那条合适的直线？<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_300.png" alt=""><br>也许下面红色的线比较适合, 因为每个点投影到这条直线的距离都非常小.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_301.png" alt=""><br>相反地, 每个点投影到下图中的粉色线的距离都非常大.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_302.png" alt=""><br>PCA就是找到一条直线, 使得每个样本到这条直线的投影距离(或者叫投射误差)最小.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_284.png" alt=""><br>通过上面的内容也许会让我们想到线性会对, 但PCA和线性回归是完全不同的两个算法. 在线性回归中(下左图), 我们想要的是能够拟合数据的一条直线, 最小化的是两点之间$y$的差；而在PCA中我们最小化的是点到直线的距离(注意下右图中点垂直于线的距离). 并且, 在线性回归中, 有一个标签$y$；而在PCA中所有的都是特征.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_285.png" alt="">　　<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_286.png" alt=""></p>
-<h3 id="2-2-PCA算法"><a href="#2-2-PCA算法" class="headerlink" title="2.2  PCA算法"></a>2.2  PCA算法</h3><p>在使用PCA之前, 我们需要对数据进行feature scaling/mean normalization处理.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_287.png" alt=""><br>在PCA中, 我们需要计算的就是向量$u$和新的特征$z$. 　　<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_288.png" alt=""><br>首先我们需要计算出矩阵$\Sigma$, 然后使用奇异值分解(sigular value decomposition)来计算$[U, S, V]$. 我们需要的就是$n \times n$的矩阵$U$, 如果我们需要将数据从n维降到k维, 取U的前k列, 记为$U_{reduce}$.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_289.png" alt=""><br>最后通过如下的方法得到$z$.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_290.png" alt=""><br>下图是对PCA的总结.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_291.png" alt=""></p>
-<h2 id="三-使用PCA"><a href="#三-使用PCA" class="headerlink" title="三. 使用PCA"></a>三. 使用PCA</h2><h3 id="3-1-恢复原数据"><a href="#3-1-恢复原数据" class="headerlink" title="3.1 恢复原数据"></a>3.1 恢复原数据</h3><p>数据降维候, 我们可以通过$X_{approx}^{(1)}=U_{reduce}.z^{(1)}$来的得到原始数据的近似值.<br>　　<img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_292.png" alt=""></p>
-<h3 id="3-2-选择合适的维度"><a href="#3-2-选择合适的维度" class="headerlink" title="3.2 选择合适的维度"></a>3.2 选择合适的维度</h3><p>那么该如何选择k的值？一般选择一个最小的k并且满足下图中的公式.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_293.png" alt=""><br>我们可以使用下左图中的算法来选择k的值, 但是这样做效率太低；更好的选择是使用下右图中的方法, 在调用一次SVD之后, 我们只需要找到一个最小的k并且满足$\frac{\sum_{i=1}^kS_{ii}}{\sum_{i=1}^nS_{ii}} ge 0.99$即可.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_294.png" alt=""><br>即：<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_295.png" alt=""></p>
-<h3 id="3-3-PCA总结"><a href="#3-3-PCA总结" class="headerlink" title="3.3 PCA总结"></a>3.3 PCA总结</h3><p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_296.png" alt=""><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_297.png" alt=""><br>注意, 不要使用PCA来解决过拟合的问题.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_298.png" alt=""><br>在使用PCA之前应该考虑先使用原始数据, 如果使用原始数据不能达到效果, 再考虑使用PCA.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_299.png" alt="">
+<h2 id="一-数据降维"><a href="#一-数据降维" class="headerlink" title="一. 数据降维"></a>一. 数据降维</h2><p>对于如下图所示的二维特征, 我们可以找到一条直线, 将所有的点投射到这条直线上, 这样就将二维的数据降到了一维, 得到一个新的特征$z_1$. 降维不仅可以让我们节省空间, 更重要的是可以让学习算法运行的更快.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_278.png" alt><br>同样的, 可以将三维数据降到二维数据.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_279.png" alt><br>降维也可以更好地可视化数据. 如下图的例子, 这里一共有6个特征, 该如何更好地展示这些数据？<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_280.png" alt><br>上面的数据不利于我们对数据进行可视化, 但是通过降维之后, 我们得到如下的数据,<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_281.png" alt><br>这样就可以轻松地描绘出这些数据了.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_282.png" alt></p>
+<h2 id="二-PCA"><a href="#二-PCA" class="headerlink" title="二. PCA"></a>二. PCA</h2><h3 id="2-1-什么是PCA"><a href="#2-1-什么是PCA" class="headerlink" title="2.1 什么是PCA"></a>2.1 什么是PCA</h3><p>PCA(主成分分析, Principal components analysis)是用来对数据降维的非监督学习算法. 假设我们有如下图所示的数据, 我们希望将数据降到一维, 那么PCA是如何找到那条合适的直线？<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_300.png" alt><br>也许下面红色的线比较适合, 因为每个点投影到这条直线的距离都非常小.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_301.png" alt><br>相反地, 每个点投影到下图中的粉色线的距离都非常大.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_302.png" alt><br>PCA就是找到一条直线, 使得每个样本到这条直线的投影距离(或者叫投射误差)最小.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_284.png" alt><br>通过上面的内容也许会让我们想到线性会对, 但PCA和线性回归是完全不同的两个算法. 在线性回归中(下左图), 我们想要的是能够拟合数据的一条直线, 最小化的是两点之间$y$的差；而在PCA中我们最小化的是点到直线的距离(注意下右图中点垂直于线的距离). 并且, 在线性回归中, 有一个标签$y$；而在PCA中所有的都是特征.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_285.png" alt>　　<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_286.png" alt></p>
+<h3 id="2-2-PCA算法"><a href="#2-2-PCA算法" class="headerlink" title="2.2  PCA算法"></a>2.2  PCA算法</h3><p>在使用PCA之前, 我们需要对数据进行feature scaling/mean normalization处理.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_287.png" alt><br>在PCA中, 我们需要计算的就是向量$u$和新的特征$z$. 　　<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_288.png" alt><br>首先我们需要计算出矩阵$\Sigma$, 然后使用奇异值分解(sigular value decomposition)来计算$[U, S, V]$. 我们需要的就是$n \times n$的矩阵$U$, 如果我们需要将数据从n维降到k维, 取U的前k列, 记为$U_{reduce}$.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_289.png" alt><br>最后通过如下的方法得到$z$.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_290.png" alt><br>下图是对PCA的总结.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_291.png" alt></p>
+<h2 id="三-使用PCA"><a href="#三-使用PCA" class="headerlink" title="三. 使用PCA"></a>三. 使用PCA</h2><h3 id="3-1-恢复原数据"><a href="#3-1-恢复原数据" class="headerlink" title="3.1 恢复原数据"></a>3.1 恢复原数据</h3><p>数据降维候, 我们可以通过$X_{approx}^{(1)}=U_{reduce}.z^{(1)}$来的得到原始数据的近似值.<br>　　<img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_292.png" alt></p>
+<h3 id="3-2-选择合适的维度"><a href="#3-2-选择合适的维度" class="headerlink" title="3.2 选择合适的维度"></a>3.2 选择合适的维度</h3><p>那么该如何选择k的值？一般选择一个最小的k并且满足下图中的公式.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_293.png" alt><br>我们可以使用下左图中的算法来选择k的值, 但是这样做效率太低；更好的选择是使用下右图中的方法, 在调用一次SVD之后, 我们只需要找到一个最小的k并且满足$\frac{\sum_{i=1}^kS_{ii}}{\sum_{i=1}^nS_{ii}} ge 0.99$即可.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_294.png" alt><br>即：<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_295.png" alt></p>
+<h3 id="3-3-PCA总结"><a href="#3-3-PCA总结" class="headerlink" title="3.3 PCA总结"></a>3.3 PCA总结</h3><p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_296.png" alt><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_297.png" alt><br>注意, 不要使用PCA来解决过拟合的问题.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_298.png" alt><br>在使用PCA之前应该考虑先使用原始数据, 如果使用原始数据不能达到效果, 再考虑使用PCA.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_299.png" alt>
 　　</p>
 
     </div>
@@ -337,7 +334,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     <a href="/https:/daniellaah.github.io/2016/Coursera-ML-Notes-Week-8-Dimensionality-Reduction.html" title="Coursera机器学习笔记(十四) - 数据降维">https://daniellaah.github.io/2016/Coursera-ML-Notes-Week-8-Dimensionality-Reduction.html</a>
   </li>
   <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="external nofollow noopener noreferrer" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
   </li>
 </ul>
 </div>
@@ -474,10 +471,10 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </span>
   <span class="author" itemprop="copyrightHolder">Daniellaah</span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">Hexo</a> 强力驱动 v4.0.0
   </div>
   <span class="post-meta-divider">|</span>
-  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.6.0
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="external nofollow noopener noreferrer" target="_blank">NexT.Muse</a> v7.6.0
   </div>
 
         
