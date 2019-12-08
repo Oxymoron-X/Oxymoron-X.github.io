@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
 <meta name="generator" content="Hexo 4.0.0">
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
   <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
 <link rel="stylesheet" href="/css/main.css">
@@ -19,7 +19,7 @@
 <script id="hexo-configurations">
   var NexT = window.NexT || {};
   var CONFIG = {
-    hostname: new URL('http://yoursite.com').hostname,
+    hostname: new URL('https://daniellaah.github.io').hostname,
     root: '/',
     scheme: 'Muse',
     version: '7.6.0',
@@ -50,7 +50,7 @@
 <meta name="keywords" content="Machine Learning,Neural Network,Deep Learning,deeplearning.ai">
 <meta property="og:type" content="article">
 <meta property="og:title" content="deeplearning.ai 专项课程一第三周">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2017&#x2F;08&#x2F;29&#x2F;deeplearning-ai-Neural-Networks-and-Deep-Learning-week3&#x2F;index.html">
+<meta property="og:url" content="https:&#x2F;&#x2F;daniellaah.github.io&#x2F;2017&#x2F;08&#x2F;29&#x2F;deeplearning-ai-Neural-Networks-and-Deep-Learning-week3&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&amp;apos;$&amp;apos;,&amp;apos;$&amp;apos;], [&amp;apos;\\(&amp;apos;,&amp;apos;\\)&amp;apos;]]} });      这是Andrew Ng在Coursera上的深度学习专项课程中第一课Neural Networks and Deep Learning第三周Shallow Neural Networks的学习笔记. 上周我们说了Logistic Regr">
 <meta property="og:locale" content="zh-CN">
@@ -74,7 +74,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_1286.png">
 
-<link rel="canonical" href="http://yoursite.com/2017/08/29/deeplearning-ai-Neural-Networks-and-Deep-Learning-week3/">
+<link rel="canonical" href="https://daniellaah.github.io/2017/08/29/deeplearning-ai-Neural-Networks-and-Deep-Learning-week3/">
 
 
 <script id="page-configurations">
@@ -124,12 +124,12 @@
   .use-motion .logo-line-before i { left: initial; }
   .use-motion .logo-line-after i { right: initial; }
   </style>
-</noscript>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
     <div class="headband"></div>
 
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -219,7 +219,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/29/deeplearning-ai-Neural-Networks-and-Deep-Learning-week3/">
+    <link itemprop="mainEntityOfPage" href="https://daniellaah.github.io/2017/08/29/deeplearning-ai-Neural-Networks-and-Deep-Learning-week3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -294,7 +294,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
-<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1286.png" alt=""><br>这是Andrew Ng在Coursera上的深度学习专项课程中第一课Neural Networks and Deep Learning第三周Shallow Neural Networks的学习笔记. 上周我们说了Logistic Regression是神经网络的基础, 在学习了上周的内容之后, 我们要正式地进入神经网络的学习. 当然, 我们先从简单的只有一个隐藏层的神经网络开始. 在学习完本周内容之后, 我们将会使用Python实现一个单个隐藏层的神经网络, 并在Planar data上测试.<br>注: 本课程适合有一定基本概念的同学使用, 如果没有任何基础, 可以先学习Andrew Ng在Coursera上的机器学习课程. 课程见这里: <a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">Coursera Machine Learning</a>, 这门课程我也做了<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes.html" target="_blank" rel="noopener">笔记</a>, 可供参考.</p>
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1286.png" alt=""><br>这是Andrew Ng在Coursera上的深度学习专项课程中第一课Neural Networks and Deep Learning第三周Shallow Neural Networks的学习笔记. 上周我们说了Logistic Regression是神经网络的基础, 在学习了上周的内容之后, 我们要正式地进入神经网络的学习. 当然, 我们先从简单的只有一个隐藏层的神经网络开始. 在学习完本周内容之后, 我们将会使用Python实现一个单个隐藏层的神经网络, 并在Planar data上测试.<br>注: 本课程适合有一定基本概念的同学使用, 如果没有任何基础, 可以先学习Andrew Ng在Coursera上的机器学习课程. 课程见这里: <a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">Coursera Machine Learning</a>, 这门课程我也做了<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes.html">笔记</a>, 可供参考.</p>
 <a id="more"></a>
 <hr>
 <h1 id="一-常用符号与基本概念"><a href="#一-常用符号与基本概念" class="headerlink" title="一. 常用符号与基本概念"></a>一. 常用符号与基本概念</h1><p>如下图第三行所示是一个简单的神经网络结构. 在神经网络中我们使用中括号的上角标来表示第几层, 例如$a^{[1]}$表示第一层的激活单元; 使用圆括号的上角标来表示第几个训练样本, 例如$x^{(1)}$表示第一个训练样本.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1287.png?imageMogr/v2/thumbnail/!35p" alt=""><br>该神经网络完全可以使用上一周所讲的计算图来表示, 和LR计算图的区别仅仅在于多了一个$z$和$a$的计算而已. 如果你已经完全掌握了上一周的内容, 那么其实你已经知道了神经网络的前向传播, 反向传播(梯度计算)等等. 要注意的是各种参数, 中间变量($a, z$)的维度问题. 关于神经网络的基本概念, 这里就不赘述了. 见下图回顾一下:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1288.png?imageMogr/v2/thumbnail/!35p" alt=""></p>
@@ -338,6 +338,23 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
     
     
     
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Daniellaah
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="/https:/daniellaah.github.io/2017/08/29/deeplearning-ai-Neural-Networks-and-Deep-Learning-week3/" title="deeplearning.ai 专项课程一第三周">https://daniellaah.github.io/2017/08/29/deeplearning-ai-Neural-Networks-and-Deep-Learning-week3/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
 
       <footer class="post-footer">
           <div class="post-tags">
@@ -434,12 +451,12 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-count">38</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
@@ -466,7 +483,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   &copy; 2015 – 
   <span itemprop="copyrightYear">2019</span>
   <span class="with-love">
-    <i class="fa fa-user"></i>
+    <i class="fa fa-heart"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">Daniellaah</span>
 </div>
@@ -521,6 +538,8 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 
   
 
+  
+
 
 <script>
 NexT.utils.loadComments(() => {
@@ -548,7 +567,7 @@ NexT.utils.loadComments(() => {
     });
   }, window.Valine);
 });
-</script>
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
 </body>
 </html>

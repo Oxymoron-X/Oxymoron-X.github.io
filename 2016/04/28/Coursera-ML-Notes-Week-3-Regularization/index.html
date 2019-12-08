@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://daniellaah.github.io').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&amp;apos;$&amp;apos;,&amp;apos;$&amp;apos;], [&amp;apos;\\(&amp;apos;,&amp;apos;\\)&amp;apos;]]} });        课程地址：Regularization 课程Wiki：Regularization 课件：PPT　PDF">
+<meta name="keywords" content="Machine Learning,Notes,Coursera,MOOC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Coursera机器学习笔记(六) - 正则化">
+<meta property="og:url" content="https:&#x2F;&#x2F;daniellaah.github.io&#x2F;2016&#x2F;04&#x2F;28&#x2F;Coursera-ML-Notes-Week-3-Regularization&#x2F;index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&amp;apos;$&amp;apos;,&amp;apos;$&amp;apos;], [&amp;apos;\\(&amp;apos;,&amp;apos;\\)&amp;apos;]]} });        课程地址：Regularization 课程Wiki：Regularization 课件：PPT　PDF">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_100.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_101.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_102.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_103.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_831.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_104.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_105.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_108.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_112.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_110.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_832.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_114.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_111.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_113.png">
+<meta property="og:updated_time" content="2019-12-06T13:16:59.330Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_100.png">
+
+<link rel="canonical" href="https://daniellaah.github.io/2016/04/28/Coursera-ML-Notes-Week-3-Regularization/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Coursera机器学习笔记(六) - 正则化 | Hexo</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f83617d7f08d120ecbbca435e8de97a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://daniellaah.github.io/2016/04/28/Coursera-ML-Notes-Week-3-Regularization/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daniellaah">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Coursera机器学习笔记(六) - 正则化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-04-28 10:00:15" itemprop="dateCreated datePublished" datetime="2016-04-28T10:00:15+08:00">2016-04-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-06 21:16:59" itemprop="dateModified" datetime="2019-12-06T21:16:59+08:00">2019-12-06</time>
+              </span>
+
+          
+            <span id="/2016/04/28/Coursera-ML-Notes-Week-3-Regularization/" class="post-meta-item leancloud_visitors" data-flag-title="Coursera机器学习笔记(六) - 正则化" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/04/28/Coursera-ML-Notes-Week-3-Regularization/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/04/28/Coursera-ML-Notes-Week-3-Regularization/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_100.png" alt=""></p>
+<ul>
+<li>课程地址：<a href="https://www.coursera.org/learn/machine-learning/home/week/3" target="_blank" rel="noopener">Regularization</a></li>
+<li>课程Wiki：<a href="https://share.coursera.org/wiki/index.php/ML:Regularization" target="_blank" rel="noopener">Regularization</a></li>
+<li>课件：<a href="https://d396qusza40orc.cloudfront.net/ml/docs/slides/Lecture7.pptx" target="_blank" rel="noopener">PPT</a>　<a href="https://d396qusza40orc.cloudfront.net/ml/docs/slides/Lecture7.pdf" target="_blank" rel="noopener">PDF</a><a id="more"></a>
+
+</li>
+</ul>
+<hr>
+<h2 id="一-过拟合"><a href="#一-过拟合" class="headerlink" title="一. 过拟合"></a>一. 过拟合</h2><p>如下图所示, 使用三种不同的多项式作为假设函数对数据进行拟合, 从左一和右一分别为过拟合和欠拟合.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_101.png" alt=""><br>对率回归:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_102.png" alt=""><br>解决过拟合问题大致分为两种, 一种是减少特征的数量, 可以人工选择一些比较重要的特征留下, 也可以使用模型选择算法(Model selection algorithm,后面的课程会介绍)；另一种就是正则化(Regularization).<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_103.png" alt=""></p>
+<h2 id="二-正则化"><a href="#二-正则化" class="headerlink" title="二. 正则化"></a>二. 正则化</h2><p>如图所示的两个假设函数, 其中第二个为过拟合. 那么该如何改变代价函数能够让最中的假设函数不过拟合? 对比两个假设函数我们可以看到, 它们的区别就在于第二个多了两个高阶项. 也就是说, 我们不希望出现后面两个高阶项, 即希望$\theta_3$, $\theta_4$越小越好.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_831.png" alt=""><br>通过上面的想法, 我们把$\theta_3$, $\theta_4$放到代价函数里, 并且加上很大的权重(1000):<br>$$J(\theta)=\frac{1}{2m}\sum_{i=1}^m(h_\theta(x^{(i)})-y^{(i)} )^2+1000\theta_3^2+1000\theta_4^2$$<br>现在如果要最小化代价函数, 那么最后两项也必须得最小. 这个时候, 就有$\theta_3\approx0$, $\theta_4\approx0$. 从而这个四次多项式就变成了一个二次多项式, 解决了过拟合的问题.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_104.png" alt=""><br>对于正则化的一般思路是, 减少特征的数量, 降低模型的复杂度. 所以我们要对每个参数进行惩罚, 从而得到’更简单’的并且可以防止过拟合的模型. 但是在实际问题中我们很难判断哪些特征比较重要, 所以对每一个参数(除了第一个)参数进行惩罚, 将代价函数改为:<br><font size='4'>$$J(\theta)=\frac{1}{2m}\left[\sum_{i=1}^m(h_\theta(x^{(i)})-y^{(i)} )^2+\lambda\sum_{i=1}^n\theta_j^2\right]$$</font><br>其中, $\lambda\sum_{i=1}^n\theta_j^2$叫做正则化项(Regularization Term), $\lambda$叫做正则化参数(Regularization Parameter). $\lambda$的作用就是在”更好地拟合数据”和”防止过拟合”之间权衡.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_105.png" alt=""><br>如过$\lambda$过大的话, 就会导致$\theta_1$、$\theta_2$、$\theta_3$…近似于0, 这样我们的假设函数就为：$h_\theta(x)=\theta_0$. 这时就变成了欠拟合(Underfit). 所以需要选择一个合适的$\lambda$. 后面的课程会讲到自动选择合适的$\lambda$的方法.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_108.png" alt=""></p>
+<h2 id="三-正则化线性回归"><a href="#三-正则化线性回归" class="headerlink" title="三. 正则化线性回归"></a>三. 正则化线性回归</h2><p>通过正则化之后的$J(\theta)$我们可以得到对应的梯度下降算法, 如下图所示. 因为我们不对$\theta_0$进行惩罚, 所以将$\theta_0$的规则单独写出来, 其余的参数更新规则如下图第三行公式. 公式前半部分$1-\alpha\frac{\lambda}{m}$是一个比1小一点点的数(教授举了个例子大概是0.99), 而公式的后半部分和没有进行正则化的梯度下降的公式的后半部分是完全一样的. 所以区别就在于前半部分会将$\theta_j$缩小(因为乘了一个小于1的数).<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_112.png" alt=""><br>同样, 在正规方程中, 我们只需要在公式中加上一部分如下图所示.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_110.png" alt=""><br>即:<br>$$\theta=(X^TX+\lambda\begin{bmatrix} 0&amp;0&amp;0&amp;0&amp;…&amp;0\\ 0&amp;1&amp;0&amp;0&amp;…&amp;0\\ 0&amp;0&amp;1&amp;0&amp;…&amp;0\\ 0&amp;0&amp;0&amp;1&amp;…&amp;0\\ 0&amp;0&amp;0&amp;0&amp;…&amp;0 \\ 0&amp;0&amp;0&amp;0&amp;…&amp;1 \end{bmatrix})^{-1}X^Ty$$<br>并且对于正则化后的正规方程, 只要$\lambda\gt0$, 括号里的那一项总是可逆的:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_832.png" alt=""></p>
+<h2 id="四-正则化对率回归"><a href="#四-正则化对率回归" class="headerlink" title="四. 正则化对率回归"></a>四. 正则化对率回归</h2><p>类似地, 正则化逻辑回归中的代价函数和梯度下降如下图所示.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_114.png" alt=""><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_111.png" alt=""><br>下图是使用正则化的高级优化算法, 只需要在计算jVal时在后面加上一个正则化项以及在梯度后面减去一个$\frac{\lambda}{m}\theta_j$.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_113.png" alt=""></p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Daniellaah
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="/https:/daniellaah.github.io/2016/04/28/Coursera-ML-Notes-Week-3-Regularization/" title="Coursera机器学习笔记(六) - 正则化">https://daniellaah.github.io/2016/04/28/Coursera-ML-Notes-Week-3-Regularization/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+              <a href="/tags/Notes/" rel="tag"># Notes</a>
+              <a href="/tags/Coursera/" rel="tag"># Coursera</a>
+              <a href="/tags/MOOC/" rel="tag"># MOOC</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/04/26/Coursera-ML-Notes-Week-3-Logistic-Regression/" rel="prev" title="Coursera机器学习笔记(五) - Logistic Regression">
+      <i class="fa fa-chevron-left"></i> Coursera机器学习笔记(五) - Logistic Regression
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/04/28/Coursera-ML-Notes-Week-3-chicken-soup/" rel="next" title="Coursera机器学习笔记(七) - 来自吴恩达的狗粮和鸡汤">
+      Coursera机器学习笔记(七) - 来自吴恩达的狗粮和鸡汤 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-过拟合"><span class="nav-number">1.</span> <span class="nav-text">一. 过拟合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-正则化"><span class="nav-number">2.</span> <span class="nav-text">二. 正则化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-正则化线性回归"><span class="nav-number">3.</span> <span class="nav-text">三. 正则化线性回归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四-正则化对率回归"><span class="nav-number">4.</span> <span class="nav-text">四. 正则化对率回归</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Daniellaah</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniellaah</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(() => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#comments',
+      verify: false,
+      notify: true,
+      appId: 't623MSBhVLoTHhzaeTlxl7Oz-gzGzoHsz',
+      appKey: 'tmiBxnWHuuecINpFBk861cEf',
+      placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: true,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

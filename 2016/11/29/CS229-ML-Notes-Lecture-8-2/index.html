@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://daniellaah.github.io').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&amp;apos;$&amp;apos;,&amp;apos;$&amp;apos;], [&amp;apos;\\(&amp;apos;,&amp;apos;\\)&amp;apos;]]} });      课程信息:  主页　Youtube相关阅读:  支持向量机系列-pluskid(强烈推荐) 支持向量机(四)-JerryLead(强烈推荐) 支持向量机(五)-JerryLead(强烈推荐) 斯坦福CS229机器学习课程笔记五：支持向量机">
+<meta name="keywords" content="Machine Learning,CS229">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS229机器学习笔记(九)-SVM之SMO算法">
+<meta property="og:url" content="https:&#x2F;&#x2F;daniellaah.github.io&#x2F;2016&#x2F;11&#x2F;29&#x2F;CS229-ML-Notes-Lecture-8-2&#x2F;index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&amp;apos;$&amp;apos;,&amp;apos;$&amp;apos;], [&amp;apos;\\(&amp;apos;,&amp;apos;\\)&amp;apos;]]} });      课程信息:  主页　Youtube相关阅读:  支持向量机系列-pluskid(强烈推荐) 支持向量机(四)-JerryLead(强烈推荐) 支持向量机(五)-JerryLead(强烈推荐) 斯坦福CS229机器学习课程笔记五：支持向量机">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;lo_llbs1rs0-jan-senderek.jpg?imageMogr2&#x2F;thumbnail&#x2F;!50p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_765.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_766.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_763.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_767.png">
+<meta property="og:updated_time" content="2019-12-06T13:16:59.324Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;lo_llbs1rs0-jan-senderek.jpg?imageMogr2&#x2F;thumbnail&#x2F;!50p">
+
+<link rel="canonical" href="https://daniellaah.github.io/2016/11/29/CS229-ML-Notes-Lecture-8-2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>CS229机器学习笔记(九)-SVM之SMO算法 | Hexo</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f83617d7f08d120ecbbca435e8de97a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://daniellaah.github.io/2016/11/29/CS229-ML-Notes-Lecture-8-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daniellaah">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CS229机器学习笔记(九)-SVM之SMO算法
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-11-29 20:00:45" itemprop="dateCreated datePublished" datetime="2016-11-29T20:00:45+08:00">2016-11-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-06 21:16:59" itemprop="dateModified" datetime="2019-12-06T21:16:59+08:00">2019-12-06</time>
+              </span>
+
+          
+            <span id="/2016/11/29/CS229-ML-Notes-Lecture-8-2/" class="post-meta-item leancloud_visitors" data-flag-title="CS229机器学习笔记(九)-SVM之SMO算法" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/11/29/CS229-ML-Notes-Lecture-8-2/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/11/29/CS229-ML-Notes-Lecture-8-2/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/lo_llbs1rs0-jan-senderek.jpg?imageMogr2/thumbnail/!50p" alt=""><br>课程信息:  <a href="http://cs229.stanford.edu" target="_blank" rel="noopener">主页</a>　<a href="https://www.youtube.com/playlist?list=PLA89DCFA6ADACE599" target="_blank" rel="noopener">Youtube</a><br>相关阅读:</p>
+<ol>
+<li><a href="http://blog.pluskid.org/?page_id=683" target="_blank" rel="noopener">支持向量机系列-pluskid</a>(强烈推荐)</li>
+<li><a href="http://www.cnblogs.com/jerrylead/archive/2011/03/18/1988415.html" target="_blank" rel="noopener">支持向量机(四)-JerryLead</a>(强烈推荐)</li>
+<li><a href="http://www.cnblogs.com/jerrylead/archive/2011/03/18/1988419.html" target="_blank" rel="noopener">支持向量机(五)-JerryLead</a>(强烈推荐)</li>
+<li><a href="http://logos.name/archives/304" target="_blank" rel="noopener">斯坦福CS229机器学习课程笔记五：支持向量机 Support Vector Machines</a></li>
+<li><a href="http://blog.csdn.net/stdcoutzyx/article/details/9798843" target="_blank" rel="noopener">核技法、软间隔分类器、SMO算法——斯坦福ML公开课笔记8</a></li>
+<li><a href="https://github.com/zlotus/notes-LSJU-machine-learning" target="_blank" rel="noopener">机器学习笔记</a><a id="more"></a>
+</li>
+</ol>
+<hr>
+<p>接上篇: <a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-8-1.html">CS229机器学习笔记(七)-SVM之软间隔</a></p>
+<p>在将SMO之前, 我们先来看看什么是坐标上升法(coordinate ascent).</p>
+<h1 id="坐标上升"><a href="#坐标上升" class="headerlink" title="坐标上升"></a>坐标上升</h1><p>假设我们有如下的优化问题:<br>$$\mathop{max}_\alpha W(\alpha_1, \alpha_2, … , \alpha_m).$$<br>先撇开SVM不谈, 这里的$W$是$\alpha_i$的一个函数. 我们前面已经看过了两种优化算法, 一种是梯度下降(gradient descent), 另一种是牛顿方法(Newton’s method). 现在我们所要说的是第三种优化算法, 坐标上升法(coordinate ascent):<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_765.png" alt=""><br>上面是该算法的过程, 在内循环中, 每次固定除了第i个$\alpha$, 即,将$W$看成只关于第$i$个$\alpha$的函数. 然后对第$i$个$\alpha$进行优化, 然后依次对下一个$\alpha$进行优化:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_766.png" alt=""><br>这里提一点, 优化$\alpha$的顺序是可以改变的, 取决于你觉得下一次优化哪一个$\alpha$会带来最大的进步.<br>相对其他优化算法来讲, 坐标上升需要更多的迭代次数来收敛. 但它的优点就是在于内循环的计算非常简单.</p>
+<h1 id="序列最小优化算法"><a href="#序列最小优化算法" class="headerlink" title="序列最小优化算法"></a>序列最小优化算法</h1><p>SVM终于接近尾声了…<br>前面有一个问题一直没有解决, 就是如何求解这个优化问题:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_763.png" alt=""><br>这一节的标题序列最小优化算法(Sequential minimal optimazation)就是用来解决这个优化问题的. 刚才讲的coordinate ascend现在自然要用到啦.<br>在刚才讲的coordinate ascend中, 我们每次固定除了某一个变量之外的所有变量, 将优化目标看成仅仅是这一个没有固定变量的函数, 再对该变量进行优化. 在SVM中, 好像也可以直接这么用. 但是别忘了, SVM的优化是有约束条件的:<br>$$\sum_{i=1}^m\alpha_iy^{(i)}=0.$$<br>有这个约束条件的存在, 我们就不可能改变其中一个而固定其他所有. 那该怎么办?<br>很简单, 在SVM中, 我们每次改变两个$\alpha$, 固定其他所有的. 这个算法就叫SMO(sequential minimal optimazation)算法, 其中minimal指的就是每次改变2个$\alpha$. 具体算法的过程如下:<br>1.选择两个变量$\alpha_i$和$\alpha_j$,<br>2.固定其他所有变量, 将$W(\alpha)$看成仅是关于$\alpha_i$和$\alpha_j$的函数对$W(\alpha)$进行优化<br>下面我们使用$\alpha_1$和$\alpha_2$做一个具体的例子来看看.<br>由$\sum_{i=1}^m\alpha_iy^{(i)}=0$, 我们可以得到:<br>$$\alpha_1y^{(1)}+\alpha_2y^{(2)}=-\sum_{i=3}^m\alpha_iy^{(i)}.$$<br>我们令:<br>$$-\sum_{i=3}^m\alpha_iy^{(i)}=\zeta$$<br>即:<br>$$\alpha_1y^{(1)}+\alpha_2y^{(2)}=\zeta$$<br>我们可以用下图画出$\alpha_1$和$\alpha_2$的约束(注意不要忘了$0\le\alpha_i\le C$):<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_767.png" alt=""><br>由$\alpha_1y^{(1)}+\alpha_2y^{(2)}=\zeta$我们可以得到:<br>$$\alpha_1 = \frac{\zeta-\alpha_2y^{(2)}}{y^{(1)}}.$$<br>这个时候, $W$就可以写成:<br>$$W(\alpha)=W(\frac{\zeta-\alpha_2y^{(2)}}{y^{(1)}}, \alpha_2, …, \alpha_m).$$<br>前面也说了$W(\alpha)$是一个二次函数, 我们现在把$W$看成仅仅是关于$\alpha_2$的函数的话, $W$就变成了关于$\alpha_2$的一元二次函数, 这个时候求最值就很简单了. </p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Daniellaah
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="/https:/daniellaah.github.io/2016/11/29/CS229-ML-Notes-Lecture-8-2/" title="CS229机器学习笔记(九)-SVM之SMO算法">https://daniellaah.github.io/2016/11/29/CS229-ML-Notes-Lecture-8-2/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+              <a href="/tags/CS229/" rel="tag"># CS229</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/11/29/CS229-ML-Notes-Lecture-8-1/" rel="prev" title="CS229机器学习笔记(八)-SVM之软间隔">
+      <i class="fa fa-chevron-left"></i> CS229机器学习笔记(八)-SVM之软间隔
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/02/18/CS229-ML-Notes-Lecture-9/" rel="next" title="CS229机器学习笔记(十) - Learning Theory">
+      CS229机器学习笔记(十) - Learning Theory <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#坐标上升"><span class="nav-number">1.</span> <span class="nav-text">坐标上升</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#序列最小优化算法"><span class="nav-number">2.</span> <span class="nav-text">序列最小优化算法</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Daniellaah</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniellaah</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(() => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#comments',
+      verify: false,
+      notify: true,
+      appId: 't623MSBhVLoTHhzaeTlxl7Oz-gzGzoHsz',
+      appKey: 'tmiBxnWHuuecINpFBk861cEf',
+      placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: true,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

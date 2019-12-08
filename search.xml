@@ -13,7 +13,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
-<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/luxury-silver-pen-with-a-business-diary-picjumbo-com.jpg" alt=""><br>本篇文章概览:</p>
+<p><img src="http://7xrrje.com1.z0.glb.clouddn.com/luxury-silver-pen-with-a-business-diary-picjumbo-com.jpg" alt=""><br>本篇文章概览:</p>
 <ol>
 <li>什么是高斯混合模型</li>
 <li>什么是EM算法</li>
@@ -23,16 +23,16 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <a id="more"></a>
 
 <hr>
-<h1 id="一-高斯混合模型-GMM"><a href="#一-高斯混合模型-GMM" class="headerlink" title="一. 高斯混合模型(GMM)"></a>一. 高斯混合模型(GMM)</h1><p>高斯混合模型, 英文为Gaussian Mixture Model, 简称GMM, 是一种聚类算法. 它和K-means算法很像, 只不过GMM得到的结果是对概率密度的估计, 是一种软聚类. 那么究竟什么是高斯混合模型呢? 其实顾名思义, 其就假设数据是由多个服从高斯分布的数据混合而成的. 这里究竟有几个高斯分布不能确定, 就像K-means算法里的k值一样, 是一种超参数, 更多时候需要领域知识来决定. 模型中的每一个高斯分布被称为component, 即组分. 每一个组分的概率密度线性叠加就组成了GMM的概率密度函数:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/gmm1.png" alt=""><br>根据上面的式子，如果我们要从 GMM 的分布中随机地取一个点的话，实际上可以分为两步：首先随机地在这 K 个 Component 之中选一个，每个 Component 被选中的概率实际上就是它的系数 $\pi_k$ ，选中了 Component 之后，再单独地考虑从这个 Component 的分布中选取一个点就可以了──这里已经回到了普通的 Gaussian 分布，转化为了已知的问题。<sup>[1]</sup><br>给定一批数据, 我们想用GMM来对这批数据进行聚类. 具体如何做呢? 很简单, 我们只要通过这批数据来得到GMM的概率密度函数即可. 本质上就是通过数据来计算$\pi_k, \mu_k, \sigma_k$等参数.其中, 通过数据来推算概率密度被称作density estimation, 而估算参数被称作parameter estimation.<br>如何估计这些参数? 这就回到我们熟悉的最大似然估计了. 根据概率密度函数, 很容易写出对应的log似然函数:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/gmm2.png" alt=""><br>对于上式, 我们无法像普通的log似然函数那样通过求导来求出最大值. 具体地, 我们通过如下步骤来解决这个问题.</p>
+<h1 id="一-高斯混合模型-GMM"><a href="#一-高斯混合模型-GMM" class="headerlink" title="一. 高斯混合模型(GMM)"></a>一. 高斯混合模型(GMM)</h1><p>高斯混合模型, 英文为Gaussian Mixture Model, 简称GMM, 是一种聚类算法. 它和K-means算法很像, 只不过GMM得到的结果是对概率密度的估计, 是一种软聚类. 那么究竟什么是高斯混合模型呢? 其实顾名思义, 其就假设数据是由多个服从高斯分布的数据混合而成的. 这里究竟有几个高斯分布不能确定, 就像K-means算法里的k值一样, 是一种超参数, 更多时候需要领域知识来决定. 模型中的每一个高斯分布被称为component, 即组分. 每一个组分的概率密度线性叠加就组成了GMM的概率密度函数:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/gmm1.png" alt=""><br>根据上面的式子，如果我们要从 GMM 的分布中随机地取一个点的话，实际上可以分为两步：首先随机地在这 K 个 Component 之中选一个，每个 Component 被选中的概率实际上就是它的系数 $\pi_k$ ，选中了 Component 之后，再单独地考虑从这个 Component 的分布中选取一个点就可以了──这里已经回到了普通的 Gaussian 分布，转化为了已知的问题。<sup>[1]</sup><br>给定一批数据, 我们想用GMM来对这批数据进行聚类. 具体如何做呢? 很简单, 我们只要通过这批数据来得到GMM的概率密度函数即可. 本质上就是通过数据来计算$\pi_k, \mu_k, \sigma_k$等参数.其中, 通过数据来推算概率密度被称作density estimation, 而估算参数被称作parameter estimation.<br>如何估计这些参数? 这就回到我们熟悉的最大似然估计了. 根据概率密度函数, 很容易写出对应的log似然函数:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/gmm2.png" alt=""><br>对于上式, 我们无法像普通的log似然函数那样通过求导来求出最大值. 具体地, 我们通过如下步骤来解决这个问题.</p>
 <ol>
-<li>估计当前模型下第i个观测数据来自第k个分模型的概率, 称为分模型k对观测数据$y_i$的响应度.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/gmm3.png" alt=""><br>此时, 假设$\mu_k, \sigma_k$均已知(随机初始值).</li>
-<li>利用第一步的$\gamma_i$估计每个组分的参数$\mu_k, \sigma_k$. 直观理解, 可以将看作$x_i$这个值其中有$\gamma(i, k)x_i$这部分是由 组分$k$所生成的, 即组份$k$在生成数据$x_i$时所做的贡献.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/gmm4.png?imageMogr/v2/thumbnail/!45p" alt=""></li>
+<li>估计当前模型下第i个观测数据来自第k个分模型的概率, 称为分模型k对观测数据$y_i$的响应度.<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/gmm3.png" alt=""><br>此时, 假设$\mu_k, \sigma_k$均已知(随机初始值).</li>
+<li>利用第一步的$\gamma_i$估计每个组分的参数$\mu_k, \sigma_k$. 直观理解, 可以将看作$x_i$这个值其中有$\gamma(i, k)x_i$这部分是由 组分$k$所生成的, 即组份$k$在生成数据$x_i$时所做的贡献.<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/gmm4.png?imageMogr/v2/thumbnail/!45p" alt=""></li>
 <li>不断迭代上面两步, 知道收敛为止.<br>上面这三步其实就是GMM的核心了, 至此我们应该可以轻松的实现GMM的代码了. 不过先不着急, 上面的步骤只是直观地展示了GMM求解的步骤, 那么这些步骤是怎么来的呢? 有没有严格的数学证明? 下面我们就来看看什么是EM算法.</li>
 </ol>
-<h1 id="二-EM算法"><a href="#二-EM算法" class="headerlink" title="二. EM算法"></a>二. EM算法</h1><p>假定有训练集<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1421.png?imageMogr/v2/thumbnail/!45p" alt=""><br>包含m个独立样本，希望从中找到该组数据的模型p(x,z)的参数.<br>常规操作, 对数似然函数为:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1422.png?imageMogr/v2/thumbnail/!45p" alt=""><br>z是隐随机变量，不方便直接找到参数估计。 策略:计算l(θ)下界，求该下界的最大值; 重复该过程，直到收敛到局部最大值。<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1423.png?imageMogr/v2/thumbnail/!45p" alt=""><br>令$Q_i$是$z$的某一个分布，$Q_i\gt 0$, 有:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1425.png?imageMogr/v2/thumbnail/!45p" alt=""><br>其中最后一步利用了Jensen不等式. 当且仅当$\log(\frac{P}{Q})=c(\text{常数})$时, 等号成立, 即:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1426.png?imageMogr/v2/thumbnail/!45p" alt=""><br>$$P(x^{(i)}, z^{(i)}; \theta)=cQ_i(z^{(i)}) \<br>\<br>\sum_z P(x^{(i)}, z^{(i)}; \theta)=\sum_zcQ_i(z^{(i)}) \<br>\<br>\sum_z P(x^{(i)}, z^{(i)}; \theta)=c \<br>\<br>\frac{P(x^{(i)}, z^{(i)}; \theta)}{Q_i(z^{(i)})}=\sum_z P(x^{(i)}, z^{(i)}; \theta) \<br>\<br>Q_i(z^{(i)})=\frac{P(x^{(i)}, z^{(i)}; \theta)}{\sum_z P(x^{(i)}, z^{(i)}; \theta)}=P(z^{(i)}|x^{(i)};\theta)$$<br>这样我们就推出了$Q_i(z^{(i)})$, 解决了$Q_i(z^{(i)})$如何选择的问题, 这就是E步, 有了$Q_i(z^{(i)})$, 就有了$l$的下界. 在M步中, 我们极大化这个下界. 一般的EM算法的步骤如下：<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1427.png?imageMogr/v2/thumbnail/!45p" alt=""><br>这里值得注意的是, 当我们把似然函数看成是关于$Q$和$\theta$的函数时, 其实我们上面的迭代步骤就是关于$Q$和$\theta$的坐标上升.<br>接下来, 我们来利用EM算法推导GMM.</p>
-<h1 id="三-利用EM算法推导GMM"><a href="#三-利用EM算法推导GMM" class="headerlink" title="三. 利用EM算法推导GMM"></a>三. 利用EM算法推导GMM</h1><p>随机变量$X$是有$K$个高斯分布混合而成，取各个高斯分布的概率为$\phi_1, \phi_2… \phi_K$，第$i$个高斯分布的均值为$\mu_i$，方差为$\Sigma_i$。若观测到随机变量$X$的一系列样本$x_1,x_2,…,x_n$试估计参数 $\phi, \mu, \Sigma$。<br>E-step:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1428.png?imageMogr/v2/thumbnail/!45p" alt=""><br>M-step:<br>将多项分布和高斯分布的参数带入:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1429.png?imageMogr/v2/thumbnail/!45p" alt=""><br>对$\mu_l$求偏导:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1430.png?imageMogr/v2/thumbnail/!45p" alt=""><br>令上式=0:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1431.png?imageMogr/v2/thumbnail/!45p" alt=""><br>同理对$\Sigma_j$求偏导并令结果为0可得:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1432.png?imageMogr/v2/thumbnail/!45p" alt=""><br>上面就解决了高斯分布中的参数. 下面看多项分布中的参数.<br>考察M-step的目标函数，对于$\phi$，删除常数项:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1433.png?imageMogr/v2/thumbnail/!45p" alt=""><br>得到:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1434.png?imageMogr/v2/thumbnail/!45p" alt=""><br>由于多项分布的概率和为1，建立拉格朗日方程<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1435.png?imageMogr/v2/thumbnail/!45p" alt=""><br>对$\phi求偏导$:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1437.png?imageMogr/v2/thumbnail/!45p" alt=""><br>令上式等于0:<br>$$\sum_{i=1}^mw_j^{(i)}+\beta\phi_j=0$$<br>$$\sum_{j=1}^k\sum_{i=1}^mw_j^{(i)}+\sum_{j=1}^k\beta\phi_j=0$$<br>$$\sum_{i=1}^m\sum_{j=1}^kw_j^{(i)}+\beta\sum_{j=1}^k\phi_j=0$$<br>$$m+\beta\sum_{j=1}^k\phi_j=0$$<br>$$\beta=-m$$<br>带回式中可得:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1438.png?imageMogr/v2/thumbnail/!45p" alt=""><br>这样, 我们通过EM算法一步步推导得到了第一节中的结论.<br>到这里, 我们就掌握了GMM和EM算法. 这里还需注意的是, EM算法是一种通用的算法, 常常用于解决含有因变量的参数估计问题. 它不仅可以用在这里的GMM, 在HMM和LDA(Latent Dirichlet Allocation)中, 我们还会看到EM的身影.<br>最后, 附上Python实现GMM的代码.</p>
+<h1 id="二-EM算法"><a href="#二-EM算法" class="headerlink" title="二. EM算法"></a>二. EM算法</h1><p>假定有训练集<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1421.png?imageMogr/v2/thumbnail/!45p" alt=""><br>包含m个独立样本，希望从中找到该组数据的模型p(x,z)的参数.<br>常规操作, 对数似然函数为:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1422.png?imageMogr/v2/thumbnail/!45p" alt=""><br>z是隐随机变量，不方便直接找到参数估计。 策略:计算l(θ)下界，求该下界的最大值; 重复该过程，直到收敛到局部最大值。<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1423.png?imageMogr/v2/thumbnail/!45p" alt=""><br>令$Q_i$是$z$的某一个分布，$Q_i\gt 0$, 有:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1425.png?imageMogr/v2/thumbnail/!45p" alt=""><br>其中最后一步利用了Jensen不等式. 当且仅当$\log(\frac{P}{Q})=c(\text{常数})$时, 等号成立, 即:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1426.png?imageMogr/v2/thumbnail/!45p" alt=""><br>$$P(x^{(i)}, z^{(i)}; \theta)=cQ_i(z^{(i)}) \<br>\<br>\sum_z P(x^{(i)}, z^{(i)}; \theta)=\sum_zcQ_i(z^{(i)}) \<br>\<br>\sum_z P(x^{(i)}, z^{(i)}; \theta)=c \<br>\<br>\frac{P(x^{(i)}, z^{(i)}; \theta)}{Q_i(z^{(i)})}=\sum_z P(x^{(i)}, z^{(i)}; \theta) \<br>\<br>Q_i(z^{(i)})=\frac{P(x^{(i)}, z^{(i)}; \theta)}{\sum_z P(x^{(i)}, z^{(i)}; \theta)}=P(z^{(i)}|x^{(i)};\theta)$$<br>这样我们就推出了$Q_i(z^{(i)})$, 解决了$Q_i(z^{(i)})$如何选择的问题, 这就是E步, 有了$Q_i(z^{(i)})$, 就有了$l$的下界. 在M步中, 我们极大化这个下界. 一般的EM算法的步骤如下：<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1427.png?imageMogr/v2/thumbnail/!45p" alt=""><br>这里值得注意的是, 当我们把似然函数看成是关于$Q$和$\theta$的函数时, 其实我们上面的迭代步骤就是关于$Q$和$\theta$的坐标上升.<br>接下来, 我们来利用EM算法推导GMM.</p>
+<h1 id="三-利用EM算法推导GMM"><a href="#三-利用EM算法推导GMM" class="headerlink" title="三. 利用EM算法推导GMM"></a>三. 利用EM算法推导GMM</h1><p>随机变量$X$是有$K$个高斯分布混合而成，取各个高斯分布的概率为$\phi_1, \phi_2… \phi_K$，第$i$个高斯分布的均值为$\mu_i$，方差为$\Sigma_i$。若观测到随机变量$X$的一系列样本$x_1,x_2,…,x_n$试估计参数 $\phi, \mu, \Sigma$。<br>E-step:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1428.png?imageMogr/v2/thumbnail/!45p" alt=""><br>M-step:<br>将多项分布和高斯分布的参数带入:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1429.png?imageMogr/v2/thumbnail/!45p" alt=""><br>对$\mu_l$求偏导:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1430.png?imageMogr/v2/thumbnail/!45p" alt=""><br>令上式=0:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1431.png?imageMogr/v2/thumbnail/!45p" alt=""><br>同理对$\Sigma_j$求偏导并令结果为0可得:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1432.png?imageMogr/v2/thumbnail/!45p" alt=""><br>上面就解决了高斯分布中的参数. 下面看多项分布中的参数.<br>考察M-step的目标函数，对于$\phi$，删除常数项:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1433.png?imageMogr/v2/thumbnail/!45p" alt=""><br>得到:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1434.png?imageMogr/v2/thumbnail/!45p" alt=""><br>由于多项分布的概率和为1，建立拉格朗日方程<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1435.png?imageMogr/v2/thumbnail/!45p" alt=""><br>对$\phi求偏导$:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1437.png?imageMogr/v2/thumbnail/!45p" alt=""><br>令上式等于0:<br>$$\sum_{i=1}^mw_j^{(i)}+\beta\phi_j=0$$<br>$$\sum_{j=1}^k\sum_{i=1}^mw_j^{(i)}+\sum_{j=1}^k\beta\phi_j=0$$<br>$$\sum_{i=1}^m\sum_{j=1}^kw_j^{(i)}+\beta\sum_{j=1}^k\phi_j=0$$<br>$$m+\beta\sum_{j=1}^k\phi_j=0$$<br>$$\beta=-m$$<br>带回式中可得:<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/screenshot_1438.png?imageMogr/v2/thumbnail/!45p" alt=""><br>这样, 我们通过EM算法一步步推导得到了第一节中的结论.<br>到这里, 我们就掌握了GMM和EM算法. 这里还需注意的是, EM算法是一种通用的算法, 常常用于解决含有因变量的参数估计问题. 它不仅可以用在这里的GMM, 在HMM和LDA(Latent Dirichlet Allocation)中, 我们还会看到EM的身影.<br>最后, 附上Python实现GMM的代码.</p>
 <h1 id="四-Python实现GMM"><a href="#四-Python实现GMM" class="headerlink" title="四. Python实现GMM"></a>四. Python实现GMM</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> scipy.stats <span class="keyword">import</span> multivariate_normal</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.utils <span class="keyword">import</span> shuffle</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GMM</span><span class="params">()</span>:</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, n_components=<span class="number">2</span>, max_iter=<span class="number">100</span>)</span>:</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">        self.n_comp = <span class="number">2</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">        self.max_iter = max_iter</span></pre></td></tr><tr><td class="code"><pre><span class="line">        self.weights_ = []</span></pre></td></tr><tr><td class="code"><pre><span class="line">        self.means_ = []</span></pre></td></tr><tr><td class="code"><pre><span class="line">        self.covariances_ = []</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(self, X)</span>:</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">        m, n = X.shape</span></pre></td></tr><tr><td class="code"><pre><span class="line">        means = [np.random.standard_normal(n) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.n_comp)]</span></pre></td></tr><tr><td class="code"><pre><span class="line">        sigmas = [np.identity(n) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.n_comp)]</span></pre></td></tr><tr><td class="code"><pre><span class="line">        pis = [<span class="number">1</span>/self.n_comp <span class="keyword">for</span> i <span class="keyword">in</span> range(self.n_comp)]</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="comment"># EM</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.max_iter):</span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="comment"># E Step</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">            predict_gausses = [multivariate_normal(mean, sigma) <span class="keyword">for</span> mean, sigma <span class="keyword">in</span> zip(means, sigmas)]</span></pre></td></tr><tr><td class="code"><pre><span class="line">            gauss_sum = <span class="number">0</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="keyword">for</span> pi, predict_gauss <span class="keyword">in</span> zip(pis, predict_gausses):</span></pre></td></tr><tr><td class="code"><pre><span class="line">                gauss_sum += pi * predict_gauss.pdf(X)</span></pre></td></tr><tr><td class="code"><pre><span class="line">            gammas = [pi * predict_gauss.pdf(X) / gauss_sum <span class="keyword">for</span> pi, predict_gauss <span class="keyword">in</span> zip(pis, predict_gausses)]</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">            <span class="comment"># M Step</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">            means = [np.dot(gamma, X) / np.sum(gamma) <span class="keyword">for</span> gamma <span class="keyword">in</span> gammas]</span></pre></td></tr><tr><td class="code"><pre><span class="line">            sigmas = [np.dot(gamma * (X - mean).T, X - mean) / np.sum(gamma) <span class="keyword">for</span> gamma, mean <span class="keyword">in</span> zip(gammas, means)]</span></pre></td></tr><tr><td class="code"><pre><span class="line">            pis = [np.sum(gamma) / m <span class="keyword">for</span> gamma <span class="keyword">in</span> gammas]</span></pre></td></tr><tr><td class="code"><pre><span class="line">        self.weights_ = pis</span></pre></td></tr><tr><td class="code"><pre><span class="line">        self.covariances_ = sigmas</span></pre></td></tr><tr><td class="code"><pre><span class="line">        self.means_ = means</span></pre></td></tr><tr><td class="code"><pre><span class="line">        <span class="keyword">return</span> self</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span></pre></td></tr><tr><td class="code"><pre><span class="line">    mean1, sigma1 = [<span class="number">0</span>, <span class="number">0</span>], [[<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>]]</span></pre></td></tr><tr><td class="code"><pre><span class="line">    mean2, sigma2 = [<span class="number">2</span>, <span class="number">4</span>], [[<span class="number">3</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>]]</span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment"># mean1, sigma1 = [0, 0, 0], [[1, 0, 0], [0, 1, 0], [0, 0, 1]]</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    <span class="comment"># mean2, sigma2 = [2, 4, 1], [[3, 0, 0], [0, 1, 0], [0, 0, 2]]</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">    np.random.seed(<span class="number">8827</span>)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    X1 = np.random.multivariate_normal(mean1, sigma1, <span class="number">500</span>)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    X2 = np.random.multivariate_normal(mean2, sigma2, <span class="number">300</span>)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    y = np.array([<span class="number">1</span>]*<span class="number">500</span> + [<span class="number">0</span>]*<span class="number">300</span>)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    X = np.vstack([X1, X2])</span></pre></td></tr><tr><td class="code"><pre><span class="line">    X, y = shuffle(X, y)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    gmm = GMM(n_components=<span class="number">2</span>).fit(X)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    weight1, weight2 = gmm.weights_</span></pre></td></tr><tr><td class="code"><pre><span class="line">    predict_mean1, predict_mean2 = gmm.means_</span></pre></td></tr><tr><td class="code"><pre><span class="line">    predict_sigma1, predict_sigma2 = gmm.covariances_</span></pre></td></tr><tr><td class="code"><pre><span class="line">    predict_gauss1 = multivariate_normal(predict_mean1, predict_sigma1)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    predict_gauss2 = multivariate_normal(predict_mean2, predict_sigma2)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    predict_y1 = predict_gauss1.pdf(X)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    predict_y2 = predict_gauss2.pdf(X)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    predict1 = (predict_y1 &gt; predict_y2).astype(int)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    predict2 = (predict_y1 &lt; predict_y2).astype(int)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    acc1, acc2 = np.mean(predict1 == y), np.mean(predict2 == y)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    print(<span class="string">'accuracy: &#123;&#125;'</span>.format(acc1 <span class="keyword">if</span> acc1 &gt; acc2 <span class="keyword">else</span> acc2))</span></pre></td></tr><tr><td class="code"><pre><span class="line">    fig = plt.figure(figsize=(<span class="number">12</span>, <span class="number">6</span>))</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ax = fig.add_subplot(<span class="number">121</span>)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ax.set_title(<span class="string">'True'</span>)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ax.scatter(X[y==<span class="number">1</span>, <span class="number">0</span>], X[y==<span class="number">1</span>, <span class="number">1</span>], c=<span class="string">'r'</span>, s=<span class="number">10</span>)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ax.scatter(X[y==<span class="number">0</span>, <span class="number">0</span>], X[y==<span class="number">0</span>, <span class="number">1</span>], c=<span class="string">'b'</span>, s=<span class="number">10</span>)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ax = fig.add_subplot(<span class="number">122</span>)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ax.set_title(<span class="string">'Predict'</span>)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ax.scatter(X[predict1==<span class="number">1</span>, <span class="number">0</span>], X[predict1==<span class="number">1</span>, <span class="number">1</span>], c=<span class="string">'r'</span>, s=<span class="number">10</span>)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    ax.scatter(X[predict1==<span class="number">0</span>, <span class="number">0</span>], X[predict1==<span class="number">0</span>, <span class="number">1</span>], c=<span class="string">'b'</span>, s=<span class="number">10</span>)</span></pre></td></tr><tr><td class="code"><pre><span class="line">    plt.show()</span></pre></td></tr></table></figure>
-<p>Output:<br>accuracy: 0.9825<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/gmm_output.png?imageMogr/v2/thumbnail/!45p" alt=""></p>
+<p>Output:<br>accuracy: 0.9825<br><img src="http://7xrrje.com1.z0.glb.clouddn.com/gmm_output.png?imageMogr/v2/thumbnail/!45p" alt=""></p>
 <p>参考文献:</p>
 <ol>
 <li><a href="http://blog.pluskid.org/?p=39" target="_blank" rel="noopener">漫谈 Clustering (3): Gaussian Mixture Model - pluskid</a></li>
@@ -58,7 +58,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
-<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1327.png" alt=""><br>这是Andrew Ng在Coursera上的深度学习专项课程中第二门课Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization第一周Practical aspects of Deep Learning 的学习笔记.<br>注: 本课程适合有一定基本概念的同学使用, 如果没有任何基础, 可以先学习Andrew Ng在Coursera上的机器学习课程. 课程见这里: <a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">Coursera Machine Learning</a>, 这门课程我也做了<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes.html" target="_blank" rel="noopener">笔记</a>, 可供参考.</p>
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1327.png" alt=""><br>这是Andrew Ng在Coursera上的深度学习专项课程中第二门课Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization第一周Practical aspects of Deep Learning 的学习笔记.<br>注: 本课程适合有一定基本概念的同学使用, 如果没有任何基础, 可以先学习Andrew Ng在Coursera上的机器学习课程. 课程见这里: <a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">Coursera Machine Learning</a>, 这门课程我也做了<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes.html">笔记</a>, 可供参考.</p>
 <a id="more"></a>
 <hr>
 ]]></content>
@@ -82,7 +82,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
-<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1326.png" alt=""><br>这是Andrew Ng在Coursera上的深度学习专项课程中第二门课Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization第一周Practical aspects of Deep Learning 的学习笔记.<br>注: 本课程适合有一定基本概念的同学使用, 如果没有任何基础, 可以先学习Andrew Ng在Coursera上的机器学习课程. 课程见这里: <a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">Coursera Machine Learning</a>, 这门课程我也做了<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes.html" target="_blank" rel="noopener">笔记</a>, 可供参考.</p>
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1326.png" alt=""><br>这是Andrew Ng在Coursera上的深度学习专项课程中第二门课Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization第一周Practical aspects of Deep Learning 的学习笔记.<br>注: 本课程适合有一定基本概念的同学使用, 如果没有任何基础, 可以先学习Andrew Ng在Coursera上的机器学习课程. 课程见这里: <a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">Coursera Machine Learning</a>, 这门课程我也做了<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes.html">笔记</a>, 可供参考.</p>
 <a id="more"></a>
 <hr>
 ]]></content>
@@ -106,7 +106,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
-<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1325.png" alt=""><br>在深度学习专项课程的第一门课Neural Networks and Deep Learning中, 我们主要学习了深度神经网络中的前向反向传播, 并成功地使用Python+Numpy实现了任意结构的二分类深度神经网络. 而从这次开始我们要学习专项课程中第二门课Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization. 这次的笔记为第一周Practical aspects of Deep Learning, 主要内容包括: 数据集分割, 偏差与方差, 正则化, Normalization,  梯度检查等. 在学完本周的内容后, 我们会使用Python实现不同的权重初始化, L2正则, Dropout正则以及梯度下降.<br>注: 本课程适合有一定基本概念的同学使用, 如果没有任何基础, 可以先学习Andrew Ng在Coursera上的机器学习课程. 课程见这里: <a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">Coursera Machine Learning</a>, 这门课程我也做了<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes.html" target="_blank" rel="noopener">笔记</a>, 可供参考.</p>
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1325.png" alt=""><br>在深度学习专项课程的第一门课Neural Networks and Deep Learning中, 我们主要学习了深度神经网络中的前向反向传播, 并成功地使用Python+Numpy实现了任意结构的二分类深度神经网络. 而从这次开始我们要学习专项课程中第二门课Improving Deep Neural Networks: Hyperparameter tuning, Regularization and Optimization. 这次的笔记为第一周Practical aspects of Deep Learning, 主要内容包括: 数据集分割, 偏差与方差, 正则化, Normalization,  梯度检查等. 在学完本周的内容后, 我们会使用Python实现不同的权重初始化, L2正则, Dropout正则以及梯度下降.<br>注: 本课程适合有一定基本概念的同学使用, 如果没有任何基础, 可以先学习Andrew Ng在Coursera上的机器学习课程. 课程见这里: <a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">Coursera Machine Learning</a>, 这门课程我也做了<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes.html">笔记</a>, 可供参考.</p>
 <a id="more"></a>
 <hr>
 <h1 id="一-训练集-验证集与测试集"><a href="#一-训练集-验证集与测试集" class="headerlink" title="一. 训练集, 验证集与测试集"></a>一. 训练集, 验证集与测试集</h1><h2 id="数据集划分"><a href="#数据集划分" class="headerlink" title="数据集划分"></a>数据集划分</h2><p>在训练完一个模型时, 我们需要知道这个模型预测的效果. 此时就需要一个额外的数据集, 我们称为dev/hold out/validation set, 这里我们就统一称之为验证集. 如果我们需要知道模型最终效果的无偏估计, 那么我们还需要一个测试集. 在以往传统的机器学习中, 我们通常按照70/30来数据集分为训练集和验证集, 或者按照60/20/20的比例分为训练集, 验证集和测试集. 但在今天机器学习问题中, 我们可用的数据集的量级非常大(例如有100w个样本). 这时我们就不需要给验证集和测试集太大的比例, 例如98/1/1.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1329.png?imageMogr/v2/thumbnail/!35p" alt=""></p>
@@ -147,12 +147,12 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
-<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1305.png" alt=""><br>这是Andrew Ng在Coursera上的深度学习专项课程中第一门课Neural Networks and Deep Learning第四周Deep Neural Networks的学习笔记. 本周的大部分内容在上一周的笔记中都已经覆盖了, 所以本周的笔记会非常简略. 本周重点任务是使用Python要实现一个任意层的神经网络, 并在cat数据上测试.<br>注: 本课程适合有一定基本概念的同学使用, 如果没有任何基础, 可以先学习Andrew Ng在Coursera上的机器学习课程. 课程见这里: <a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">Coursera Machine Learning</a>, 这门课程我也做了<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes.html" target="_blank" rel="noopener">笔记</a>, 可供参考.</p>
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1305.png" alt=""><br>这是Andrew Ng在Coursera上的深度学习专项课程中第一门课Neural Networks and Deep Learning第四周Deep Neural Networks的学习笔记. 本周的大部分内容在上一周的笔记中都已经覆盖了, 所以本周的笔记会非常简略. 本周重点任务是使用Python要实现一个任意层的神经网络, 并在cat数据上测试.<br>注: 本课程适合有一定基本概念的同学使用, 如果没有任何基础, 可以先学习Andrew Ng在Coursera上的机器学习课程. 课程见这里: <a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">Coursera Machine Learning</a>, 这门课程我也做了<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes.html">笔记</a>, 可供参考.</p>
 <a id="more"></a>
 <hr>
 <h1 id="一-深度神经网络中的常用符号回顾"><a href="#一-深度神经网络中的常用符号回顾" class="headerlink" title="一. 深度神经网络中的常用符号回顾"></a>一. 深度神经网络中的常用符号回顾</h1><p>在上一周的内容中, 我们已经介绍了神经网络中的常用符号以及各种变量的维度. 这里就不再赘述, 不清楚的可以回顾上周的笔记或视频内容.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1306.png?imageMogr/v2/thumbnail/!20p" alt=""><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1308.png?imageMogr/v2/thumbnail/!20p" alt=""><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1309.png?imageMogr/v2/thumbnail/!35p" alt=""><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1310.png?imageMogr/v2/thumbnail/!35p" alt=""></p>
 <h1 id="二-Intuition-about-deep-representation"><a href="#二-Intuition-about-deep-representation" class="headerlink" title="二. Intuition about deep representation"></a>二. Intuition about deep representation</h1><p>关于深度神经网络直观地解释这部分笔记暂略, 请直接观看课程视频内容:<a href="https://www.coursera.org/learn/neural-networks-deep-learning/lecture/rz9xJ/why-deep-representations" target="_blank" rel="noopener">Why deep representation?</a>.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1311.png?imageMogr/v2/thumbnail/!35p" alt=""><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1312.png?imageMogr/v2/thumbnail/!35p" alt=""></p>
-<h1 id="三-深度神经网络中的前向-反向传播"><a href="#三-深度神经网络中的前向-反向传播" class="headerlink" title="三. 深度神经网络中的前向/反向传播"></a>三. 深度神经网络中的前向/反向传播</h1><p>在第三周的笔记中详细介绍了神经网络的前向/方向传播, 这里完全套用, 只是多了层数而已. 还不能手推的同学可以仔细研究上周的笔记内容(<a href="http://daniellaah.github.io/2017/deeplearning-ai-Neural-Networks-and-Deep-Learning-week3.html" target="_blank" rel="noopener">戳我</a>).</p>
+<h1 id="三-深度神经网络中的前向-反向传播"><a href="#三-深度神经网络中的前向-反向传播" class="headerlink" title="三. 深度神经网络中的前向/反向传播"></a>三. 深度神经网络中的前向/反向传播</h1><p>在第三周的笔记中详细介绍了神经网络的前向/方向传播, 这里完全套用, 只是多了层数而已. 还不能手推的同学可以仔细研究上周的笔记内容(<a href="http://daniellaah.github.io/2017/deeplearning-ai-Neural-Networks-and-Deep-Learning-week3.html">戳我</a>).</p>
 <h1 id="四-参数与超参数"><a href="#四-参数与超参数" class="headerlink" title="四. 参数与超参数"></a>四. 参数与超参数</h1><p>在神经网络中参数指的是$W, b$, 这两个参数是通过梯度下降算法不断优化的. 而超参数指的是学习率, 迭代次数, 决定神经网络结构的参数以及激活函数的选择等等, 在后面我们还会提到momentum, minibatch size, regularization等等. 这些都属于超参数, 需要我们手动设定.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1320.png?imageMogr/v2/thumbnail/!35p" alt=""><br>这些超参数也决定了最终的参数$W, b$. 不同的超参数的选择会导致模型很大的差别, 所以超参数的选择也非常重要(后面的课程会讲解如何选择超参数).<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1321.png?imageMogr/v2/thumbnail/!35p" alt=""></p>
 <h1 id="五-使用Python实现深度神经网络"><a href="#五-使用Python实现深度神经网络" class="headerlink" title="五. 使用Python实现深度神经网络"></a>五. 使用Python实现深度神经网络</h1><p>完成本周内容以及课后作业后, 我们应该可以使用Python+Numpy实现一个任意结构的二分类神经网络. 以下为参考代码, 也可从这里<a href="https://github.com/daniellaah/deeplearning.ai-notes-code/tree/master/Neural%20Networks%20and%20Deep%20Learning/week4" target="_blank" rel="noopener">Github</a>下载.  </p>
 <p>DeepNeuralNetwork.py</p>
@@ -188,7 +188,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
-<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1286.png" alt=""><br>这是Andrew Ng在Coursera上的深度学习专项课程中第一课Neural Networks and Deep Learning第三周Shallow Neural Networks的学习笔记. 上周我们说了Logistic Regression是神经网络的基础, 在学习了上周的内容之后, 我们要正式地进入神经网络的学习. 当然, 我们先从简单的只有一个隐藏层的神经网络开始. 在学习完本周内容之后, 我们将会使用Python实现一个单个隐藏层的神经网络, 并在Planar data上测试.<br>注: 本课程适合有一定基本概念的同学使用, 如果没有任何基础, 可以先学习Andrew Ng在Coursera上的机器学习课程. 课程见这里: <a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">Coursera Machine Learning</a>, 这门课程我也做了<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes.html" target="_blank" rel="noopener">笔记</a>, 可供参考.</p>
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1286.png" alt=""><br>这是Andrew Ng在Coursera上的深度学习专项课程中第一课Neural Networks and Deep Learning第三周Shallow Neural Networks的学习笔记. 上周我们说了Logistic Regression是神经网络的基础, 在学习了上周的内容之后, 我们要正式地进入神经网络的学习. 当然, 我们先从简单的只有一个隐藏层的神经网络开始. 在学习完本周内容之后, 我们将会使用Python实现一个单个隐藏层的神经网络, 并在Planar data上测试.<br>注: 本课程适合有一定基本概念的同学使用, 如果没有任何基础, 可以先学习Andrew Ng在Coursera上的机器学习课程. 课程见这里: <a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">Coursera Machine Learning</a>, 这门课程我也做了<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes.html">笔记</a>, 可供参考.</p>
 <a id="more"></a>
 <hr>
 <h1 id="一-常用符号与基本概念"><a href="#一-常用符号与基本概念" class="headerlink" title="一. 常用符号与基本概念"></a>一. 常用符号与基本概念</h1><p>如下图第三行所示是一个简单的神经网络结构. 在神经网络中我们使用中括号的上角标来表示第几层, 例如$a^{[1]}$表示第一层的激活单元; 使用圆括号的上角标来表示第几个训练样本, 例如$x^{(1)}$表示第一个训练样本.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1287.png?imageMogr/v2/thumbnail/!35p" alt=""><br>该神经网络完全可以使用上一周所讲的计算图来表示, 和LR计算图的区别仅仅在于多了一个$z$和$a$的计算而已. 如果你已经完全掌握了上一周的内容, 那么其实你已经知道了神经网络的前向传播, 反向传播(梯度计算)等等. 要注意的是各种参数, 中间变量($a, z$)的维度问题. 关于神经网络的基本概念, 这里就不赘述了. 见下图回顾一下:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1288.png?imageMogr/v2/thumbnail/!35p" alt=""></p>
@@ -247,10 +247,10 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 
-<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1266.png" alt=""><br>这是Andrew Ng在Coursera上的深度学习专项课程中第一课Neural Networks and Deep Learning第二周Neural Networks Basics的学习笔记. 本周我们将要学习Logistic Regression, 它是神经网络的基础. Logistic Regression可以看成是一种只有输入层和输出层(没有隐藏层)的神经网络. 在学习完本周的内容后, 我们将使用Python来实现一个这样的模型, 并将其应用在cat和non-cat的图像识别上.<br>注: 本课程适合有一定基本概念的同学使用, 如果没有任何基础, 可以先学习Andrew Ng在Coursera上的机器学习课程. 课程见这里: <a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">Coursera Machine Learning</a>, 这门课程我也做了<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes.html" target="_blank" rel="noopener">笔记</a>, 可供参考.</p>
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1266.png" alt=""><br>这是Andrew Ng在Coursera上的深度学习专项课程中第一课Neural Networks and Deep Learning第二周Neural Networks Basics的学习笔记. 本周我们将要学习Logistic Regression, 它是神经网络的基础. Logistic Regression可以看成是一种只有输入层和输出层(没有隐藏层)的神经网络. 在学习完本周的内容后, 我们将使用Python来实现一个这样的模型, 并将其应用在cat和non-cat的图像识别上.<br>注: 本课程适合有一定基本概念的同学使用, 如果没有任何基础, 可以先学习Andrew Ng在Coursera上的机器学习课程. 课程见这里: <a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">Coursera Machine Learning</a>, 这门课程我也做了<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes.html">笔记</a>, 可供参考.</p>
 <a id="more"></a>
 <hr>
-<h1 id="一-基本概念回顾"><a href="#一-基本概念回顾" class="headerlink" title="一. 基本概念回顾"></a>一. 基本概念回顾</h1><p>这次Andrew出的系列课程在符号上有所改动(和机器学习课程中的行列有所区别, 主要是为了后面代码实现更方便), 如下图所示.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1270.png?imageMogr/v2/thumbnail/!35p" alt=""><br>更多关于本系列课程的符号<a href="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/deeplearningnotation.pdf" target="_blank" rel="noopener">点这里</a>同样地, 参数也有所变化(bias 单独拿出来作为b, 而不是添加$\theta_0$):<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1265.png?imageMogr/v2/thumbnail/!35p" alt=""><br>下图描述了Logistic Regression, 这在机器学习的课程里已经讲的很清楚了, 可以看我之前做的笔记回忆下<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-3-Logistic-Regression.html" target="_blank" rel="noopener">Logistic Regression</a>. 这里需要明确两个概念. 一个是Loss function, 即损失函数, 它代表了对于<strong>一个样本</strong>估计值与真实值之间的误差; 另一个是Cost function, 它代表了所有样本loss的平均值.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1269.png?imageMogr/v2/thumbnail/!35p" alt=""><br>熟悉的梯度下降:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1272.png?imageMogr/v2/thumbnail/!35p" alt=""><br>如果上面提到的知识点都已经掌握了的话, 那么学这门课就没什么问题啦, 不会的赶紧去补.</p>
+<h1 id="一-基本概念回顾"><a href="#一-基本概念回顾" class="headerlink" title="一. 基本概念回顾"></a>一. 基本概念回顾</h1><p>这次Andrew出的系列课程在符号上有所改动(和机器学习课程中的行列有所区别, 主要是为了后面代码实现更方便), 如下图所示.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1270.png?imageMogr/v2/thumbnail/!35p" alt=""><br>更多关于本系列课程的符号<a href="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/deeplearningnotation.pdf" target="_blank" rel="noopener">点这里</a>同样地, 参数也有所变化(bias 单独拿出来作为b, 而不是添加$\theta_0$):<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1265.png?imageMogr/v2/thumbnail/!35p" alt=""><br>下图描述了Logistic Regression, 这在机器学习的课程里已经讲的很清楚了, 可以看我之前做的笔记回忆下<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-3-Logistic-Regression.html">Logistic Regression</a>. 这里需要明确两个概念. 一个是Loss function, 即损失函数, 它代表了对于<strong>一个样本</strong>估计值与真实值之间的误差; 另一个是Cost function, 它代表了所有样本loss的平均值.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1269.png?imageMogr/v2/thumbnail/!35p" alt=""><br>熟悉的梯度下降:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1272.png?imageMogr/v2/thumbnail/!35p" alt=""><br>如果上面提到的知识点都已经掌握了的话, 那么学这门课就没什么问题啦, 不会的赶紧去补.</p>
 <h1 id="二-计算图与前向反向传播"><a href="#二-计算图与前向反向传播" class="headerlink" title="二. 计算图与前向反向传播"></a>二. 计算图与前向反向传播</h1><p>在神经网络中, forward propagation 用来计算输出, backward propagation 用来计算梯度, 得到梯度后就可以更新对应的参数了. 为了帮助更好地理解前向反向传播, 我们使用图的方式来描述这两个过程. 首先可以看一个简单的例子$J(a, b, c)=3(a+bc)$, 可用下面的图来表示:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1273.png?imageMogr/v2/thumbnail/!35p" alt=""><br>如上图所示通过前向传播, 我们可以得到$J=33$. 反向传播本质上就是通过链式法则不断求出前面各个变量的导数的过程.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1274.png?imageMogr/v2/thumbnail/!35p" alt=""><br>这里说明一下, 在后面代码实现中, 这些导数都可以用$dvar$来表示, 例如$dw1$, $db1$等等.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1275.png?imageMogr/v2/thumbnail/!35p" alt=""><br>有了计算图的概念之后, 我们将其运用到Logistic Regression上.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1276.png?imageMogr/v2/thumbnail/!35p" alt=""><br>上面的式子可以用下面的计算图来表达:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1277.png?imageMogr/v2/thumbnail/!35p" alt=""><br>有了上面的图之后, 我们现在来计算反向传播.<br>首先我们来计算$\frac{dL}{da}$:<br>$$<br>\begin{align}<br>\frac{dL}{da} &amp; = - (\frac{y}{a} - \frac{(1-y)}{(1-a)})<br>\end{align}<br>$$<br>通过链式法则, 计算$\frac{dL}{dz}$:<br>$$<br>\begin{align}<br>\frac{dL}{dz} &amp; = \frac{dL}{da}\frac{da}{dz} \<br>\<br>&amp; = - (\frac{y}{a} - \frac{(1-y)}{(1-a)})\sigma(z)(1-\sigma(z)) \<br>\<br>&amp; = - (\frac{y}{a} - \frac{(1-y)}{(1-a)})a(1-a)) \<br>\<br>&amp; = -y(1-a) + (1-y)a \<br>\<br>&amp; = a - y<br>\end{align}<br>$$<br>最后计算$\frac{dL}{dw1}, \frac{dL}{dw2}, \frac{dL}{db}$:<br>$$\frac{dL}{dw_1} = \frac{dL}{dz}\frac{dz}{dw_1} = (a - y)x_1$$<br>$$\frac{dL}{dw_2} = \frac{dL}{dz}\frac{dz}{dw_2} = (a - y)x_2$$<br>$$\frac{dL}{db} = \frac{dL}{dz}\frac{dz}{db} = a - y$$<br>怎么样? 是不是很简单呢? 这里我们所有的计算都是针对一个训练样本的. 当然我们不可能只有一个样本, 那么对于整个训练集, 我们应该怎么做呢? 其实很简单, 我们只需要将$J(w, b)$拆开来写就很清晰.<br>$$J(w, b) = \frac{1}{m}(L(a^{(1)}, y^{(1)}) + L(a^{(2)}, y^{(2)}) + … + L(a^{(m)}, y^{m)}))$$<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1279.png?imageMogr/v2/thumbnail/!35p" alt=""><br>对于每一个样本都有一个对应的$dz^{(i)}$, 而对于$dw, db$来说是对于所有求平均.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1280.png?imageMogr/v2/thumbnail/!35p" alt=""></p>
 <h1 id="三-向量化"><a href="#三-向量化" class="headerlink" title="三. 向量化"></a>三. 向量化</h1><p>如果用上一节的伪代码来实现梯度计算的话, 效率会非常低. 向量化就是用来解决计算效率问题. 在Andrew机器学习的课程中, 其实已经提到了这个技术, 当时的作业好像并没有强制要求使用向量化. 这次的深度学习系列课程作业, 一律要求使用向量化来实现代码. 配合强大的Numpy, 向量化其实很简单. 来看一个例子:</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">a = np.random.rand(<span class="number">1000000</span>)</span></pre></td></tr><tr><td class="code"><pre><span class="line">b = np.random.rand(<span class="number">1000000</span>)</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">tic = time.time()</span></pre></td></tr><tr><td class="code"><pre><span class="line">c = np.dot(a, b)</span></pre></td></tr><tr><td class="code"><pre><span class="line">toc = time.time()</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">print(c)</span></pre></td></tr><tr><td class="code"><pre><span class="line">print(<span class="string">'Vectorized version:&#123;&#125;ms'</span>.format(<span class="number">1000</span>*(toc-tic)))</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">c = <span class="number">0</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">tic = time.time()</span></pre></td></tr><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1000000</span>):</span></pre></td></tr><tr><td class="code"><pre><span class="line">    c += a[i] * b[i]</span></pre></td></tr><tr><td class="code"><pre><span class="line">toc = time.time()</span></pre></td></tr><tr><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="code"><pre><span class="line">print(c)</span></pre></td></tr><tr><td class="code"><pre><span class="line">print(<span class="string">'For loop:&#123;&#125;ms'</span>.format(<span class="number">1000</span>*(toc-tic)))</span></pre></td></tr></table></figure>
@@ -317,10 +317,10 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <h2 id="课程相关链接"><a href="#课程相关链接" class="headerlink" title="课程相关链接:"></a>课程相关链接:</h2><ul>
 <li><a href="https://www.deeplearning.ai/" target="_blank" rel="noopener">deeplearning.ai</a></li>
 <li><a href="https://www.coursera.org/specializations/deep-learning" target="_blank" rel="noopener">Deep Learning Specialization</a><h2 id="Neural-Networks-and-Deep-Learning"><a href="#Neural-Networks-and-Deep-Learning" class="headerlink" title="Neural Networks and Deep Learning"></a>Neural Networks and Deep Learning</h2></li>
-<li><a href="http://daniellaah.github.io/2017/deeplearning-ai-Neural-Networks-and-Deep-Learning-week1.html" target="_blank" rel="noopener">Week 1: Introduction to deep learning</a></li>
-<li><a href="http://daniellaah.github.io/2017/deeplearning-ai-Neural-Networks-and-Deep-Learning-week2.html" target="_blank" rel="noopener">Week 2: Neural Networks Basics</a></li>
-<li><a href="http://daniellaah.github.io/2017/deeplearning-ai-Neural-Networks-and-Deep-Learning-week3.html" target="_blank" rel="noopener">Week 3: Shallow neural networks</a></li>
-<li><a href="http://daniellaah.github.io/2017/deeplearning-ai-Neural-Networks-and-Deep-Learning-week4.html" target="_blank" rel="noopener">Week 4: Deep Neural Networks</a></li>
+<li><a href="http://daniellaah.github.io/2017/deeplearning-ai-Neural-Networks-and-Deep-Learning-week1.html">Week 1: Introduction to deep learning</a></li>
+<li><a href="http://daniellaah.github.io/2017/deeplearning-ai-Neural-Networks-and-Deep-Learning-week2.html">Week 2: Neural Networks Basics</a></li>
+<li><a href="http://daniellaah.github.io/2017/deeplearning-ai-Neural-Networks-and-Deep-Learning-week3.html">Week 3: Shallow neural networks</a></li>
+<li><a href="http://daniellaah.github.io/2017/deeplearning-ai-Neural-Networks-and-Deep-Learning-week4.html">Week 4: Deep Neural Networks</a></li>
 </ul>
 ]]></content>
       <tags>
@@ -384,7 +384,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>CS229机器学习笔记(十) - Learning Theory</title>
-    <url>/2017/02/18/CS229-Machine-Learning-Notes-Lecture-9/</url>
+    <url>/2017/02/18/CS229-ML-Notes-Lecture-9/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -405,7 +405,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>CS229机器学习笔记(九)-SVM之SMO算法</title>
-    <url>/2016/11/29/CS229-Machine-Learning-Notes-Lecture-8-2/</url>
+    <url>/2016/11/29/CS229-ML-Notes-Lecture-8-2/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -427,7 +427,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 </li>
 </ol>
 <hr>
-<p>接上篇: <a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-8-1.html" target="_blank" rel="noopener">CS229机器学习笔记(七)-SVM之软间隔</a></p>
+<p>接上篇: <a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-8-1.html">CS229机器学习笔记(七)-SVM之软间隔</a></p>
 <p>在将SMO之前, 我们先来看看什么是坐标上升法(coordinate ascent).</p>
 <h1 id="坐标上升"><a href="#坐标上升" class="headerlink" title="坐标上升"></a>坐标上升</h1><p>假设我们有如下的优化问题:<br>$$\mathop{max}_\alpha W(\alpha_1, \alpha_2, … , \alpha_m).$$<br>先撇开SVM不谈, 这里的$W$是$\alpha_i$的一个函数. 我们前面已经看过了两种优化算法, 一种是梯度下降(gradient descent), 另一种是牛顿方法(Newton’s method). 现在我们所要说的是第三种优化算法, 坐标上升法(coordinate ascent):<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_765.png" alt=""><br>上面是该算法的过程, 在内循环中, 每次固定除了第i个$\alpha$, 即,将$W$看成只关于第$i$个$\alpha$的函数. 然后对第$i$个$\alpha$进行优化, 然后依次对下一个$\alpha$进行优化:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_766.png" alt=""><br>这里提一点, 优化$\alpha$的顺序是可以改变的, 取决于你觉得下一次优化哪一个$\alpha$会带来最大的进步.<br>相对其他优化算法来讲, 坐标上升需要更多的迭代次数来收敛. 但它的优点就是在于内循环的计算非常简单.</p>
 <h1 id="序列最小优化算法"><a href="#序列最小优化算法" class="headerlink" title="序列最小优化算法"></a>序列最小优化算法</h1><p>SVM终于接近尾声了…<br>前面有一个问题一直没有解决, 就是如何求解这个优化问题:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_763.png" alt=""><br>这一节的标题序列最小优化算法(Sequential minimal optimazation)就是用来解决这个优化问题的. 刚才讲的coordinate ascend现在自然要用到啦.<br>在刚才讲的coordinate ascend中, 我们每次固定除了某一个变量之外的所有变量, 将优化目标看成仅仅是这一个没有固定变量的函数, 再对该变量进行优化. 在SVM中, 好像也可以直接这么用. 但是别忘了, SVM的优化是有约束条件的:<br>$$\sum_{i=1}^m\alpha_iy^{(i)}=0.$$<br>有这个约束条件的存在, 我们就不可能改变其中一个而固定其他所有. 那该怎么办?<br>很简单, 在SVM中, 我们每次改变两个$\alpha$, 固定其他所有的. 这个算法就叫SMO(sequential minimal optimazation)算法, 其中minimal指的就是每次改变2个$\alpha$. 具体算法的过程如下:<br>1.选择两个变量$\alpha_i$和$\alpha_j$,<br>2.固定其他所有变量, 将$W(\alpha)$看成仅是关于$\alpha_i$和$\alpha_j$的函数对$W(\alpha)$进行优化<br>下面我们使用$\alpha_1$和$\alpha_2$做一个具体的例子来看看.<br>由$\sum_{i=1}^m\alpha_iy^{(i)}=0$, 我们可以得到:<br>$$\alpha_1y^{(1)}+\alpha_2y^{(2)}=-\sum_{i=3}^m\alpha_iy^{(i)}.$$<br>我们令:<br>$$-\sum_{i=3}^m\alpha_iy^{(i)}=\zeta$$<br>即:<br>$$\alpha_1y^{(1)}+\alpha_2y^{(2)}=\zeta$$<br>我们可以用下图画出$\alpha_1$和$\alpha_2$的约束(注意不要忘了$0\le\alpha_i\le C$):<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_767.png" alt=""><br>由$\alpha_1y^{(1)}+\alpha_2y^{(2)}=\zeta$我们可以得到:<br>$$\alpha_1 = \frac{\zeta-\alpha_2y^{(2)}}{y^{(1)}}.$$<br>这个时候, $W$就可以写成:<br>$$W(\alpha)=W(\frac{\zeta-\alpha_2y^{(2)}}{y^{(1)}}, \alpha_2, …, \alpha_m).$$<br>前面也说了$W(\alpha)$是一个二次函数, 我们现在把$W$看成仅仅是关于$\alpha_2$的函数的话, $W$就变成了关于$\alpha_2$的一元二次函数, 这个时候求最值就很简单了. </p>
@@ -439,7 +439,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>CS229机器学习笔记(八)-SVM之软间隔</title>
-    <url>/2016/11/29/CS229-Machine-Learning-Notes-Lecture-8-1/</url>
+    <url>/2016/11/29/CS229-ML-Notes-Lecture-8-1/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -460,7 +460,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 </li>
 </ol>
 <hr>
-<p>接上篇: <a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-8.html" target="_blank" rel="noopener">CS229机器学习笔记(七)-SVM之Kernels</a></p>
+<p>接上篇: <a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-8.html">CS229机器学习笔记(七)-SVM之Kernels</a></p>
 <h1 id="软间隔分类器"><a href="#软间隔分类器" class="headerlink" title="软间隔分类器"></a>软间隔分类器</h1><p>软间隔分类器(soft margin classifier)可以解决两种情况.<br>前面我们都假定数据是线性可分的, 但实际上数据即使映射到了高维也不一定是线性可分. 这个时候就要对超平面进行一个调整, 即这里所说的软间隔.<br>另一种情况是即使数据是线性可分的,  但数据中可能存在噪点. 而如果按照前面那种常规处理的话, 这些噪点会对我们的结果造成很大的影响.这个时候也是需要使用软间隔来尽可能减少噪点对我们的影响.<br>如下图所示, 如果数据是线性可分并且不存在噪点的话, 我们可以找到一个完美的分类超平面:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_759.png" alt=""><br>但是, 如果数据中出现了一个噪点并且仍然是线性可分, 如果我们还是按照之前的办法处理, 那么我们就会得到如下的分类超平面, 这明显是不合理的.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_760.png" alt=""><br>现在我们对原来的优化做一个处理:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_761.png" alt=""><br>我们在限制条件中添加了一个非负的$\xi$, 这样我们就允许某些点的函数间隔小于一甚至是在对方的区域. 当然, 我们不能只在限制条件中加上$\xi$, 还要在优化目标中对$\xi$进行惩罚, 使得所有$\xi$的和尽可能小.<br>有了这个优化目标后, 我们按照之前学的拉格朗日对偶的知识来求解.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_762.png" alt=""><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_763.png" alt=""><br>我们发现, $(\alpha)$和原来唯一的区别就在于多了一个$\alpha_i\le C$这个限制条件. (这里需要注意的是$b^\ast$的公式也有变化, 后面再说)KKT对偶互补条件为:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_764.png" alt=""><br>现在唯一的问题就是如何解决$W(\alpha)$了, 相关的内容放在下一篇进行介绍.</p>
 ]]></content>
       <tags>
@@ -470,7 +470,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>CS229机器学习笔记(七)-SVM之Kernels</title>
-    <url>/2016/11/28/CS229-Machine-Learning-Notes-Lecture-8/</url>
+    <url>/2016/11/28/CS229-ML-Notes-Lecture-8/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -491,8 +491,8 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 </li>
 </ol>
 <hr>
-<p>接上篇: <a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-7.html" target="_blank" rel="noopener">CS229机器学习笔记(六)-SVM之拉格朗日对偶, 最优间隔分类器</a></p>
-<h1 id="Kernels"><a href="#Kernels" class="headerlink" title="Kernels"></a>Kernels</h1><p>在我们讨论线性回归的时候, 提到过<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-2-Linear-Regression-with-Multiple-Variables.html" target="_blank" rel="noopener">polynomial regression</a>. 假设$x$是房子的面积, 我们使用三个特征$x, x^2, x^3$来构造一个三次多项式. 这里有两个概念要区分一下. 这里房子的面积$x$叫做属性(attribute), 我们通过这个$x$映射得到的$x, x^2, x^3$叫做特征(feature). 我们使用$\phi$来表示这种从属性到特征的特征映射(feature mapping). 例如, 在这个例子中:<br>$$\phi(x) = \begin{bmatrix}  x \\ x^2 \\ x^3 \end{bmatrix}$$<br>那么在SVM中, 我们该如何使用这种特征映射呢? 很简单, 通过上一讲的知识, 我们应该知道只需要将所有出现$\langle x^{(i)}, x^{(j)}\rangle$替换为$\langle\phi(x^{(i)}), \phi(x^{(j)})\rangle$就可以了.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_897.png" alt=""><br>看上去好像我们既在SVM中使用了特征映射, 又解决了数据在低维空间中线性不可分的情况. 但是, 这里有个问题. 如果我们通过特征映射得到的$\phi(x)$是一个很高维甚至是无穷维的, 那么计算$\langle\phi(x^{(i)}), \phi(x^{(j)})\rangle$就不是那么现实了. 这里我们就要引出一个叫kernels的概念.<br>假设$x, z\in \mathbb{R}^n$, $K(x,z)=(x^Tz)^2.$, 展开$K(x,z)$:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_755.png" alt=""><br>展开后我们发现, $K(x,z)$还可以写成$K(x,z)=\phi(x)^T\phi(z)$, 其中:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_756.png" alt=""><br>在这个例子中, 映射后特征的内积和原始特征的内积的平方是等价的. 也就是说, 我们只需要计算原始特征的内积再进行平方就可以了, 并不需要先得到映射后的特征再计算映射后特征的内积. 计算原始特征内积的时间复杂度为$\mathcal{O}(n)$, 而计算映射特征$\phi(x)$的时间复杂度为$\mathcal{O}(x^2)$.<br>我们再来看另一个kernels:<br>$$<br>\begin{align}<br>K(x,z) &amp; =(x^Tz+c)^2 \<br>&amp; = \sum_{i,j=1}^n(x_ix_j)(z_iz_j) + \sum_{i=1}^n(\sqrt{2c}x_i)(\sqrt{2c}x_j)+c^2.<br>\end{align}<br>$$<br>对应的映射函数$(n=3)$为:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_757.png" alt=""><br>更广泛的来说, 我们有:<br>$$K(x,z)=(x^Tz+c)^d$$<br>这个kernel将n维的特征映射为${ {n+d} \choose d }$维.<br>以上是举几个kernel的例子, 如果我们有一个新的问题我们该如何构造一个kernel? 假设我们有映射后的特征向量$\phi(x)$和$\phi(z)$, kernel就是用来计算它们两之间的内积. 如果$\phi(x)$和$\phi(z)$相似的话, 即这两个向量的夹角很小, 那么这个内积就会很大; 相反地, 如果它们差别很大, 那么这个内积就会很小.<br>所以, 我们可以这样想kernels, 当$x$和$z$相似时, $K(x,z)$很大. 反之, 当$x$和$z$不同时, $K(x,z)$很小.<br>我们再来看一个kernel:<br>$$K(x,z)=exp\left(-\frac{||x-z||^2}{2\sigma^2}\right).$$<br>思考一下, 这个kernel应该挺符合上面的想法吧. 这个kernel长得像高斯分布, 我们一般叫他高斯kernel, 也可以叫Radial basis funtction kernel, 简称RBF核.</p>
+<p>接上篇: <a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-7.html">CS229机器学习笔记(六)-SVM之拉格朗日对偶, 最优间隔分类器</a></p>
+<h1 id="Kernels"><a href="#Kernels" class="headerlink" title="Kernels"></a>Kernels</h1><p>在我们讨论线性回归的时候, 提到过<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-2-Linear-Regression-with-Multiple-Variables.html">polynomial regression</a>. 假设$x$是房子的面积, 我们使用三个特征$x, x^2, x^3$来构造一个三次多项式. 这里有两个概念要区分一下. 这里房子的面积$x$叫做属性(attribute), 我们通过这个$x$映射得到的$x, x^2, x^3$叫做特征(feature). 我们使用$\phi$来表示这种从属性到特征的特征映射(feature mapping). 例如, 在这个例子中:<br>$$\phi(x) = \begin{bmatrix}  x \\ x^2 \\ x^3 \end{bmatrix}$$<br>那么在SVM中, 我们该如何使用这种特征映射呢? 很简单, 通过上一讲的知识, 我们应该知道只需要将所有出现$\langle x^{(i)}, x^{(j)}\rangle$替换为$\langle\phi(x^{(i)}), \phi(x^{(j)})\rangle$就可以了.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_897.png" alt=""><br>看上去好像我们既在SVM中使用了特征映射, 又解决了数据在低维空间中线性不可分的情况. 但是, 这里有个问题. 如果我们通过特征映射得到的$\phi(x)$是一个很高维甚至是无穷维的, 那么计算$\langle\phi(x^{(i)}), \phi(x^{(j)})\rangle$就不是那么现实了. 这里我们就要引出一个叫kernels的概念.<br>假设$x, z\in \mathbb{R}^n$, $K(x,z)=(x^Tz)^2.$, 展开$K(x,z)$:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_755.png" alt=""><br>展开后我们发现, $K(x,z)$还可以写成$K(x,z)=\phi(x)^T\phi(z)$, 其中:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_756.png" alt=""><br>在这个例子中, 映射后特征的内积和原始特征的内积的平方是等价的. 也就是说, 我们只需要计算原始特征的内积再进行平方就可以了, 并不需要先得到映射后的特征再计算映射后特征的内积. 计算原始特征内积的时间复杂度为$\mathcal{O}(n)$, 而计算映射特征$\phi(x)$的时间复杂度为$\mathcal{O}(x^2)$.<br>我们再来看另一个kernels:<br>$$<br>\begin{align}<br>K(x,z) &amp; =(x^Tz+c)^2 \<br>&amp; = \sum_{i,j=1}^n(x_ix_j)(z_iz_j) + \sum_{i=1}^n(\sqrt{2c}x_i)(\sqrt{2c}x_j)+c^2.<br>\end{align}<br>$$<br>对应的映射函数$(n=3)$为:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_757.png" alt=""><br>更广泛的来说, 我们有:<br>$$K(x,z)=(x^Tz+c)^d$$<br>这个kernel将n维的特征映射为${ {n+d} \choose d }$维.<br>以上是举几个kernel的例子, 如果我们有一个新的问题我们该如何构造一个kernel? 假设我们有映射后的特征向量$\phi(x)$和$\phi(z)$, kernel就是用来计算它们两之间的内积. 如果$\phi(x)$和$\phi(z)$相似的话, 即这两个向量的夹角很小, 那么这个内积就会很大; 相反地, 如果它们差别很大, 那么这个内积就会很小.<br>所以, 我们可以这样想kernels, 当$x$和$z$相似时, $K(x,z)$很大. 反之, 当$x$和$z$不同时, $K(x,z)$很小.<br>我们再来看一个kernel:<br>$$K(x,z)=exp\left(-\frac{||x-z||^2}{2\sigma^2}\right).$$<br>思考一下, 这个kernel应该挺符合上面的想法吧. 这个kernel长得像高斯分布, 我们一般叫他高斯kernel, 也可以叫Radial basis funtction kernel, 简称RBF核.</p>
 <h1 id="kernels的有效性"><a href="#kernels的有效性" class="headerlink" title="kernels的有效性"></a>kernels的有效性</h1><p>上一节提到了一些核函数, 这里我们提一个问题, 我们该如何确定这个核函数是有效的, 也即:是否存在$\phi$, 使得$K(x,z)=\langle\phi(x)\phi(z)\rangle$?<br>假设我们有核K和m个训练样本$\lbrace x^{(1)},x^{(2)}, …,x^{(m)}\rbrace$, 定义一个$m\times m$的矩阵$K$, $K_{ij}=K(x^{(i)}, x^{(j)})$.<br>如果$K$是一个有效的kernel, 那么一定有:<br>$$K_{ij}=K(x^{(i)}, x^{(j)})=\phi(x^{(i)})^T\phi(x^{(j)})=\phi(x^{(j)})^T\phi(x^{(i)})=K(x^{(j)}, x^{(i)})=K_{ji}$$<br>即$K$是对称阵.现我们用$\phi_k(x)$表示向量$\phi(x)$的第k个元素, 对任意的向量$z$都有:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_758.png" alt=""><br>从上面的证明我们可以得到, 如果$K$是一个有效的kernel, 那么对于在训练集上的核矩阵$K$一定是半正定的. 事实上, 这不仅仅是个必要条件, 它也是充分条件. 有效核也叫作Mercer Kernel. </p>
 <blockquote>
 <p>Mercer 定理: </p>
@@ -506,7 +506,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>CS229机器学习笔记(六)-SVM之拉格朗日对偶, 最优间隔分类器</title>
-    <url>/2016/11/23/CS229-Machine-Learning-Notes-Lecture-7/</url>
+    <url>/2016/11/23/CS229-ML-Notes-Lecture-7/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -528,7 +528,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 </li>
 </ol>
 <hr>
-<p>接上篇: <a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-6.html" target="_blank" rel="noopener">CS229机器学习笔记(五)-SVM之函数间隔, 几何间隔</a><br>支持向量机学习的基本想法是求解能够正确划分训练数据集并且几何间隔最大的分离超平面. 对线性可分的训练数据集而言, 线性可分分离超平面有无穷多个(等价于感知机), 但是几何间隔最大的分离超平面是唯一的. 这里的间隔最大化又称为硬间隔最大化(与将要讨论的训练数据集近似线性可分时的软间隔最大化相对应)</p>
+<p>接上篇: <a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-6.html">CS229机器学习笔记(五)-SVM之函数间隔, 几何间隔</a><br>支持向量机学习的基本想法是求解能够正确划分训练数据集并且几何间隔最大的分离超平面. 对线性可分的训练数据集而言, 线性可分分离超平面有无穷多个(等价于感知机), 但是几何间隔最大的分离超平面是唯一的. 这里的间隔最大化又称为硬间隔最大化(与将要讨论的训练数据集近似线性可分时的软间隔最大化相对应)</p>
 <h2 id="一-间隔最大化"><a href="#一-间隔最大化" class="headerlink" title="一. 间隔最大化"></a>一. 间隔最大化</h2><p>通过上一篇的讲解, 我们知道我们想要找到一个超平面, 使得离超平面最近的点的几何间隔越大越好.该如何找到这样的超平面呢? 这个问题可用如下的优化问题表示：<br>$$<br>\begin{align}<br>\max_{w,b} &amp;\quad \gamma \<br>\<br>s.t. &amp;\quad y_{i}(\frac{w}{\Vert w\Vert}\cdot x_i+ \frac{b}{\Vert w\Vert})\ge\gamma, \quad i=1,2,…,N \<br>\end{align}<br>$$<br>即我们希望最大化超平面$(w,b)$关于训练数据集的几何间隔$\gamma$, 约束条件表示的是超平面$(w,b)$关于每个训练样本点的几何间隔至少是$\gamma$<br>考虑几何间隔和函数间隔的关系式, 可将这个问题改写为<br>$$<br>\begin{align}<br>\max_{w,b} &amp;\quad \frac{\hat{\gamma}}{\Vert w\Vert} \<br>\<br>s.t. &amp;\quad y_{i}({w}\cdot x_i+ {b})\ge\hat{\gamma}, \quad i=1,2,…,N \<br>\end{align}<br>$$<br>函数间隔$\hat{\gamma}$的取值并不影响最优化问题的解. 事实上, 假设将$w$和$b$按比例改变为$\lambda w和\lambda b$, 这时函数间隔成为$\lambda\hat{\gamma}$. 函数间隔的这一改变对上面最优化问题的不等式约束没有影响, 对目标函数的优化也没有影响, 也就是说, 它产生一个等价的最优化问题. 这样, 就可以取$\gamma＝1$. 将$\gamma＝1$代入上面的最优化问题, 注意到最大化$\frac{1}{\Vert w\Vert}$和最小化$\frac{1}{2}\Vert w\Vert^2$是等价的, 于是就得到下面的线性可分支持向量机学习的最优化问题<br>$$<br>\begin{align}<br>\min_{w,b} &amp;\quad {\frac12}||w||^2  \<br>\<br>s.t. &amp;\quad y_{i}(w\cdot x_{i}+b)-1\ge =0<br>\end{align}<br>$$<br>这个时候我们的问题就转化成了在线性约束下的二次规划. 可以使用二次规划的软件来解决这个优化问题, 然后我们就可以得到我们的最优间隔分类器.<br>实际上, 我们有更好的办法去解这个优化问题. 但在这之前, 我们需要补充一下其他的相关知识.</p>
 <h2 id="二-拉格朗日对偶"><a href="#二-拉格朗日对偶" class="headerlink" title="二. 拉格朗日对偶"></a>二. 拉格朗日对偶</h2><p>在约束最优化问题中, 常常利用拉格朗日对偶性(Lagrange duality)将原始问题转换为对偶问题, 通过解对偶问题而得到原始问题的解. 该方法应用在许多统计学习方法中, 例如, 最大熵模型与支持向量机. </p>
 <h3 id="2-1-原始问题"><a href="#2-1-原始问题" class="headerlink" title="2.1 原始问题"></a>2.1 原始问题</h3><p>$$<br>\begin{align}<br>\min_{w} &amp; \quad f(w) \<br>\<br>{s.t.} &amp;\quad h_i(w)=0, \quad i=1,\cdots,l<br>\end{align}<br>$$<br>我们使用拉格朗日乘子法, 将问题转化为:<br>$$\mathcal{L}(w,\beta)=f(w)+\sum_{i=1}^l\beta_ih_i(w)$$<br>其中, $\beta_i$为拉格朗日乘子(Lagrange Multipliers). 然后令偏导为0来解得$w,\beta$.<br>$$<br>\begin{align}<br>\frac{\partial\mathcal{L}}{\partial w_i} &amp; = 0 \\<br>\<br>\frac{\partial\mathcal{L}}{\partial \beta_i} &amp; = 0<br>\end{align}<br>$$<br>这个问题的更加广泛的形式为(既存在等式约束又存在不等式约束):<br>$$<br>\begin{align}<br>\min_{w}&amp;\quad f(w) \\<br>\<br>\mathrm{s.t.} &amp; \quad g_i(w)\leq 0,\quad i=1,\cdots ,k \<br>\<br>&amp; \quad h_i(w)=0,\quad i=1,\cdots,l<br>\end{align}<br>$$<br>我们定义广义拉格朗日公式(generalized Lagrangian)为:<br>$$<br>\mathcal{L}(w,\alpha,\beta)=f(w)+\sum_{i=1}^k\alpha_ig_i(w)+\sum_{i=1}^l\beta_ih_i(w).<br>$$<br>其中, $\alpha_i, \beta_i$为拉格朗日乘子. 现在我们定义:<br>$$<br>\theta_{\mathcal{P}}(w)=\operatorname*\max_{\alpha,\beta:\alpha_i\geq 0}\mathcal{L}(w,\alpha,\beta)<br>$$<br>其中下标$\mathcal{P}$代表”primal”. 若约束条件得不到满足的时候($g_i(w)\gt0$或$h_i(w)\ne0$), 则可令$\alpha_i$为无穷大或$\beta_i$为无穷大使得$\theta_{\mathcal{P}}(w)=\infty$. 而当约束条件满足时, $\theta_{\mathcal{P}}(w)=f(w)$. 所以有:<br>$$<br>\theta_{\mathcal{P}}=\begin{cases}f(w) &amp; w\text{ 满足原始问题的约束} \\<br>\<br>\infty &amp;\text{其他}\end{cases}<br>$$<br>即对于满足原始约束的w来说, $\theta_{\mathcal{p}}$与原始问题中的目标函数相同. 对于违反原始约束的w来说, $\theta_{\mathcal{p}}=\infty$. 因此, 如果考虑最小化：<br>$$<br>\min_{w}\theta_{\mathcal{P}}(w)=\min_{w}\max_{\alpha,\beta:\alpha_i\geq 0}\mathcal{L}(w,\alpha,\beta)<br>$$<br>它是与原始最优化问题等价的, 即它们有相同的解. 问题$\min_{w}\max_{\alpha,\beta:\alpha_i\geq 0}\mathcal{L}(w,\alpha,\beta)=\min_w\theta_{\mathcal{p}}(w)$称为广义拉格朗日函数的极小极大问题. 这样一来我们就把原始最优化问题表示为广义拉格朗日函数的极小极大问题. 为了后面使用方便, 我们定义原始问题的最优值<br>$$p^\ast=\min_w\theta_{\mathcal{p}}(w)$$<br>称为原始问题的值.</p>
@@ -546,7 +546,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>CS229机器学习笔记(五)-SVM之函数间隔, 几何间隔</title>
-    <url>/2016/11/21/CS229-Machine-Learning-Notes-Lecture-6/</url>
+    <url>/2016/11/21/CS229-ML-Notes-Lecture-6/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -600,7 +600,7 @@ $$\gamma=\min\_i\gamma^{(i)}.$$
   </entry>
   <entry>
     <title>CS229机器学习笔记(四)-生成学习算法, 朴素贝叶斯, 多项式事件模型</title>
-    <url>/2016/11/21/CS229-Machine-Learning-Notes-Lecture-5-6/</url>
+    <url>/2016/11/21/CS229-ML-Notes-Lecture-5-6/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -621,7 +621,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 <h2 id="朴素贝叶斯分类器"><a href="#朴素贝叶斯分类器" class="headerlink" title="朴素贝叶斯分类器"></a>朴素贝叶斯分类器</h2><p>$y\in \lbrace0,1\rbrace$代表正常邮件和垃圾邮件, 首先我们需要解决的是，邮件该用什么形式来表现. 我们有一个词典，如果一个邮件中出现了这个单词，我们就在相应的位置用1表示:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_730.png" alt=""><br>现在我们要对$p(x|y)$进行建模, $x\in {\lbrace0,1\rbrace}^n, n=50000$(字典里有50000个单词). 这样我们的$x$就有$2^{50000}$中表示. 我们就需要$2^{50000}-1$个参数, 这肯定是不现实的. 所以在朴素贝叶斯中, 我们又做了一个更加强的假设: $x_{i}$条件独立于给定的$y$. 即知道了一个单词在某一种邮件中出现了不会影响其他单词在这个邮件中出现的概率. 用公式表示就是:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_731.png" alt=""><br>于是, 模型的参数为:<br>$$\phi_{i|y=1}=p(x_i|y=1),$$ $$\phi_{i|y=0}=p(x_i|y=0),$$ $$\phi_y=p(y=1).$$<br>联合似然函数为:<br>$$\mathcal{L}(\phi_y,\phi_{i|y=0},\phi_{i|y=1})=\prod_{i=1}^mp(x^{(i)},y^{(i)})$$<br>最大似然估计:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_732.png" alt=""><br>当我们得到这些参数之后, 就可以对新的数据进行预测:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_733.png" alt=""></p>
 <h2 id="拉普拉斯平滑"><a href="#拉普拉斯平滑" class="headerlink" title="拉普拉斯平滑"></a>拉普拉斯平滑</h2><p>还是上面垃圾邮件分类的例子，假设我们现在有一封新的邮件，它包含了”nips”这个单词. 但在这之前, 我们没有一封邮件(不管是垃圾还是正常邮件)是包含了这个单词的. 假设”nips”在字典中是第35000个, 那么我们的朴素贝叶斯的两个参数如下:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_734.png" alt=""><br>因此, 在我们做预测的时候, 我们会得到如下结果:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_735.png" alt=""><br>这显然是不合理的. 不能因为一件事情从来没有观测到就说它出现的概率为0.<br>所以这里我们引入了拉普拉斯平滑处理的概念. 假设一个随机变量可取值$\lbrace1,2,…,k\rbrace$, 参数为$\phi_i=p(z=i)$. 给定m个独立的观测值$\lbrace z^{(1)},z^{(2)},…,z^{(m)}\rbrace$, 最大似然估计为:<br>$$\phi_j=\frac{\sum_{i=1}^m1\lbrace z^{(i)}=j\rbrace}{m}$$<br>为了不让$\phi_j$有可能等于0, 我们做一个拉普拉斯平滑, 即, 将最大似然估计改为:<br>$$\phi_j=\frac{\sum_{i=1}^m1\lbrace z^{(i)}=j\rbrace+1}{m+k}$$<br>这不仅解决了$\phi_j$可能等于0的问题, 而且保证了$\sum_{j=1}^k\phi_j$仍然等于1.<br>再回到朴素贝叶斯分类器, 使用了Laplace Smoothing之后的最大似然估计为:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_736.png" alt=""></p>
 <h1 id="多项式事件模型"><a href="#多项式事件模型" class="headerlink" title="多项式事件模型"></a>多项式事件模型</h1><p>我们前面讲的朴素贝叶斯模型可以解决很多分类问题, 在文本分类下, 它又叫做多元伯努利事件模型(Multi-variate Bernoulli Event Model). 这一节我们来讲一个专门为文本分类设计的模型, 它就叫做多项式事件模型(Multinomial Event Model).<br>在Multi-variate Bernoulli Event Model中, 我们的邮件用如下形式表示:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_730.png" alt=""><br>在Multinomial Event Model中, 我们使用另一种形式来表示, 将第i个邮件用一个向量表示:<br>$$(x_1^{(i)},x_2^{(i)},…,x_{n_i}^{(i)})$$<br>其中$n_i$表示第i封邮件的单词的个数, $x_j$表示第$j$个单词在字典中的索引, 例如字典有50000个单词的话, 那么$x_j\in \lbrace 1,2,…,50000\rbrace$.<br>现在, 我们模型的参数为:<br>$$\phi_{k|y=1}=p(x_j=k|y=1),$$ $$\phi_{k|y=0}=p(x_j=k|y=0),$$ $$\phi_y=p(y=1).$$<br>log似然函数为:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_739.png" alt=""><br>最大似然估计为:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_737.png" alt=""><br>若使用Laplace Smoothing则最大似然估计为:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_738.png" alt=""><br>其中$|V|$为字典中单词的个数. </p>
-<p>视频中的神经网络部分可以参考:<br>1.<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-4-Neural-Networks-Representation.html" target="_blank" rel="noopener">我的机器学习笔记(九) - 神经网络(上)</a><br>2.<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-5-Neural-Networks-Learning.html" target="_blank" rel="noopener">我的机器学习笔记(九) - 神经网络(下)</a></p>
+<p>视频中的神经网络部分可以参考:<br>1.<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-4-Neural-Networks-Representation.html">我的机器学习笔记(九) - 神经网络(上)</a><br>2.<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-5-Neural-Networks-Learning.html">我的机器学习笔记(九) - 神经网络(下)</a></p>
 <p>参考: </p>
 <ol>
 <li><a href="https://github.com/zlotus/notes-LSJU-machine-learning" target="_blank" rel="noopener">机器学习笔记-子实</a></li>
@@ -636,7 +636,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>CS229机器学习笔记(三)-指数分布族, 广义线性模型</title>
-    <url>/2016/11/19/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%8B/</url>
+    <url>/2016/11/19/CS229-ML-Notes-Lecture-1-4-%E4%B8%8B/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -749,7 +749,7 @@ log likelihood如下:
   </entry>
   <entry>
     <title>CS229机器学习笔记(二) - Logistic回归, 牛顿方法</title>
-    <url>/2016/11/18/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%AD/</url>
+    <url>/2016/11/18/CS229-ML-Notes-Lecture-1-4-%E4%B8%AD/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -780,7 +780,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>CS229机器学习笔记(一) - 梯度下降, 正规方程, 局部加权</title>
-    <url>/2016/11/17/CS229-Machine-Learning-Notes-Lecture-1-4-%E4%B8%8A/</url>
+    <url>/2016/11/17/CS229-ML-Notes-Lecture-1-4-%E4%B8%8A/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -814,31 +814,8 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
       </tags>
   </entry>
   <entry>
-    <title>CS229机器学习笔记(〇)-目录</title>
-    <url>/2016/11/17/CS229-Machine-Learning-Notes-TOC/</url>
-    <content><![CDATA[<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/andrewng2.jpg" alt=""><br>课程信息:  <a href="http://cs229.stanford.edu" target="_blank" rel="noopener">主页</a>　<a href="https://www.youtube.com/playlist?list=PLA89DCFA6ADACE599" target="_blank" rel="noopener">Youtube</a></p>
-<a id="more"></a>
-<hr>
-<p>在Coursera上的Machine Learning 学到第三周时候，Andrew Ng说“其实这个时候你们其实比硅谷好多机器学习工程师懂得都多了”(<a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-3-chicken-soup.html" target="_blank" rel="noopener">我的机器学习笔记 - 鸡汤</a>)。可是整个课程学完并拿到证书之后，感觉自己什么都不知道(此时我的表情就是和本文的题图一样)。想想还是老老实实把Coursera那个Machine Learning的原版学一遍吧，再把Coursera上的复习一遍顺带整理一下笔记。<br>以下是目录：</p>
-<ol>
-<li><a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-1-4-上.html" target="_blank" rel="noopener">CS229机器学习笔记(一)-梯度下降, 正规方程, 局部加权</a></li>
-<li><a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-1-4-中.html" target="_blank" rel="noopener">CS229机器学习笔记(二)-Logistic回归, 牛顿方法</a></li>
-<li><a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-1-4-下.html" target="_blank" rel="noopener">CS229机器学习笔记(三)-指数分布族, 广义线性模型</a></li>
-<li><a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-5-6.html" target="_blank" rel="noopener">CS229机器学习笔记(四)-生成学习算法, 朴素贝叶斯, 多项式事件模型</a></li>
-<li><a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-6.html" target="_blank" rel="noopener">CS229机器学习笔记(五)-SVM之函数间隔, 几何间隔</a></li>
-<li><a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-7.html" target="_blank" rel="noopener">CS229机器学习笔记(六)-SVM之拉格朗日对偶, 最优间隔分类器</a></li>
-<li><a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-8.html" target="_blank" rel="noopener">CS229机器学习笔记(七)-SVM之Kernels</a></li>
-<li><a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-8-1.html" target="_blank" rel="noopener">CS229机器学习笔记(七)-SVM之软间隔</a></li>
-<li><a href="http://daniellaah.github.io/2016/CS229-Machine-Learning-Notes-Lecture-8-2.html" target="_blank" rel="noopener">CS229机器学习笔记(八)-SVM之SMO算法</a></li>
-</ol>
-]]></content>
-      <tags>
-        <tag>Machine Learning</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Coursera机器学习笔记(十八) - Photo OCR</title>
-    <url>/2016/06/27/Machine-Learning-Andrew-Ng-My-Notes-Week-11-Application-Example-Photo-OCR/</url>
+    <url>/2016/06/27/Coursera-ML-Notes-Week-11-Application-Example-Photo-OCR/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -871,7 +848,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(十七) - 大规模机器学习</title>
-    <url>/2016/06/26/Machine-Learning-Andrew-Ng-My-Notes-Week-10-Large-Scale-Machine-Learning/</url>
+    <url>/2016/06/26/Coursera-ML-Notes-Week-10-Large-Scale-Machine-Learning/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -907,7 +884,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(十六) - 推荐系统</title>
-    <url>/2016/06/21/Machine-Learning-Andrew-Ng-My-Notes-Week-9-Recommender-Systems/</url>
+    <url>/2016/06/21/Coursera-ML-Notes-Week-9-Recommender-Systems/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -944,7 +921,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(十五) - 异常检测</title>
-    <url>/2016/06/20/Machine-Learning-Andrew-Ng-My-Notes-Week-9-Anomaly-Detection/</url>
+    <url>/2016/06/20/Coursera-ML-Notes-Week-9-Anomaly-Detection/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -981,7 +958,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(十三) - 非监督学习</title>
-    <url>/2016/06/17/Machine-Learning-Andrew-Ng-My-Notes-Week-8-Unsupervised-Learning/</url>
+    <url>/2016/06/17/Coursera-ML-Notes-Week-8-Unsupervised-Learning/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1017,7 +994,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(十四) - 数据降维</title>
-    <url>/2016/06/16/Machine-Learning-Andrew-Ng-My-Notes-Week-8-Dimensionality-Reduction/</url>
+    <url>/2016/06/16/Coursera-ML-Notes-Week-8-Dimensionality-Reduction/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1054,7 +1031,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(十二) - SVM</title>
-    <url>/2016/05/26/Machine-Learning-Andrew-Ng-My-Notes-Week-7-Support-Vector-Machines/</url>
+    <url>/2016/05/26/Coursera-ML-Notes-Week-7-Support-Vector-Machines/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1090,7 +1067,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(十一) - 机器学习系统设计</title>
-    <url>/2016/05/23/Machine-Learning-Andrew-Ng-My-Notes-Week-6Machine-Learning-System-Design/</url>
+    <url>/2016/05/23/Coursera-ML-Notes-Week-6-Machine-Learning-System-Design/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1128,7 +1105,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(十) - 机器学习经验方法总结</title>
-    <url>/2016/05/19/Machine-Learning-Andrew-Ng-My-Notes-Week-6-Advice-for-Applying-Machine-Learning/</url>
+    <url>/2016/05/19/Coursera-ML-Notes-Week-6-Advice-for-Applying-Machine-Learning/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1222,7 +1199,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(九) - 神经网络(下)</title>
-    <url>/2016/05/13/Machine-Learning-Andrew-Ng-My-Notes-Week-5-Neural-Networks-Learning/</url>
+    <url>/2016/05/13/Coursera-ML-Notes-Week-5-Neural-Networks-Learning/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1275,7 +1252,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(八) - 神经网络(上)</title>
-    <url>/2016/05/09/Machine-Learning-Andrew-Ng-My-Notes-Week-4-Neural-Networks-Representation/</url>
+    <url>/2016/05/09/Coursera-ML-Notes-Week-4-Neural-Networks-Representation/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1312,7 +1289,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(七) - 来自吴恩达的狗粮和鸡汤</title>
-    <url>/2016/04/28/Machine-Learning-Andrew-Ng-My-Notes-Week-3-chicken-soup/</url>
+    <url>/2016/04/28/Coursera-ML-Notes-Week-3-chicken-soup/</url>
     <content><![CDATA[<center>![](https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/andrewngandhiswift.jpg?imageMogr2/thumbnail/!60p)</center>
 > 结婚两周年之际和Carol一起登上了八达岭，愿长城见证我们的爱情 。
 > -- [AndrewNg吴恩达 ](http://weibo.com/5866810652/Dqs1UvKQd)
@@ -1325,7 +1302,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(六) - 正则化</title>
-    <url>/2016/04/28/Machine-Learning-Andrew-Ng-My-Notes-Week-3-Regularization/</url>
+    <url>/2016/04/28/Coursera-ML-Notes-Week-3-Regularization/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1359,7 +1336,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(五) - Logistic Regression</title>
-    <url>/2016/04/26/Machine-Learning-Andrew-Ng-My-Notes-Week-3-Logistic-Regression/</url>
+    <url>/2016/04/26/Coursera-ML-Notes-Week-3-Logistic-Regression/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1399,7 +1376,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(四) - Octave教程</title>
-    <url>/2016/04/19/Machine-Learning-Andrew-Ng-My-Notes-Week-2-Octave-Tutorial/</url>
+    <url>/2016/04/19/Coursera-ML-Notes-Week-2-Octave-Tutorial/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1639,7 +1616,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(三) - 多变量线性回归</title>
-    <url>/2016/04/11/Machine-Learning-Andrew-Ng-My-Notes-Week-2-Linear-Regression-with-Multiple-Variables/</url>
+    <url>/2016/04/11/Coursera-ML-Notes-Week-2-Linear-Regression-with-Multiple-Variables/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1721,7 +1698,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(二) - 单变量线性回归</title>
-    <url>/2016/04/08/Machine-Learning-Andrew-Ng-My-Notes-Week-1-Linear-Regression-with-One-Variable/</url>
+    <url>/2016/04/08/Coursera-ML-Notes-Week-1-Linear-Regression-with-One-Variable/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1765,26 +1742,19 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(一) - 监督学习vs无监督学习</title>
-    <url>/2016/04/06/Machine-Learning-Andrew-Ng-My-Notes-Week-1-Introduction/</url>
-    <content><![CDATA[<script type="text/javascript" async
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-
-<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_03.png" alt=""></p>
-<ul>
-<li>课程地址：<a href="https://www.coursera.org/learn/machine-learning/lecture/1VkCb/supervised-learning" target="_blank" rel="noopener">Supervised Learning &amp; Unsupervised Learning</a> </li>
-<li>课程Wiki：<a href="https://share.coursera.org/wiki/index.php/ML:Introduction" target="_blank" rel="noopener">Introduction</a></li>
-<li>课件：<a href="https://d396qusza40orc.cloudfront.net/ml/docs/slides/Lecture1.pptx" target="_blank" rel="noopener">PPT</a>　 <a href="https://d396qusza40orc.cloudfront.net/ml/docs/slides/Lecture1.pdf" target="_blank" rel="noopener">PDF</a><a id="more"></a>
-
-</li>
-</ul>
-<hr>
+    <url>/2016/04/06/Coursera-ML-Notes-Week-1-Introduction/</url>
+    <content><![CDATA[<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_03.png" alt=""></p>
 <h2 id="一-监督学习"><a href="#一-监督学习" class="headerlink" title="一. 监督学习"></a>一. 监督学习</h2><p>什么是监督学习? 我们来看看<a href="https://zh.wikipedia.org/wiki/%E7%9B%A3%E7%9D%A3%E5%BC%8F%E5%AD%B8%E7%BF%92" target="_blank" rel="noopener">维基百科</a>中给出的定义:</p>
 <blockquote>
 <p>监督式学习（英语：Supervised learning），是一个机器学习中的方法，可以由训练资料中学到或建立一个模式（函数 / learning model），并依此模式推测新的实例。训练资料是由输入物件（通常是向量）和预期输出所组成。函数的输出可以是一个连续的值（称为回归分析），或是预测一个分类标签（称作分类）</p>
 </blockquote>
+<a id="more"></a>
+
+<hr>
 <p>从数据的角度来讲, 监督学习和无监督学习的区别就在于监督学习的数据不仅仅有特征组成, 即每一个数据样本都包含一个准确的输出值. 在房价预测的问题中, 数据由特征+房价组成.</p>
-<h3 id="1-1-监督学习的分类"><a href="#1-1-监督学习的分类" class="headerlink" title="1.1 监督学习的分类"></a>1.1 监督学习的分类</h3><p>在监督学习中, 我们的预测结果可以是连续值, 也可以是离散值. 我们根据这样的属性将监督学习氛围回归问题和分类问题.<br>$$<br>\text{监督学习:}<br>   \begin{cases}<br>   \text{回归}(\text{Regression})\<br>      \<br>   \text{分类}(\text{Classification})<br>   \end{cases}<br>$$<br>下面我们分别举一个例子来看看, 学完这两个例子之后, 我们就会对监督学习, 回归以及分类有比较清晰地认识了.</p>
+<h3 id="1-1-监督学习的分类"><a href="#1-1-监督学习的分类" class="headerlink" title="1.1 监督学习的分类"></a>1.1 监督学习的分类</h3><p>在监督学习中, 我们的预测结果可以是连续值, 也可以是离散值. 我们根据这样的属性将监督学习氛围回归问题和分类问题.</p>
+<p>$$<br>\text{监督学习:}<br>   \begin{cases}<br>   \text{回归}(\text{Regression})\<br>      \<br>   \text{分类}(\text{Classification})<br>   \end{cases}<br>$$</p>
+<p>下面我们分别举一个例子来看看, 学完这两个例子之后, 我们就会对监督学习, 回归以及分类有比较清晰地认识了.</p>
 <h3 id="1-2-监督学习举例"><a href="#1-2-监督学习举例" class="headerlink" title="1.2 监督学习举例"></a>1.2 监督学习举例</h3><h4 id="1-2-1-回归问题"><a href="#1-2-1-回归问题" class="headerlink" title="1.2.1 回归问题"></a>1.2.1 回归问题</h4><p>我们现在有这么一个问题, 我们想通过给定的一个房子的面积来预测这个房子在市场中的价格. 这里的房子的面积就是特征, 房子的价格就是一个输出值. 为了解决这个问题, 我们获取了大量的房地产数据, 每一条数据都包含房子的面积及其对应价格. 第一, 我们的数据不仅包含房屋的面积, 还包含其对应的价格, 而我们的目标就是通过面积预测房价. 所以这应该是一个监督学习; 其次, 我们的输出数据房价可以看做是连续的值, 所以这个问题是一个回归问题. 至于如何通过数据得到可以使用的模型, 后面的几节课我们再做讨论.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/img_1.jpg?imageMogr/v2/thumbnail/!45p" alt=""><br>思考: 如果对于同样的数据, 但是我们的目标是预测这个房子的房价是大于100w还是小于100w, 那么这个时候是什么哪一类问题?</p>
 <h4 id="1-2-2-分类问题"><a href="#1-2-2-分类问题" class="headerlink" title="1.2.2 分类问题"></a>1.2.2 分类问题</h4><p>我们再来看一个分类问题, 从名字上来讲, 分类问题还是比较好理解的, 我们的目标应该是要对数据进行分类. 现在我们的数据是有关乳腺癌的医学数据, 它包含了肿瘤的大小以及该肿瘤是良性的还是恶性的. 我们的目标是给定一个肿瘤的大小来预测它是良性还是恶性. 我们可以用0代表良性，1代表恶性. 这就是一个分类问题, 因为我们要预测的是一个离散值. 当然, 在这个例子中, 我们的离散值可以去’良性’或者’恶性’. 在其他分类问题中, 离散值可能会大于两个.例如在该例子中可以有{0,1,2,3}四种输出，分别对应{良性, 第一类肿瘤, 第二类肿瘤, 第三类肿瘤}。<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/img_1022aa.jpg?imageMogr/v2/thumbnail/!45p" alt=""><br>在这个例子中特征只有一个即瘤的大小。 对于大多数机器学习的问题, 特征往往有多个(上面的房价问题也是, 实际中特征不止是房子的面积). 例如下图， 有“年龄”和“肿瘤大小”两个特征。(还可以有其他许多特征，如下图右侧所示)<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/img_1018abc.jpg?imageMogr/v2/thumbnail/!45p" alt=""></p>
 <h2 id="二-无监督学习"><a href="#二-无监督学习" class="headerlink" title="二. 无监督学习"></a>二. 无监督学习</h2><p>在监督学习中我们也提到了它与无监督学习的区别. 在无监督学习中, 我们的数据并没有给出特定的标签, 例如上面例子中的房价或者是良性还是恶性. 我们目标也从预测某个值或者某个分类便成了寻找数据集中特殊的或者对我们来说有价值结构. 如下图所示, 我们可以直观的感受到监督学习和无监督学习在数据集上的区别.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_582.png?imageMogr/v2/thumbnail/!55p" alt=""><br>我们也可以从图中看到, 大概可以将数据及分成两个簇. 将数据集分成不同簇的无监督学习算法也被称为聚类算法.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/img_1025dadc.jpg?imageMogr/v2/thumbnail/!45p" alt=""></p>
@@ -1796,283 +1766,8 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
 ]]></content>
       <tags>
         <tag>Machine Learning</tag>
-        <tag>Notes</tag>
-        <tag>Coursera</tag>
-        <tag>MOOC</tag>
         <tag>Supervised Learning</tag>
         <tag>UnSupervised Learning</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Coursera机器学习笔记(〇)-目录</title>
-    <url>/2016/04/06/Machine-Learning-Andrew-Ng-My-Notes/</url>
-    <content><![CDATA[<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/AndrewHallway2.jpg" alt=""></p>
-<p>课程信息:  <a href="https://www.coursera.org/learn/machine-learning/home/welcome" target="_blank" rel="noopener">主页</a>　<a href="https://share.coursera.org/wiki/index.php/ML:Main" target="_blank" rel="noopener">Wiki</a></p>
-<a id="more"></a>
-
-<ul>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes.html" target="_blank" rel="noopener">Coursera机器学习笔记(〇)-目录</a>  </li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-1-Introduction.html" target="_blank" rel="noopener">Coursera机器学习笔记(一) - 监督学习vs无监督学习</a>  </li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-1-Linear-Regression-with-One-Variable.html" target="_blank" rel="noopener">Coursera机器学习笔记(二) - 单变量线性回归</a>  </li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-2-Linear-Regression-with-Multiple-Variables.html" target="_blank" rel="noopener">Coursera机器学习笔记(三) - 多变量线性回归</a>  </li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-2-Octave-Tutorial.html" target="_blank" rel="noopener">Coursera机器学习笔记(四) - Octave教程</a>  </li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-3-Logistic-Regression.html" target="_blank" rel="noopener">Coursera机器学习笔记(五) - Logistic Regression</a>  </li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-3-Regularization.html" target="_blank" rel="noopener">Coursera机器学习笔记(六) - 正则化</a>  </li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-3-chicken-soup.html" target="_blank" rel="noopener">Coursera机器学习笔记(七) - 来自吴恩达的狗粮和鸡汤</a>  </li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-4-Neural-Networks-Representation.html" target="_blank" rel="noopener">Coursera机器学习笔记(八) - 神经网络(上)</a>  </li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-5-Neural-Networks-Learning.html" target="_blank" rel="noopener">Coursera机器学习笔记(九) - 神经网络(下)</a>  </li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-6-Advice-for-Applying-Machine-Learning.html" target="_blank" rel="noopener">Coursera机器学习笔记(十) - 机器学习经验方法总结</a>  </li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-6Machine-Learning-System-Design.html" target="_blank" rel="noopener">Coursera机器学习笔记(十一) - 机器学习系统设计</a>  </li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-7-Support-Vector-Machines.html" target="_blank" rel="noopener">Coursera机器学习笔记(十二) - SVM</a>  </li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-8-Unsupervised-Learning.html" target="_blank" rel="noopener">Coursera机器学习笔记(十三) - 非监督学习</a>  </li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-8-Dimensionality-Reduction.html" target="_blank" rel="noopener">Coursera机器学习笔记(十四) - 数据降维</a>  </li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-9-Anomaly-Detection.html" target="_blank" rel="noopener">Coursera机器学习笔记(十五) - 异常检测</a>  </li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-9-Recommender-Systems.html" target="_blank" rel="noopener">Coursera机器学习笔记(十六) - 推荐系统</a>  </li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-10-Large-Scale-Machine-Learning.html" target="_blank" rel="noopener">Coursera机器学习笔记(十七) - 大规模机器学习</a>  </li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes-Week-11-Application-Example-Photo-OCR.html" target="_blank" rel="noopener">Coursera机器学习笔记(十八) - Application Example Photo OCR</a>  </li>
-</ul>
-]]></content>
-      <tags>
-        <tag>Machine Learning</tag>
-        <tag>Coursera</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>如何在Hexo博客中插入数学公式</title>
-    <url>/2016/04/02/Mathmatical-Formula-within-Markdown/</url>
-    <content><![CDATA[<script type="text/javascript" async
-  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
-</script>
-
-
-
-<p>想想后面记笔时有那么多数学公式要处理我就方了°(°ˊДˋ°) ° 😂。还好今天研究了一下如何在博客中插入数学公式，发现有种使用起来既简单又高大尚的方法——MathJax, 哈哈😁。 </p>
-<a id="more"></a>
-
-<h2 id="如何正确显示"><a href="#如何正确显示" class="headerlink" title="如何正确显示"></a>如何正确显示</h2><p>MathJax这么神奇，那到底如何使用呢？不要太简单，就两步:  </p>
-<ol>
-<li>在开始部分插入如下代码: <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/javascript"</span> <span class="keyword">async</span></span></pre></td></tr><tr><td class="code"><pre><span class="line">  src=<span class="string">"https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"</span>&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&lt;<span class="regexp">/script&gt;</span></span></pre></td></tr></table></figure>
- 千万不要插错位置了，否则文章标题都没法正常显示。<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/Snip20160402_3.png" alt=""><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/Snip20160402_4.png" alt=""></li>
-<li>在网页中插入所需数学公式的特定格式:<br>这里先不管格式是怎样的，先看一下如何把这个特定格式显示成可读的数学公式。举一个最简单的例子:<code>f(x)=x^2</code>就是一个特定格式。只不过这个例子非常简单，一看就知道是什么含义。 想要把它显示成数学公式有两种办法，分别对应两种显示方式。一种是单独显示，另一种是在文字中显示。<ul>
-<li>单独显示，只需要在两边分别加上<code>$$</code>即可。例如<code>$$f(x)=x^2$$</code>,对应数学公式:<br>$$f(x)=x^2$$  </li>
-<li>在文字中显示，只需要在两边分别加上<code>$</code>即可。例如<code>$f(x)=x^2$</code>, 请问$f(x)=x^2$的导数为?咦？看到这里你是不是想说这**博主，说好的在文字中显示呢？？！！这里要解释一下，因为<code>$</code>这个符号在其他上下文中有不同的意义，比如它可以当作美元符号等等，所以默认情况下<code>$...$</code>是不支持的。那如何解决呢？只需要在第一步添加的代码之前再添加如下:<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&lt;script type=<span class="string">"text/x-mathjax-config"</span>&gt;</span></pre></td></tr><tr><td class="code"><pre><span class="line">MathJax.Hub.Config(&#123;</span></pre></td></tr><tr><td class="code"><pre><span class="line">tex2jax: &#123;<span class="attr">inlineMath</span>: [[<span class="string">'$'</span>,<span class="string">'$'</span>], [<span class="string">'\\('</span>,<span class="string">'\\)'</span>]]&#125;</span></pre></td></tr><tr><td class="code"><pre><span class="line">&#125;);</span></pre></td></tr><tr><td class="code"><pre><span class="line">&lt;<span class="regexp">/script&gt;</span></span></pre></td></tr></table></figure>
-<img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/Snip20160402_5.png" alt=""><br>这个时候就可以完美解决了，请问\(f(x)=x^2\)的导数为? 看到公式了吧，并且公式是在文字中间显示的，并没有占整个一行。 其实，不添加这段代码也可以这样显示，这样<code>\\(f(x)=x^2\\)</code>即可：\(f(x)=x^2\)</li>
-</ul>
-</li>
-</ol>
-<h2 id="LaTeX公式参考"><a href="#LaTeX公式参考" class="headerlink" title="LaTeX公式参考"></a>LaTeX公式参考</h2><p>好了，现在你已经知道如何在博客中显示数学公式啦🤗<br>现在可以来一点稍微复杂的公式了，例如:</p>
-<pre><code>$$f&apos;(x\_0)=\lim_{\Delta x\to 0} \frac{f(x\_0+\Delta x) - f(x\_0)}{\Delta x}$$</code></pre><p>我去，这是什么鬼😫。哈哈，不慌，这个式子对应的公式为:<br>$$f’(x_0) = \lim_{\Delta x\to 0} \frac{f(x_0+\Delta x) - f(x_0)}{\Delta x}$$<br>对应着看看差不多应该有点感觉了吧。还有啊，这些显示的公式可以右击的，很有意思，你可以试一试！</p>
-<p>下面我把常用的总结一下。(试试这个:<a href="http://detexify.kirelabs.org/classify.html" target="_blank" rel="noopener">点我</a>)</p>
-<p>上角标:</p>
-<table>
-<thead>
-<tr>
-<th align="center">格式</th>
-<th align="center">显示</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>\\(x^y\\)</code></td>
-<td align="center">\(x^y\)</td>
-</tr>
-<tr>
-<td align="center"><code>\(x^{y^z}\\)</code></td>
-<td align="center">\(x^{y^z}\)</td>
-</tr>
-</tbody></table>
-<p>下角标:  </p>
-<table>
-<thead>
-<tr>
-<th align="center">格式</th>
-<th align="center">显示</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>\\(x_i\\)</code></td>
-<td align="center">\(x_i\)</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>细心的同学会发现（你肯定没发现）我前面写的公式:<br><code>$$f&#39;(x\_0)=\lim_{\Delta x\to 0} \frac{f(x\_0+\Delta x) - f(x\_0)}{\Delta x}$$</code>:<br>$$f’(x_0)=\lim_{\Delta x\to 0} \frac{f(x_0+\Delta x) - f(x_0)}{\Delta x}$$<br>每个下角标的位置都加了一个, 那是因为如果我第一个下角标不加反斜杠(后面两个加不加都不影响):<br><code>$$f&#39;(x_0)=\lim_{\Delta x\to 0} \frac{f(x\_0+\Delta x) - f(x\_0)}{\Delta x}$$</code><br>就会出现下面的效果:<br>$$f’(x_0)=\lim_{\Delta x\to 0} \frac{f(x_0+\Delta x) - f(x_0)}{\Delta x}$$<br>我也不知道为什么…😂求解答…</p>
-<blockquote>
-<p>2016.04.08:终于找到原因了，下划线在Markdown中有特殊含义，两个下划线表示斜体。。。😅, 知道这个就很好解决啦，把每个下划线前都加一个反斜杠就OK啦~🤗</p>
-</blockquote>
-</blockquote>
-<p>希腊字母:</p>
-<table>
-<thead>
-<tr>
-<th align="center">格式</th>
-<th align="center">显示</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>\\(\alpha\\)</code></td>
-<td align="center">\(\alpha\)</td>
-</tr>
-<tr>
-<td align="center"><code>\\(\beta\\)</code></td>
-<td align="center">\(\beta\)</td>
-</tr>
-<tr>
-<td align="center"><code>\\(\Delta\\)</code></td>
-<td align="center">\(\Delta\)</td>
-</tr>
-<tr>
-<td align="center">…</td>
-<td align="center">…</td>
-</tr>
-</tbody></table>
-<p>求和:</p>
-<table>
-<thead>
-<tr>
-<th align="center">格式</th>
-<th align="center">显示</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>$$\sum_{i=0}^n$$</code></td>
-<td align="center">$$\sum_{i=0}^n$$</td>
-</tr>
-</tbody></table>
-<p> 分数:</p>
-<table>
-<thead>
-<tr>
-<th align="center">格式</th>
-<th align="center">显示</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>$\frac{x}{y}$$</code></td>
-<td align="center">$$\frac{x}{y}$$</td>
-</tr>
-</tbody></table>
-<p>开根号:</p>
-<table>
-<thead>
-<tr>
-<th align="center">格式</th>
-<th align="center">显示</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>\\(\sqrt 3\\)</code></td>
-<td align="center">\(\sqrt 3\)</td>
-</tr>
-<tr>
-<td align="center"><code>\\(\sqrt[2] 3\\)</code></td>
-<td align="center">\(\sqrt[2] 3\)</td>
-</tr>
-<tr>
-<td align="center"><code>\\(\sqrt[3] 3\\)</code></td>
-<td align="center">\(\sqrt[3] 3\)</td>
-</tr>
-</tbody></table>
-<p>极限:</p>
-<table>
-<thead>
-<tr>
-<th align="center">格式</th>
-<th align="center">显示</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>$$\lim_{x \to 0}$$</code></td>
-<td align="center">$$\lim_{x \to 0}$$</td>
-</tr>
-</tbody></table>
-<p>分情况:</p>
-<table>
-<thead>
-<tr>
-<th align="center">格式</th>
-<th align="center">显示</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center"><code>$$f(x): \begin{cases} x, x&gt;0 \\\ \\\ -x,x&lt;0 \end{cases}$$</code></td>
-<td align="center">$$f(x): \begin{cases} x, x&gt;0 \\ \\ -x,x&lt;0 \end{cases}$$</td>
-</tr>
-</tbody></table>
-<p>参考:   </p>
-<ul>
-<li><a href="http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference" target="_blank" rel="noopener">MathJax basic tutorial and quick reference - StackExchange</a></li>
-<li><a href="http://docs.mathjax.org/en/latest/start.html" target="_blank" rel="noopener">MathJax Docs</a></li>
-<li><a href="http://easy-copy-mathjax.xxxx7.com" target="_blank" rel="noopener">Easy Copy MathJax</a></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>Markdown</tag>
-        <tag>MathJax</tag>
-        <tag>LaTeX</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>机器学习资源汇总</title>
-    <url>/2016/03/26/Machine-Learning-Resources/</url>
-    <content><![CDATA[<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/aa1e0f20-7d7b-48d9-8fbf-2240133628cb.jpg" alt=""></p>
-<p>机器学习相关学习资料整理。</p>
-<a id="more"></a>
-<hr>
-<h1 id="微积分"><a href="#微积分" class="headerlink" title="微积分"></a>微积分</h1><ul>
-<li><h3 id="Single-Variable-Calculus-MIT"><a href="#Single-Variable-Calculus-MIT" class="headerlink" title="Single Variable Calculus - MIT"></a>Single Variable Calculus - MIT</h3><ul>
-<li><a href="http://ocw.mit.edu/courses/mathematics/18-01sc-single-variable-calculus-fall-2010/" target="_blank" rel="noopener">课程官网</a></li>
-<li><a href="https://archive.org/details/MIT18.01JF07" target="_blank" rel="noopener">课程存档</a></li>
-<li><a href="https://www.youtube.com/watch?v=7K1sB05pE0A&list=PL590CCC2BC5AF3BC1" target="_blank" rel="noopener">Youtube</a></li>
-<li><a href="http://open.163.com/special/sp/singlevariablecalculus.html" target="_blank" rel="noopener">网易公开课</a></li>
-<li><a href="https://itunes.apple.com/cn/itunes-u/single-variable-calculus/id354869053?mt=10" target="_blank" rel="noopener">iTunes U</a></li>
-</ul>
-</li>
-</ul>
-<h1 id="线性代数"><a href="#线性代数" class="headerlink" title="线性代数"></a>线性代数</h1><ul>
-<li><h3 id="Linear-Algebra-MIT"><a href="#Linear-Algebra-MIT" class="headerlink" title="Linear Algebra - MIT"></a>Linear Algebra - MIT</h3><ul>
-<li><a href="http://ocw.mit.edu/courses/mathematics/18-06-linear-algebra-spring-2010" target="_blank" rel="noopener">课程官网</a></li>
-<li><a href="https://www.youtube.com/watch?v=ZK3O402wf1c" target="_blank" rel="noopener">YouTube</a></li>
-<li><a href="http://open.163.com/special/opencourse/daishu.html" target="_blank" rel="noopener">网易公开课</a></li>
-<li><a href="https://itunes.apple.com/us/itunes-u/linear-algebra/id354869137" target="_blank" rel="noopener">iTunes U</a></li>
-</ul>
-</li>
-</ul>
-<h1 id="概率论与数理统计"><a href="#概率论与数理统计" class="headerlink" title="概率论与数理统计"></a>概率论与数理统计</h1><p>NA</p>
-<h1 id="凸优化"><a href="#凸优化" class="headerlink" title="凸优化"></a>凸优化</h1><p>NA</p>
-<h1 id="Python"><a href="#Python" class="headerlink" title="Python"></a>Python</h1><ul>
-<li><h3 id="廖雪峰Python教程"><a href="#廖雪峰Python教程" class="headerlink" title="廖雪峰Python教程"></a><a href="http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000" target="_blank" rel="noopener">廖雪峰Python教程</a></h3></li>
-<li><h3 id="Learn-python-in-Y-minutes"><a href="#Learn-python-in-Y-minutes" class="headerlink" title="Learn python in Y minutes"></a><a href="https://learnxinyminutes.com/docs/zh-cn/python3-cn/" target="_blank" rel="noopener">Learn python in Y minutes</a></h3></li>
-</ul>
-<h1 id="机器学习"><a href="#机器学习" class="headerlink" title="机器学习"></a>机器学习</h1><ul>
-<li><h3 id="Coursera机器学习-Andrew-Ng"><a href="#Coursera机器学习-Andrew-Ng" class="headerlink" title="Coursera机器学习 - Andrew Ng"></a>Coursera机器学习 - Andrew Ng</h3><ul>
-<li><a href="https://www.coursera.org/learn/machine-learning" target="_blank" rel="noopener">课程地址</a></li>
-<li><a href="http://daniellaah.github.io/2016/Machine-Learning-Andrew-Ng-My-Notes.html" target="_blank" rel="noopener">我的笔记</a></li>
-</ul>
-</li>
-<li><h3 id="CS229-Stanford-Andrew-Ng"><a href="#CS229-Stanford-Andrew-Ng" class="headerlink" title="CS229 Stanford - Andrew Ng"></a>CS229 Stanford - Andrew Ng</h3><ul>
-<li><a href="http://cs229.stanford.edu/" target="_blank" rel="noopener">课程官网</a></li>
-<li><a href="https://www.youtube.com/watch?v=UzxYlbK2c7E&list=PLLlzPed-cDvxR7tscN2wcwZ947AzNpW_1" target="_blank" rel="noopener">Youtube</a></li>
-<li><a href="">我的笔记</a></li>
-<li><a href="http://open.163.com/special/opencourse/machinelearning.html" target="_blank" rel="noopener">网易公开课</a></li>
-</ul>
-</li>
-<li><h3 id="《统计学习方法》-李航"><a href="#《统计学习方法》-李航" class="headerlink" title="《统计学习方法》- 李航"></a><a href="https://book.douban.com/subject/10590856/" target="_blank" rel="noopener">《统计学习方法》- 李航</a></h3></li>
-<li><h3 id="《机器学习》-周志华"><a href="#《机器学习》-周志华" class="headerlink" title="《机器学习》 - 周志华"></a><a href="https://book.douban.com/subject/26708119/" target="_blank" rel="noopener">《机器学习》 - 周志华</a></h3></li>
-</ul>
-<h1 id="深度学习"><a href="#深度学习" class="headerlink" title="深度学习"></a>深度学习</h1><ul>
-<li><h3 id="Coursera-Deep-Learning-Sepecialization-deeplearning-ai"><a href="#Coursera-Deep-Learning-Sepecialization-deeplearning-ai" class="headerlink" title="Coursera Deep Learning Sepecialization - deeplearning.ai "></a><a href="https://www.coursera.org/specializations/deep-learning" target="_blank" rel="noopener">Coursera Deep Learning Sepecialization - deeplearning.ai </a></h3></li>
-<li><h3 id="Deep-Learning-Sepecialization学习笔记"><a href="#Deep-Learning-Sepecialization学习笔记" class="headerlink" title="Deep Learning Sepecialization学习笔记"></a><a href="">Deep Learning Sepecialization学习笔记</a></h3></li>
-</ul>
-<h1 id="自然语言处理"><a href="#自然语言处理" class="headerlink" title="自然语言处理"></a>自然语言处理</h1><p><a href="https://web.stanford.edu/~jurafsky/slp3/" target="_blank" rel="noopener">Speech and Language Processing</a></p>
-<h1 id="推荐系统"><a href="#推荐系统" class="headerlink" title="推荐系统"></a>推荐系统</h1><ul>
-<li><h3 id="推荐系统实践-项亮"><a href="#推荐系统实践-项亮" class="headerlink" title="推荐系统实践 - 项亮"></a><a href="https://book.douban.com/subject/10769749/" target="_blank" rel="noopener">推荐系统实践 - 项亮</a></h3></li>
-</ul>
-<h1 id="竞赛"><a href="#竞赛" class="headerlink" title="竞赛"></a>竞赛</h1><ul>
-<li><h3 id="Kaggle"><a href="#Kaggle" class="headerlink" title="Kaggle"></a><a href="https://www.kaggle.com/" target="_blank" rel="noopener">Kaggle</a></h3></li>
-</ul>
-<p>2018.06.09 updated</p>
-]]></content>
-      <tags>
-        <tag>Machine Learning</tag>
       </tags>
   </entry>
 </search>
