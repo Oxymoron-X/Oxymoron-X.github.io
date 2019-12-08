@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>高斯混合模型和EM算法</title>
-    <url>/2018/01/24/gaussian-mixture-model-and-expectation-maximun-algorithm/</url>
+    <url>/2018/gaussian-mixture-model-and-expectation-maximun-algorithm/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -47,7 +47,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>deeplearning-ai-专项课程二第三周</title>
-    <url>/2017/09/17/deeplearning-ai-Improving-Deep-Neural-Networks-week3/</url>
+    <url>/2017/deeplearning-ai-Improving-Deep-Neural-Networks-week3/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -71,7 +71,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>deeplearning-ai-专项课程二第二周</title>
-    <url>/2017/09/10/deeplearning-ai-Improving-Deep-Neural-Networks-week2/</url>
+    <url>/2017/deeplearning-ai-Improving-Deep-Neural-Networks-week2/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -95,7 +95,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>deeplearning-ai-专项课程二第一周</title>
-    <url>/2017/09/06/deeplearning-ai-Improving-Deep-Neural-Networks-week1/</url>
+    <url>/2017/deeplearning-ai-Improving-Deep-Neural-Networks-week1/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -136,7 +136,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>deeplearning.ai 专项课程一第四周</title>
-    <url>/2017/08/31/deeplearning-ai-Neural-Networks-and-Deep-Learning-week4/</url>
+    <url>/2017/deeplearning-ai-Neural-Networks-and-Deep-Learning-week4/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -177,7 +177,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>deeplearning.ai 专项课程一第三周</title>
-    <url>/2017/08/29/deeplearning-ai-Neural-Networks-and-Deep-Learning-week3/</url>
+    <url>/2017/deeplearning-ai-Neural-Networks-and-Deep-Learning-week3/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -236,7 +236,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>deeplearning.ai 专项课程一第二周</title>
-    <url>/2017/08/27/deeplearning-ai-Neural-Networks-and-Deep-Learning-week2/</url>
+    <url>/2017/deeplearning-ai-Neural-Networks-and-Deep-Learning-week2/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -289,7 +289,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>deeplearning.ai 专项课程一第一周</title>
-    <url>/2017/08/27/deeplearning-ai-Neural-Networks-and-Deep-Learning-week1/</url>
+    <url>/2017/deeplearning-ai-Neural-Networks-and-Deep-Learning-week1/</url>
     <content><![CDATA[<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/andrewng-deeplearningai.jpeg" alt=""><br>这是Andrew Ng在Coursera上的深度学习专项课程中第一课Neural Networks and Deep Learning第一周Introduction to deep learning的学习笔记.</p>
 <a id="more"></a>
 <hr>
@@ -310,7 +310,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>deeplearning.ai 深度学习专项课程笔记 - 目录</title>
-    <url>/2017/08/27/deeplearning.ai-toc/</url>
+    <url>/2017/deeplearning.ai-toc/</url>
     <content><![CDATA[<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_1263.png" alt=""><br>这里会记录我在学习深度学习系列课程中的学习笔记. 我在Github上开了一个<a href="https://github.com/daniellaah/deeplearning.ai-step-by-step-guide" target="_blank" rel="noopener">repo</a>用于分享学习心得, 代码等. 觉得好的话帮忙给个start啦.</p>
 <a id="more"></a>
 <hr>
@@ -332,7 +332,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>支持向量机总结(上)</title>
-    <url>/2017/03/20/Support-Vector-Machines-sumup/</url>
+    <url>/2017/Support-Vector-Machines-sumup/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -384,7 +384,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>CS229机器学习笔记(十) - Learning Theory</title>
-    <url>/2017/02/18/CS229-ML-Notes-Lecture-9/</url>
+    <url>/2017/CS229-ML-Notes-Lecture-9/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -405,7 +405,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>CS229机器学习笔记(九)-SVM之SMO算法</title>
-    <url>/2016/11/29/CS229-ML-Notes-Lecture-8-2/</url>
+    <url>/2016/CS229-ML-Notes-Lecture-8-2/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -439,7 +439,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>CS229机器学习笔记(八)-SVM之软间隔</title>
-    <url>/2016/11/29/CS229-ML-Notes-Lecture-8-1/</url>
+    <url>/2016/CS229-ML-Notes-Lecture-8-1/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -470,7 +470,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>CS229机器学习笔记(七)-SVM之Kernels</title>
-    <url>/2016/11/28/CS229-ML-Notes-Lecture-8/</url>
+    <url>/2016/CS229-ML-Notes-Lecture-8/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -506,7 +506,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>CS229机器学习笔记(六)-SVM之拉格朗日对偶, 最优间隔分类器</title>
-    <url>/2016/11/23/CS229-ML-Notes-Lecture-7/</url>
+    <url>/2016/CS229-ML-Notes-Lecture-7/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -546,7 +546,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>CS229机器学习笔记(五)-SVM之函数间隔, 几何间隔</title>
-    <url>/2016/11/21/CS229-ML-Notes-Lecture-6/</url>
+    <url>/2016/CS229-ML-Notes-Lecture-6/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -600,7 +600,7 @@ $$\gamma=\min\_i\gamma^{(i)}.$$
   </entry>
   <entry>
     <title>CS229机器学习笔记(四)-生成学习算法, 朴素贝叶斯, 多项式事件模型</title>
-    <url>/2016/11/21/CS229-ML-Notes-Lecture-5-6/</url>
+    <url>/2016/CS229-ML-Notes-Lecture-5-6/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -636,7 +636,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>CS229机器学习笔记(三)-指数分布族, 广义线性模型</title>
-    <url>/2016/11/19/CS229-ML-Notes-Lecture-1-4-%E4%B8%8B/</url>
+    <url>/2016/CS229-ML-Notes-Lecture-1-4-%E4%B8%8B/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -749,7 +749,7 @@ log likelihood如下:
   </entry>
   <entry>
     <title>CS229机器学习笔记(二) - Logistic回归, 牛顿方法</title>
-    <url>/2016/11/18/CS229-ML-Notes-Lecture-1-4-%E4%B8%AD/</url>
+    <url>/2016/CS229-ML-Notes-Lecture-1-4-%E4%B8%AD/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -780,7 +780,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>CS229机器学习笔记(一) - 梯度下降, 正规方程, 局部加权</title>
-    <url>/2016/11/17/CS229-ML-Notes-Lecture-1-4-%E4%B8%8A/</url>
+    <url>/2016/CS229-ML-Notes-Lecture-1-4-%E4%B8%8A/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -815,7 +815,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(十八) - Photo OCR</title>
-    <url>/2016/06/27/Coursera-ML-Notes-Week-11-Application-Example-Photo-OCR/</url>
+    <url>/2016/Coursera-ML-Notes-Week-11-Application-Example-Photo-OCR/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -848,7 +848,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(十七) - 大规模机器学习</title>
-    <url>/2016/06/26/Coursera-ML-Notes-Week-10-Large-Scale-Machine-Learning/</url>
+    <url>/2016/Coursera-ML-Notes-Week-10-Large-Scale-Machine-Learning/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -884,7 +884,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(十六) - 推荐系统</title>
-    <url>/2016/06/21/Coursera-ML-Notes-Week-9-Recommender-Systems/</url>
+    <url>/2016/Coursera-ML-Notes-Week-9-Recommender-Systems/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -921,7 +921,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(十五) - 异常检测</title>
-    <url>/2016/06/20/Coursera-ML-Notes-Week-9-Anomaly-Detection/</url>
+    <url>/2016/Coursera-ML-Notes-Week-9-Anomaly-Detection/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -958,7 +958,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(十三) - 非监督学习</title>
-    <url>/2016/06/17/Coursera-ML-Notes-Week-8-Unsupervised-Learning/</url>
+    <url>/2016/Coursera-ML-Notes-Week-8-Unsupervised-Learning/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -994,7 +994,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(十四) - 数据降维</title>
-    <url>/2016/06/16/Coursera-ML-Notes-Week-8-Dimensionality-Reduction/</url>
+    <url>/2016/Coursera-ML-Notes-Week-8-Dimensionality-Reduction/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1031,7 +1031,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(十二) - SVM</title>
-    <url>/2016/05/26/Coursera-ML-Notes-Week-7-Support-Vector-Machines/</url>
+    <url>/2016/Coursera-ML-Notes-Week-7-Support-Vector-Machines/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1067,7 +1067,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(十一) - 机器学习系统设计</title>
-    <url>/2016/05/23/Coursera-ML-Notes-Week-6-Machine-Learning-System-Design/</url>
+    <url>/2016/Coursera-ML-Notes-Week-6-Machine-Learning-System-Design/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1105,7 +1105,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(十) - 机器学习经验方法总结</title>
-    <url>/2016/05/19/Coursera-ML-Notes-Week-6-Advice-for-Applying-Machine-Learning/</url>
+    <url>/2016/Coursera-ML-Notes-Week-6-Advice-for-Applying-Machine-Learning/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1199,7 +1199,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(九) - 神经网络(下)</title>
-    <url>/2016/05/13/Coursera-ML-Notes-Week-5-Neural-Networks-Learning/</url>
+    <url>/2016/Coursera-ML-Notes-Week-5-Neural-Networks-Learning/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1252,7 +1252,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(八) - 神经网络(上)</title>
-    <url>/2016/05/09/Coursera-ML-Notes-Week-4-Neural-Networks-Representation/</url>
+    <url>/2016/Coursera-ML-Notes-Week-4-Neural-Networks-Representation/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1289,7 +1289,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(七) - 来自吴恩达的狗粮和鸡汤</title>
-    <url>/2016/04/28/Coursera-ML-Notes-Week-3-chicken-soup/</url>
+    <url>/2016/Coursera-ML-Notes-Week-3-chicken-soup/</url>
     <content><![CDATA[<center>![](https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/andrewngandhiswift.jpg?imageMogr2/thumbnail/!60p)</center>
 > 结婚两周年之际和Carol一起登上了八达岭，愿长城见证我们的爱情 。
 > -- [AndrewNg吴恩达 ](http://weibo.com/5866810652/Dqs1UvKQd)
@@ -1302,7 +1302,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(六) - 正则化</title>
-    <url>/2016/04/28/Coursera-ML-Notes-Week-3-Regularization/</url>
+    <url>/2016/Coursera-ML-Notes-Week-3-Regularization/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1336,7 +1336,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(五) - Logistic Regression</title>
-    <url>/2016/04/26/Coursera-ML-Notes-Week-3-Logistic-Regression/</url>
+    <url>/2016/Coursera-ML-Notes-Week-3-Logistic-Regression/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1376,7 +1376,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(四) - Octave教程</title>
-    <url>/2016/04/19/Coursera-ML-Notes-Week-2-Octave-Tutorial/</url>
+    <url>/2016/Coursera-ML-Notes-Week-2-Octave-Tutorial/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1616,7 +1616,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(三) - 多变量线性回归</title>
-    <url>/2016/04/11/Coursera-ML-Notes-Week-2-Linear-Regression-with-Multiple-Variables/</url>
+    <url>/2016/Coursera-ML-Notes-Week-2-Linear-Regression-with-Multiple-Variables/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1698,7 +1698,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(二) - 单变量线性回归</title>
-    <url>/2016/04/08/Coursera-ML-Notes-Week-1-Linear-Regression-with-One-Variable/</url>
+    <url>/2016/Coursera-ML-Notes-Week-1-Linear-Regression-with-One-Variable/</url>
     <content><![CDATA[<script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
@@ -1742,7 +1742,7 @@ tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
   </entry>
   <entry>
     <title>Coursera机器学习笔记(一) - 监督学习vs无监督学习</title>
-    <url>/2016/04/06/Coursera-ML-Notes-Week-1-Introduction/</url>
+    <url>/2016/Coursera-ML-Notes-Week-1-Introduction/</url>
     <content><![CDATA[<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_03.png" alt=""></p>
 <h2 id="一-监督学习"><a href="#一-监督学习" class="headerlink" title="一. 监督学习"></a>一. 监督学习</h2><p>什么是监督学习? 我们来看看<a href="https://zh.wikipedia.org/wiki/%E7%9B%A3%E7%9D%A3%E5%BC%8F%E5%AD%B8%E7%BF%92" target="_blank" rel="noopener">维基百科</a>中给出的定义:</p>
 <blockquote>

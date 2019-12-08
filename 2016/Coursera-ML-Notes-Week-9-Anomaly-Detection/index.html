@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://daniellaah.github.io').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&amp;apos;$&amp;apos;,&amp;apos;$&amp;apos;], [&amp;apos;\\(&amp;apos;,&amp;apos;\\)&amp;apos;]]} });        课程地址：Anomaly Detection 课程Wiki：Anomaly Detection 课件：PPT　PDF">
+<meta name="keywords" content="Machine Learning,Notes,Coursera,MOOC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Coursera机器学习笔记(十五) - 异常检测">
+<meta property="og:url" content="https:&#x2F;&#x2F;daniellaah.github.io&#x2F;2016&#x2F;Coursera-ML-Notes-Week-9-Anomaly-Detection&#x2F;index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&amp;apos;$&amp;apos;,&amp;apos;$&amp;apos;], [&amp;apos;\\(&amp;apos;,&amp;apos;\\)&amp;apos;]]} });        课程地址：Anomaly Detection 课程Wiki：Anomaly Detection 课件：PPT　PDF">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_303.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_304.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_305.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_306.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_307.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_308.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_309.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_310.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_311.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_312.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_313.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_314.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_315.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_316.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_317.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_318.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_319.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_320.png">
+<meta property="og:updated_time" content="2019-12-06T13:16:59.336Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_303.png">
+
+<link rel="canonical" href="https://daniellaah.github.io/2016/Coursera-ML-Notes-Week-9-Anomaly-Detection/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Coursera机器学习笔记(十五) - 异常检测 | Hexo</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f83617d7f08d120ecbbca435e8de97a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://daniellaah.github.io/2016/Coursera-ML-Notes-Week-9-Anomaly-Detection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daniellaah">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Coursera机器学习笔记(十五) - 异常检测
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-06-20 12:44:16" itemprop="dateCreated datePublished" datetime="2016-06-20T12:44:16+08:00">2016-06-20</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-06 21:16:59" itemprop="dateModified" datetime="2019-12-06T21:16:59+08:00">2019-12-06</time>
+              </span>
+
+          
+            <span id="/2016/Coursera-ML-Notes-Week-9-Anomaly-Detection/" class="post-meta-item leancloud_visitors" data-flag-title="Coursera机器学习笔记(十五) - 异常检测" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/Coursera-ML-Notes-Week-9-Anomaly-Detection/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/Coursera-ML-Notes-Week-9-Anomaly-Detection/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_303.png" alt=""></p>
+<ul>
+<li>课程地址：<a href="https://www.coursera.org/learn/machine-learning/home/week/9" target="_blank" rel="noopener">Anomaly Detection</a></li>
+<li>课程Wiki：<a href="https://share.coursera.org/wiki/index.php/ML:Anomaly_Detection" target="_blank" rel="noopener">Anomaly Detection</a></li>
+<li>课件：<a href="https://d396qusza40orc.cloudfront.net/ml/docs/slides/Lecture15.pptx" target="_blank" rel="noopener">PPT</a>　<a href="https://d396qusza40orc.cloudfront.net/ml/docs/slides/Lecture15.pdf" target="_blank" rel="noopener">PDF</a><a id="more"></a>
+
+</li>
+</ul>
+<hr>
+<h2 id="一-概率密度估计"><a href="#一-概率密度估计" class="headerlink" title="一. 概率密度估计"></a>一. 概率密度估计</h2><h3 id="1-1-异常检测"><a href="#1-1-异常检测" class="headerlink" title="1.1 异常检测"></a>1.1 异常检测</h3><p>对于飞机引擎有特征$x_1$, $x_2$…, 数据集如下所示. 对于一个新的引擎, 我们希望知道它是否是存在异常, 例如下图所示, 有一个可能是正常的引擎, 有一个引擎可能是异常的.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_304.png" alt=""><br>对于$x_{test}$, 若$p(x_{test})&lt;\epsilon$, 则为异常；若$p(x_{test}) \ge \epsilon$, 则为非异常.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_305.png" alt=""><br>下面是几个异常检测的应用, 1.监测用户异常行为2.工业制造（飞机引擎）3.监测工作异常的计算机<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_306.png" alt=""></p>
+<h3 id="1-2-高斯分布"><a href="#1-2-高斯分布" class="headerlink" title="1.2 高斯分布"></a>1.2 高斯分布</h3><p>下图为高斯分布的图形及表达式.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_307.png" alt=""><br>下面几个图形展示了$\mu$和$\sigma$对高斯分布图形的影响.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_308.png" alt=""><br>我们假设一个数据集服从高斯分布, 那么$\mu$和$\sigma$可通过如下公式得出：$\mu=\frac{1}{m}\sum_{i=1}^mx^{(i)}$, $\sigma^2=\frac{1}{m}\sum_{i=1}^m(x^{(i)}-\mu)^2$.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_309.png" alt="">　　</p>
+<h3 id="1-3-异常检测算法"><a href="#1-3-异常检测算法" class="headerlink" title="1.3 异常检测算法"></a>1.3 异常检测算法</h3><p>对于n维的特征向量, 通过如下公式计算$p(x)$：<font size='4'><br>$$\begin{align}<br>p(x) &amp; =p(x_1;\mu_1,\sigma_1^2)p(x_2;\mu_2,\sigma_2^2)p(x_3;\mu_3,\sigma_3^2)…p(x_n;\mu_n,\sigma_n^2) \<br>\<br> &amp; = \Pi_{j=1}^np(x_j;\mu_j,\sigma_j^2)<br>\end{align}$$</font><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_310.png" alt=""><br>下图展示了异常检测算法的流程:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_311.png" alt=""><br>举例：<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_312.png" alt=""></p>
+<h2 id="二-开发异常检测系统"><a href="#二-开发异常检测系统" class="headerlink" title="二. 开发异常检测系统"></a>二. 开发异常检测系统</h2><h3 id="2-1-开发与评估"><a href="#2-1-开发与评估" class="headerlink" title="2.1 开发与评估"></a>2.1 开发与评估</h3><p>在开发学习算法的时候, 我们希望有一种评估这个算法的方式. 为了能够评价一个异常检测系统, 我们假设我们有一些含标签的数据(如果正常, 则$y=0$；如果异常$y=1$).<br>因为我们要通过训练集来做概率密度估计, 所以认定训练集都是非异常的样本.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_313.png" alt=""><br>下面举个例子. 假设我们有10000个正常的引擎, 20个异常的. 将10000个正常中的6000个作为训练集, 2000个作为交叉验证集, 2000个作为测试集; 再将一半异常的放入交叉验证集, 另一半放入测试集. 下图展示了这种分配数据集的方法, 还有一种方法如下图alternative所示, 不推荐这种方法.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_314.png" alt=""><br>下图展示了一些可以用来评估算法的方式, 前面已经讲过这些内容, 这里就不再赘述. 我们可以利用交叉验证集来选取一个合适的$\epsilon$.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_315.png" alt=""></p>
+<h3 id="2-2-异常检测-vs-监督学习"><a href="#2-2-异常检测-vs-监督学习" class="headerlink" title="2.2 异常检测 vs 监督学习"></a>2.2 异常检测 vs 监督学习</h3><p>上一小节我们学习了异常检测算法, 它是一种无监督学习算法, 但是这个算法中的数据集似乎是有标签的(“异常”, “非异常”), 那么我们为什么不直接使用一种监督学习的方法呢? 这一节我们就来看看异常检测算法和监督学习算法的对比.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_316.png" alt=""><br>一些异常检测与监督学习应用的例子:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_317.png" alt=""></p>
+<h3 id="2-3-特征选择"><a href="#2-3-特征选择" class="headerlink" title="2.3 特征选择"></a>2.3 特征选择</h3><p>当描绘出特征的分布图的时候, 如果近似高斯分布就可以直接使用异常检测. 如果不是高斯分布, 则对特征进行某个数学变换也可以得到近似高斯分布. 如下图所示. 　　<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_318.png" alt=""><br>某些情况下, 在评估异常检测系统的时候, 我们发现对于一个异常点x它的$p(x)$比较大, 这个时候我们就需要对这个点进行分析, 然后总结出一个新的特征 . 如下图所示, 一开始这个点的分布在下左图, 看上去像一个非异常点；分析并加入新的特征之后, 这个点的分布在下右图, 这个时候我们的异常检测系统就可以判断该点为异常点.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_319.png" alt=""><br>下面举个例子, 我们想要监测计算机是否正常工作. 特征如下图所示. 假设CPU负载和网络流量成线性关系, 如果想要监测某台计算机是否卡在一个死循环中, 我们可以加入$x_5$或$x_6$这样的特征. 正常情况下, 这个特征的值应该保持不大不小, 若某台计算机进入了死循环, 那么它的CPU负载应该很大, 但是网络流量很小, 这个时候这个特征的值就会变的很大. 异常检测系统就很容易监测出这样的情况.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_320.png" alt=""></p>
+<h2 id="三-Multivariate-Gaussian-Distribution-Optional"><a href="#三-Multivariate-Gaussian-Distribution-Optional" class="headerlink" title="三. Multivariate Gaussian Distribution (Optional)"></a>三. Multivariate Gaussian Distribution (Optional)</h2><h3 id="3-1-Multivariate-Gaussian-Distribution"><a href="#3-1-Multivariate-Gaussian-Distribution" class="headerlink" title="3.1 Multivariate Gaussian Distribution"></a>3.1 Multivariate Gaussian Distribution</h3><h3 id="3-2-Anomaly-Detection-using-the-Multivariate-Gaussian-Distribution"><a href="#3-2-Anomaly-Detection-using-the-Multivariate-Gaussian-Distribution" class="headerlink" title="3.2 Anomaly Detection using the Multivariate Gaussian Distribution"></a>3.2 Anomaly Detection using the Multivariate Gaussian Distribution</h3><p>　　</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Daniellaah
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="/https:/daniellaah.github.io/2016/Coursera-ML-Notes-Week-9-Anomaly-Detection/" title="Coursera机器学习笔记(十五) - 异常检测">https://daniellaah.github.io/2016/Coursera-ML-Notes-Week-9-Anomaly-Detection/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+              <a href="/tags/Notes/" rel="tag"># Notes</a>
+              <a href="/tags/Coursera/" rel="tag"># Coursera</a>
+              <a href="/tags/MOOC/" rel="tag"># MOOC</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/Coursera-ML-Notes-Week-8-Unsupervised-Learning/" rel="prev" title="Coursera机器学习笔记(十三) - 非监督学习">
+      <i class="fa fa-chevron-left"></i> Coursera机器学习笔记(十三) - 非监督学习
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/Coursera-ML-Notes-Week-9-Recommender-Systems/" rel="next" title="Coursera机器学习笔记(十六) - 推荐系统">
+      Coursera机器学习笔记(十六) - 推荐系统 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-概率密度估计"><span class="nav-number">1.</span> <span class="nav-text">一. 概率密度估计</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-异常检测"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 异常检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-高斯分布"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 高斯分布</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-异常检测算法"><span class="nav-number">1.3.</span> <span class="nav-text">1.3 异常检测算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-开发异常检测系统"><span class="nav-number">2.</span> <span class="nav-text">二. 开发异常检测系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-开发与评估"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 开发与评估</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-异常检测-vs-监督学习"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 异常检测 vs 监督学习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-特征选择"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 特征选择</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-Multivariate-Gaussian-Distribution-Optional"><span class="nav-number">3.</span> <span class="nav-text">三. Multivariate Gaussian Distribution (Optional)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Multivariate-Gaussian-Distribution"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 Multivariate Gaussian Distribution</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-Anomaly-Detection-using-the-Multivariate-Gaussian-Distribution"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 Anomaly Detection using the Multivariate Gaussian Distribution</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Daniellaah</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniellaah</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(() => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#comments',
+      verify: false,
+      notify: true,
+      appId: 't623MSBhVLoTHhzaeTlxl7Oz-gzGzoHsz',
+      appKey: 'tmiBxnWHuuecINpFBk861cEf',
+      placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: true,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

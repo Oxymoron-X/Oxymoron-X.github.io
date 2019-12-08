@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.0.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon.ico">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('https://daniellaah.github.io').hostname,
+    root: '/',
+    scheme: 'Muse',
+    version: '7.6.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&amp;apos;$&amp;apos;,&amp;apos;$&amp;apos;], [&amp;apos;\\(&amp;apos;,&amp;apos;\\)&amp;apos;]]} });        课程地址：Linear Regression with One Variable 课程Wiki：Linear Regression with One Variable 课件：PPT　PDF">
+<meta name="keywords" content="Machine Learning,Notes,Coursera,MOOC,Linear Regression">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Coursera机器学习笔记(二) - 单变量线性回归">
+<meta property="og:url" content="https:&#x2F;&#x2F;daniellaah.github.io&#x2F;2016&#x2F;Coursera-ML-Notes-Week-1-Linear-Regression-with-One-Variable&#x2F;index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: {inlineMath: [[&amp;apos;$&amp;apos;,&amp;apos;$&amp;apos;], [&amp;apos;\\(&amp;apos;,&amp;apos;\\)&amp;apos;]]} });        课程地址：Linear Regression with One Variable 课程Wiki：Linear Regression with One Variable 课件：PPT　PDF">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_02.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_05.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_583.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!55p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_584.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!55p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_08.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_10.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_11.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_12.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_13.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_14.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_16.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_17.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_18.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_19.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_20.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_21.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_22.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_23.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_24.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_26.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_27.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_29.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_28.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_31.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_585.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_32.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_33.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_23.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_16.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_586.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_587.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_588.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_589.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_590.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_592.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_593.png?imageMogr&#x2F;v2&#x2F;thumbnail&#x2F;!45p">
+<meta property="og:updated_time" content="2019-12-06T13:16:59.326Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com&#x2F;screenshot_02.png">
+
+<link rel="canonical" href="https://daniellaah.github.io/2016/Coursera-ML-Notes-Week-1-Linear-Regression-with-One-Variable/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Coursera机器学习笔记(二) - 单变量线性回归 | Hexo</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f83617d7f08d120ecbbca435e8de97a1";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://daniellaah.github.io/2016/Coursera-ML-Notes-Week-1-Linear-Regression-with-One-Variable/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Daniellaah">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Coursera机器学习笔记(二) - 单变量线性回归
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-04-08 16:08:35" itemprop="dateCreated datePublished" datetime="2016-04-08T16:08:35+08:00">2016-04-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2019-12-06 21:16:59" itemprop="dateModified" datetime="2019-12-06T21:16:59+08:00">2019-12-06</time>
+              </span>
+
+          
+            <span id="/2016/Coursera-ML-Notes-Week-1-Linear-Regression-with-One-Variable/" class="post-meta-item leancloud_visitors" data-flag-title="Coursera机器学习笔记(二) - 单变量线性回归" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/Coursera-ML-Notes-Week-1-Linear-Regression-with-One-Variable/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/Coursera-ML-Notes-Week-1-Linear-Regression-with-One-Variable/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+});
+</script>
+<script type="text/javascript" async
+  src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
+
+<p><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_02.png" alt=""></p>
+<ul>
+<li>课程地址：<a href="https://www.coursera.org/learn/machine-learning/home/week/1" target="_blank" rel="noopener">Linear Regression with One Variable</a></li>
+<li>课程Wiki：<a href="https://share.coursera.org/wiki/index.php/ML:Linear_Regression_with_One_Variable" target="_blank" rel="noopener">Linear Regression with One Variable</a></li>
+<li>课件：<a href="https://d396qusza40orc.cloudfront.net/ml/docs/slides/Lecture2.pptx" target="_blank" rel="noopener">PPT</a>　<a href="https://d396qusza40orc.cloudfront.net/ml/docs/slides/Lecture2.pdf" target="_blank" rel="noopener">PDF</a><a id="more"></a>
+</li>
+</ul>
+<hr>
+<h2 id="一-基本概念"><a href="#一-基本概念" class="headerlink" title="一. 基本概念"></a>一. 基本概念</h2><p>这一节我们来学习单变量的线性回归模型, 首先了解基本概念. </p>
+<h3 id="1-1-训练集"><a href="#1-1-训练集" class="headerlink" title="1.1 训练集"></a>1.1 训练集</h3><p>由训练样例(training example)组成的集合就是训练集(training set), 如下图所示, 其中$(x, y)$是一个训练样例, $(x^{(i)}, y^{(i)})$是第$i$个训练样例.<br>   <img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_05.png?imageMogr/v2/thumbnail/!45p" alt=""></p>
+<h3 id="1-2-假设函数"><a href="#1-2-假设函数" class="headerlink" title="1.2 假设函数"></a>1.2 假设函数</h3><p>使用某种学习算法对训练集的数据进行训练, 我们可以得到假设函数(Hypothesis Function), 如下图所示. 在房价的例子中，假设函数就是一个房价关于房子面积的函数。有了这个假设函数之后, 给定一个房子的面积我们就可以预测它的价格了.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_583.png?imageMogr/v2/thumbnail/!55p" alt=""><br>我们使用如下的形式表示假设函数, 为了方便$h_\theta(x)$也可以记作$h(x)$.<br><font size='4'>$${h_\theta(x)=\theta_0+\theta_1x}$$</font><br>以上这个模型就叫做单变量的线性回归(Linear Regression with One Variable). (Linear regression with one variable = Univariate linear regression，univariate是one variable的装逼写法.)<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_584.png?imageMogr/v2/thumbnail/!55p" alt="">  </p>
+<h2 id="二-代价函数"><a href="#二-代价函数" class="headerlink" title="二. 代价函数"></a>二. 代价函数</h2><h3 id="2-1-什么是代价函数"><a href="#2-1-什么是代价函数" class="headerlink" title="2.1 什么是代价函数"></a>2.1 什么是代价函数</h3><p>只要我们知道了假设函数, 我们就可以进行预测了. 关键是, 假设函数中有两个未知的量$\theta_0, \theta_1$. 当选择不同的$\theta_0$和$\theta_1$时, 我们模型的效果肯定是不一样的. 如下图所示, 列举了三种不同的$\theta_0$和$\theta_1$下的假设函数.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_08.png" alt=""><br>现在的问题就是该如何选择这两个参数了. 我们的想法是选择某个<br>$\theta_0$和$\theta_1$，使得对于训练样例$(x,y)$，$h_\theta(x)$最”接近”$y$。越是接近, 代表这个假设函数越是准确, 这里我们选择均方误差来作为衡量标准, 即我们想要每个样例的估计值与真实值之间差的平方的均值最小。用公式表达为:<br><font size='4'><br>$${\mathop{minimize}\limits_{\theta_0,\theta_1} \frac{1}{2m}\sum_{i=0}^m\left(h_\theta(x^{(i)})-y^{(i)}\right)^2}$$<br></font><br>(其中的$1/2$只是为了后面计算的方便)我们记:<br><font size='4'><br>$${J(\theta_0,\theta_1)=\frac{1}{2m}\sum_{i=0}^m\left(h_\theta(x^{(i)})-y^{(i)}\right)^2}$$<br></font><br>这样就得到了我们的代价函数(cost function), 也就是我们的优化目标, 我们想要代价函数最小:<br><font size='4'>$$\mathop{minimize}\limits_{\theta_0,\theta_1}J(\theta_0,\theta_1)$$</font><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_10.png?imageMogr/v2/thumbnail/!45p" alt=""></p>
+<h3 id="2-2-代价函数与假设函数"><a href="#2-2-代价函数与假设函数" class="headerlink" title="2.2 代价函数与假设函数"></a>2.2 代价函数与假设函数</h3><p>现在为了更方便地探究$h_\theta(x)$与$J(\theta_0,\theta_1)$的关系, 先令$\theta_0$等于0, 得到了简化后的假设函数，有假设函数的定义可知此时的假设函数是经过原点的直线. 相应地也也得到简化的代价函数。如图所示:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_11.png?imageMogr/v2/thumbnail/!45p" alt=""><br>简化之后，我们令$\theta_1$等于1, 就得到$h_\theta(x)=x$如下图左所示。图中三个红叉表示训练样例，通过代价函数的定义我们计算得出$J(1)=0$，对应下图右中的$(1,0)$坐标。<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_12.png?imageMogr/v2/thumbnail/!45p" alt=""><br>重复上面的步骤，再令$\theta_1=0.5$，得到$h_\theta(x)$如下图左所示。通过计算得出$J(0.5)=0.58$，对应下图右中的$(0.5,0.58)$坐标。<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_13.png?imageMogr/v2/thumbnail/!45p" alt=""><br>对于不同的$\theta_1$，对应着不同的假设函数$h_\theta(x)$，于是就有了不同的$J(\theta_1)$的值。将这些点连接起来就可以得到$J(\theta_1)$关于$\theta_1$的函数图像，如下图所示：<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_14.png?imageMogr/v2/thumbnail/!45p" alt=""><br>我们的目标就是找到一个$\theta$使得$J(\theta)$最小, 通过上面的描点作图的方式, 我们可以从图中看出, 当$\theta_1=1$的时候, $J(\theta)$取得最小值. </p>
+<h3 id="2-3-代价函数与假设函数II"><a href="#2-3-代价函数与假设函数II" class="headerlink" title="2.3 代价函数与假设函数II　　"></a>2.3 代价函数与假设函数II　　</h3><p>在上一节中，我们令$\theta_0$等于0, 并且通过设置不同的$\theta_1$来描点作图得到$J(\theta_1)$的曲线。这一节我们不再令$\theta_0=0$, 而是同时设置$\theta_0$和$\theta_1$的值, 然后再绘出$J(\theta_0, \theta_1)$的图形. 因为此时有两个变量，很容易想到$J(\theta_1)$应该是一个曲面, 如下图所示:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_16.png?imageMogr/v2/thumbnail/!45p" alt=""><br>这个图是教授用matlab绘制的，由于3D图形不太方便我们研究，我们就使用二维的等高线(上图右上角教授写的contour plots/figures)，这样看上去比较清楚一些。如下图右，越靠近中心表示$J(\theta_0,\theta_1)$的值越小(对应3D图中越靠近最低点的位置)。下图左表示当$\theta_0=800$, $\theta_1=0.15$的时候对应的$h_\theta(x)$，通过$\theta_0$, $\theta_1$的值可以找到下图右中$J(\theta_0,\theta_1)$的值。<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_17.png?imageMogr/v2/thumbnail/!45p" alt=""><br>类似地：<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_18.png?imageMogr/v2/thumbnail/!45p" alt=""><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_19.png?imageMogr/v2/thumbnail/!45p" alt=""><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_20.png?imageMogr/v2/thumbnail/!45p" alt=""><br>我们不断尝试直到找到一个最佳的$h_\theta(x)$。是否有特定的算法能帮助我们找到最佳的$h_\theta(x)$呢? 下面我们就要介绍这个算法-梯度下降算法.</p>
+<h2 id="三-梯度下降算法"><a href="#三-梯度下降算法" class="headerlink" title="三. 梯度下降算法"></a>三. 梯度下降算法</h2><h3 id="3-1-梯度下降"><a href="#3-1-梯度下降" class="headerlink" title="3.1 梯度下降"></a>3.1 梯度下降</h3><p><a href="https://zh.wikipedia.org/wiki/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95" target="_blank" rel="noopener">梯度下降算法</a>是一种优化算法, 它可以帮助我们找到一个函数的局部极小值点. 它不仅仅可以用在线性回归模型中, 在机器学习许多其他的模型中也可以使用它. 对于我们现在研究的单变量线性回归来说, 我们想要使用梯度下降来找到最优的$\theta_0, \theta_1$. 它的思想是, 首先随机选择两个$\theta_0, \theta_1$(例如, $\theta_0=0, \theta_1=0$), 不断地改变它们的值使得$J(\theta)$变小, 最终找到$J(\theta)$的最小值点.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_21.png?imageMogr/v2/thumbnail/!45p" alt=""><br>可以把梯度下降的过程想象成下山坡, 如果想要尽可能快的下坡, 应该每次都往坡度最大的方向下山.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_22.png?imageMogr/v2/thumbnail/!45p" alt=""><br>梯度下降算法得到的结果会受到初始状态的影响, 即当从不同的点开始时, 可能到达不同的局部极小值, 如下图:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_23.png?imageMogr/v2/thumbnail/!45p" alt=""><br>下面具体看一下算法的过程, 如下图所示, 其中$:=$表示赋值，$\alpha$叫做学习率用来控制下降的幅度，$\frac{\partial}{\partial\theta_j}J(\theta_0, \theta_1)$叫做梯度。这里一定要注意的是，算法每次是同时(simultaneously)改变$\theta_0$和$\theta_1$的值，如图下图所示。<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_24.png?imageMogr/v2/thumbnail/!45p" alt=""></p>
+<h3 id="3-2-梯度和学习率"><a href="#3-2-梯度和学习率" class="headerlink" title="3.2 梯度和学习率"></a>3.2 梯度和学习率</h3><p>我们先来看看梯度下降算法的梯度是如何帮助我们找到最优解的. 为了研究问题的方便我们还是同样地令$\theta_0$等于0，假设一开始选取的$\theta_1$在最低点的右侧，此时的梯度(斜率)是一个正数。根据上面的算法更新$\theta_1$的时候，它的值会减小, 即靠近最低点。<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_26.png?imageMogr/v2/thumbnail/!45p" alt=""><br>类似地假设一开始选取的$\theta_1$在最低点的左侧，此时的梯度是一个负数，根据上面的算法更新$\theta_1$的时候，它的值会增大，也会靠近最低点.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_27.png?imageMogr/v2/thumbnail/!45p" alt=""><br>如果一开始选取的$\theta_1$恰好在最适位置，那么更新$\theta_1$时，它的值不会发生变化。<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_29.png?imageMogr/v2/thumbnail/!45p" alt=""><br>学习率$\alpha$会影响梯度下降的幅度。如果$\alpha$太小, $\theta$的值每次会变化的很小，那么梯度下降就会非常慢；相反地，如果$\alpha$过大，$\theta$的值每次会变化会很大，有可能直接越过最低点，可能导致永远没法到达最低点。<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_28.png?imageMogr/v2/thumbnail/!45p" alt=""><br>由于随着越来越接近最低点, 相应的梯度(绝对值)也会逐渐减小，所以每次下降程度就会越来越小, 我们并不需要减小$\alpha$的值来减小下降程度。<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_31.png?imageMogr/v2/thumbnail/!45p" alt=""></p>
+<h3 id="3-3-计算梯度"><a href="#3-3-计算梯度" class="headerlink" title="3.3 计算梯度"></a>3.3 计算梯度</h3><p>根据定义, 梯度也就是代价函数对每个$\theta$的偏导:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_585.png?imageMogr/v2/thumbnail/!45p" alt=""><br>我们将$h_\theta(x^{(i)})=\theta_0+\theta_1x^{(i)}$带入到$J(\theta_0,\theta_1)$中，并且分别对$\theta_0$和$\theta_1$求导得:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_32.png?imageMogr/v2/thumbnail/!45p" alt=""><br>由此得到了完整的梯度下降算法:<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_33.png?imageMogr/v2/thumbnail/!45p" alt=""><br>还记得这个图吗, 前面说了梯度下降算法得到的结果会受初始状态的影响, 即初始状态不同, 结果可能是不同的局部最低点.<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_23.png?imageMogr/v2/thumbnail/!45p" alt=""><br>事实上，用于线性回归的代价函数总是一个凸函数(Convex Function)。这样的函数没有局部最优解，只有一个全局最优解。所以我们在使用梯度下降的时候，总会得到一个全局最优解。<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_16.png?imageMogr/v2/thumbnail/!45p" alt=""><br>下面我们来看一下梯度下降的运行过程：<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_586.png?imageMogr/v2/thumbnail/!45p" alt=""><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_587.png?imageMogr/v2/thumbnail/!45p" alt=""><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_588.png?imageMogr/v2/thumbnail/!45p" alt=""><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_589.png?imageMogr/v2/thumbnail/!45p" alt=""><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_590.png?imageMogr/v2/thumbnail/!45p" alt=""><br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_592.png?imageMogr/v2/thumbnail/!45p" alt=""><br>迭代多次后，我们得到了最优解。现在我们可以用最优解对应的假设函数来对房价进行预测了。例如一个1,250平方英尺的房子大概能卖到250k$，如下图所示：<br><img src="https://hexo-blog-1256212224.cos.ap-shanghai.myqcloud.com/screenshot_593.png?imageMogr/v2/thumbnail/!45p" alt=""></p>
+<p>　　
+　　　　
+　　
+　　
+　　</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>Daniellaah
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="/https:/daniellaah.github.io/2016/Coursera-ML-Notes-Week-1-Linear-Regression-with-One-Variable/" title="Coursera机器学习笔记(二) - 单变量线性回归">https://daniellaah.github.io/2016/Coursera-ML-Notes-Week-1-Linear-Regression-with-One-Variable/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Machine-Learning/" rel="tag"># Machine Learning</a>
+              <a href="/tags/Notes/" rel="tag"># Notes</a>
+              <a href="/tags/Coursera/" rel="tag"># Coursera</a>
+              <a href="/tags/MOOC/" rel="tag"># MOOC</a>
+              <a href="/tags/Linear-Regression/" rel="tag"># Linear Regression</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/Coursera-ML-Notes-Week-1-Introduction/" rel="prev" title="Coursera机器学习笔记(一) - 监督学习vs无监督学习">
+      <i class="fa fa-chevron-left"></i> Coursera机器学习笔记(一) - 监督学习vs无监督学习
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/Coursera-ML-Notes-Week-2-Linear-Regression-with-Multiple-Variables/" rel="next" title="Coursera机器学习笔记(三) - 多变量线性回归">
+      Coursera机器学习笔记(三) - 多变量线性回归 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一-基本概念"><span class="nav-number">1.</span> <span class="nav-text">一. 基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-训练集"><span class="nav-number">1.1.</span> <span class="nav-text">1.1 训练集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-假设函数"><span class="nav-number">1.2.</span> <span class="nav-text">1.2 假设函数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二-代价函数"><span class="nav-number">2.</span> <span class="nav-text">二. 代价函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-什么是代价函数"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 什么是代价函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-代价函数与假设函数"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 代价函数与假设函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-代价函数与假设函数II"><span class="nav-number">2.3.</span> <span class="nav-text">2.3 代价函数与假设函数II　　</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三-梯度下降算法"><span class="nav-number">3.</span> <span class="nav-text">三. 梯度下降算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-梯度下降"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 梯度下降</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-梯度和学习率"><span class="nav-number">3.2.</span> <span class="nav-text">3.2 梯度和学习率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-计算梯度"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 计算梯度</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Daniellaah</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">38</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2015 – 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Daniellaah</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.0.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v7.6.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script>
+<script src="/js/schemes/muse.js"></script>
+<script src="/js/next-boot.js"></script>
+
+
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(() => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#comments',
+      verify: false,
+      notify: true,
+      appId: 't623MSBhVLoTHhzaeTlxl7Oz-gzGzoHsz',
+      appKey: 'tmiBxnWHuuecINpFBk861cEf',
+      placeholder: "ヾﾉ≧∀≦)o来啊，快活啊!",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: true,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+</body>
+</html>

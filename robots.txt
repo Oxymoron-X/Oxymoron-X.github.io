@@ -3,7 +3,6 @@ Allow: /
 Allow: /archives/
 Allow: /categories/
 Allow: /tags/ 
-Allow: /resources/ 
 Disallow: /vendors/
 Disallow: /js/
 Disallow: /css/
@@ -11,6 +10,6 @@ Disallow: /fonts/
 Disallow: /vendors/
 Disallow: /fancybox
 
-Sitemap: https://daniellaah.github.io/sitemap.xml
-Sitemap: https://daniellaah.github.io/baidusitemap.xml
+Sitemap: http://daniellaah.github.io/sitemap.xml
+Sitemap: http://daniellaah.github.io/baidusitemap.xml
 
